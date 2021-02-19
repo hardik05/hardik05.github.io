@@ -1,0 +1,22 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-3921398-10",
+  "updated": "2021-02-19T21:27:39+05:30",
+  "id": "test_codelab",
+  "duration": 19,
+  "title": "Title of codelab goes here",
+  "summary": "",
+  "source": "test_codelab.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": null,
+  "tags": [
+    "web"
+  ],
+  "feedback": "http://fuzzing.in",
+  "url": "test_codelab"
+}
