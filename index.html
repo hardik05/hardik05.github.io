@@ -1,99 +1,178 @@
 
 <!doctype html>
-
-<html>
+<html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <meta name="theme-color" content="#4F7DC9">
-  <meta charset="UTF-8">
-  <title>Title of codelab goes here</title>
-  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
-  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
-  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
-  <style>
-    .success {
-      color: #1e8e3e;
-    }
-    .error {
-      color: red;
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="generator" content="Codelabs">
+<meta name="application-name" content="Codelabs">
+<link rel="canonical" href="https://example.com/">
+<link rel="preconnect" href="https://www.google-analytics.com">
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+    ga('create', 'UA-49880327-14', 'auto');
+    ga('send', 'pageview');
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+<script>
+/* Set the width of the sidebar to 250px (show it) */
+function openNav() {
+  document.getElementById("mySidepanel").style.width = "250px";
+}
+
+/* Set the width of the sidebar to 0 (hide it) */
+function closeNav() {
+  document.getElementById("mySidepanel").style.width = "0";
+        }</script>
+<title>Codelabs</title>
+<link rel="stylesheet" href="/styles/main.css">
+<link rel="import" href="/elements/elements.html">
+<style is="custom-style">
+:root{--paper-input-container-underline:{ display:none; };--paper-input-container-underline-focus:{ display:none; };--paper-tabs-selection-bar-color:currentcolor}.dropdown-filter{--paper-input-container:{ padding:8px; }}
+</style>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#455a64">
+<meta name="apple-mobile-web-app-title" content="Codelabs">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="194x194" href="/images/favicons/favicon-194x194.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/images/favicons/android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="mask-icon" href="/images/favicons/safari-pinned-tab.svg" color="#455a64">
+<meta name="msapplication-TileColor" content="#455a64">
+<meta name="msapplication-TileImage" content="/images/favicons/mstile-144x144.png">
+<meta name="theme-color" content="#455a64">
+<meta name="og:type" property="og:type" content="website">
+<meta name="og:title" property="og:title" content="Codelabs">
+<meta name="og:description" property="og:description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
+<meta name="og:url" property="og:url" content="https://example.com/">
+<meta name="og:site_name" property="og:site_name" content="Codelabs">
+<meta name="og:determiner" property="og:determiner" content="the">
+<meta name="og:locale" property="og:locale" content="en_US">
+<meta name="og:image" property="og:image" content="/images/og-image.png">
+<meta name="og:image:url" property="og:image:url" content="/images/og-image.png">
+<meta name="og:image:type" property="og:image:type" content="image/png">
+<meta name="og:image:width" property="og:image:width" content="1200">
+<meta name="og:image:height" property="og:image:height" content="1200">
+<meta name="og:image:alt" property="og:image:alt" content="Codelabs">
+<meta name="twitter:card" property="twitter:card" content="summary_large_image">
+<meta name="twitter:title" property="twitter:title" content="Codelabs">
+<meta name="twitter:description" property="twitter:description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
+<meta name="twitter:image" property="twitter:image" content="/images/og-image.png">
+<meta name="twitter:url" property="twitter:url" content="https://example.com/">
 </head>
-<body>
-  <google-codelab-analytics gaid="UA-3921398-10"></google-codelab-analytics>
-  <google-codelab codelab-gaid=""
-                  id="test_codelab"
-                  title="Title of codelab goes here"
-                  environment="web"
-                  feedback-link="http://fuzzing.in">
-    
-      <google-codelab-step label="What you&#39;ll learn: Overview" duration="5">
-        <p>Enter a codelab overview here: what &amp; why and github repo link where you can find related code if applicable</p>
-<h2 is-upgraded>Info Boxes</h2>
-<p>Plain Text followed by green &amp; yellow info boxes</p>
-<aside class="warning"><p>This will appear in a yellow info box.</p>
-</aside>
-<aside class="special"><p>This will appear in a green info box.</p>
-</aside>
-<h2 is-upgraded>Bullets</h2>
-<p>Plain Text followed by bullets</p>
+<body id="app" is="body-bind" class="loading fullbleed">
+<paper-header-panel id="main" mode="standard" main>
+<div id="mainToolbar" class="paper-header">
+<div class="site-width layout horizontal">
+<button class="openbtn" onclick="openNav()">&#9776; </button>
+<a href="/">
+<img src="/images/logo.png" class="logo-devs" alt="Codelabs Logo">
+</a>
+<div id="searchbar">
+<paper-input-container no-label-float>
+<paper-icon-button prefix icon="search"></paper-icon-button>
+<label>Search</label>
+<input is="iron-input" bind-value="{{searchVal}}" on-keydown="onSearchKeyDown">
+</paper-input-container>
+</div>
+<div id="mySidepanel" class="sidepanel">
+<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+<a href="https://hardik05.wordpress.com/about-me/" target="_blank">About</a>
+<a href="https://hardik05.wordpress.com/" target="_blank">Blog</a>
+<a href="https://hardik05.wordpress.com/vulnerabilities-advisories-exploits/" target="_blank">Published Advisories</a>
+</div>
+</div>
+</div>
+<header id="banner" down$="[[_toBoolean(selectedFilter)]]">
+<div class="site-width">
+<h2 class="banner-title">Welcome!</h2>
+<div class="banner-description" data-filter-selected$="[[_toBoolean(selectedFilter)]]">
+<p class="banner-info">
+This contains my Fuzzing Workshops which i have delivered or delivering at various conferences.
+<br>
+</p>
+</div>
+</div>
+</header>
+<main>
+<div id="filters" class="site-width layout horizontal center justified">
+<div id="sortby">
+<paper-tabs selected="0" noink on-iron-activate="sortBy">
+<paper-tab>A-Z</paper-tab>
+<paper-tab>Recent</paper-tab>
+<paper-tab>Duration</paper-tab>
+</paper-tabs>
+</div>
+</div>
+<card-sorter id="cards" class="site-width">
+<a href="/codelabs/fuzzing_linux/index.html?index=..%2F..index" on-tap="navigate" class="codelab-card category-workshop" data-category="workshop" data-title="Fuzzing and finding vulnerabilities on Linux" data-duration="306" data-updated="2021-03-16T16:23:08+05:30" data-tags="afl,fuzzing,honggfuzz,libfuzzer,web" data-pin="">
+<div class="description">Fuzzing and finding vulnerabilities on Linux</div>
+<div class="card-duration">
+<span>306 min </span>
+<span>Updated Mar 16, 2021</span>
+</div>
+<div class="card-footer">
+<div class="category-icon workshop-icon"></div>
+<paper-button class="workshop-bg">Start</paper-button>
+</div>
+</a>
+<a href="/codelabs/test/index.html?index=..%2F..index" on-tap="navigate" class="codelab-card category-workshop" data-category="workshop" data-title="Fuzzing and finding vulnerabilities on Linux" data-duration="306" data-updated="2021-03-16T16:06:10+05:30" data-tags="afl,fuzzing,honggfuzz,libfuzzer,web" data-pin="">
+<div class="description">Fuzzing and finding vulnerabilities on Linux</div>
+<div class="card-duration">
+<span>306 min </span>
+<span>Updated Mar 16, 2021</span>
+</div>
+<div class="card-footer">
+<div class="category-icon workshop-icon"></div>
+<paper-button class="workshop-bg">Start</paper-button>
+</div>
+</a>
+</card-sorter>
+<div id="loading-placeholder" class="site-width">
+Loading Codelabs, please wait...
+</div>
+</main>
+<footer id="footer">
+<div class="footer-wrapper site-width">
+<div class="link-list">
+<label>Twitter</label>
 <ul>
-<li>Hello</li>
-<li>CodeLab</li>
-<li>World</li>
+<li><a href="https://twitter.com/hardik05" target="_blank">@hardik05</a></li>
 </ul>
-<h2 is-upgraded>Numbered List</h2>
-<ol type="1">
-<li>List</li>
-<li>Using</li>
-<li>Numbers</li>
-</ol>
-<h2 is-upgraded>Add an Image or a GIF</h2>
-<p class="image-container"><img alt="Soly Image Caption" src="img/44f356558033e250.gif"></p>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="What you need: Prerequisites" duration="7">
-        <p>Enter environment setup &amp; prerequisites here</p>
-<h2 is-upgraded>Add a Link</h2>
-<p>Add a link! <a href="https://www.google.com" target="_blank">Example of a Link</a></p>
-<h2 is-upgraded>Embed an iframe</h2>
-<iframe class="embedded-iframe" src="https://codepen.io/tzoght/embed/yRNZaP"></iframe>
-
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Custom Step 1" duration="0">
-        
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Custom Step 2" duration="0">
-        
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Custom Step 3" duration="0">
-        
-
-      </google-codelab-step>
-    
-      <google-codelab-step label="Takeaways" duration="7">
-        <p>✅ &lt; Fill IN TAKEAWAY 1&gt;<br> ✅ &lt; Fill IN TAKEAWAY 2&gt;<br> ✅ &lt; Fill IN TAKEAWAY 3&gt;</p>
-<p class="image-container"><img alt="Soly Image Caption" src="img/44f356558033e250.gif"></p>
-<p>Thanks for participating in this codelab! Let us know what you thought in the <a href="https://solace.community/" target="_blank">Solace Community Forum</a>! If you found any issues along the way we&#39;d appreciate it if you&#39;d raise them by clicking the Report a mistake button at the bottom left of this codelab.</p>
-
-
-      </google-codelab-step>
-    
-  </google-codelab>
-
-  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
-  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
-  <script src="//support.google.com/inapp/api.js"></script>
-
+</div>
+<div class="link-list">
+<label>Github</label>
+<ul>
+<li><a href="https://github.com/hardik05/Damn_Vulnerable_C_Program" target="_blank">hardik05</a></li>
+</ul>
+</div>
+<div class="link-list">
+<label>LinkedIn</label>
+<ul>
+<li><a href="https://www.linkedin.com/in/hardik05/" target="_blank">hardik05</a></li>
+</ul>
+</div>
+<div class="link-list">
+<label>YouTube</label>
+<ul>
+<li><a href="https://www.youtube.com/c/MrHardik05" target="_blank">MrHardik05</a></li>
+</ul>
+</div>
+</div>
+</footer>
+<div class="footerbar">
+<div class="site-width layout horizontal center justified">
+<span>
+<a href="https://fuzzing.in">Terms</a>
+&nbsp; | &nbsp;
+<a href="https://fuzzing.in">Privacy</a>
+</span>
+</div>
+</div>
+</paper-header-panel>
+<script src="/scripts/main.js"></script>
 </body>
 </html>
