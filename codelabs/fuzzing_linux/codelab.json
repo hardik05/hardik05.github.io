@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-03-16T16:23:08+05:30",
+  "updated": "2021-03-24T15:27:01+05:30",
   "id": "fuzzing_linux",
   "duration": 306,
   "title": "Fuzzing and finding vulnerabilities on Linux",
@@ -23,7 +23,6 @@
     "libfuzzer",
     "web"
   ],
-  "feedback": "https://github.com/SolaceDev/solace-dev-codelabs/blob/master/markdown/test",
-  "ga": "UA-3921398-10",
+  "feedback": "http://fuzzing.in",
   "url": "fuzzing_linux"
 }
