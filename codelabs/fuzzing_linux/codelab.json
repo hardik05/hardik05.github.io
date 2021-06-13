@@ -3,7 +3,7 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2021-06-02T12:08:51+05:30",
+  "updated": "2021-06-13T12:31:49+05:30",
   "id": "fuzzing_linux",
   "duration": 311,
   "title": "Fuzzing and finding vulnerabilities on Linux",
