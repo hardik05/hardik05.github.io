@@ -1,0 +1,1531 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Fuzzing and finding vulnerabilities on Linux</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid=""
+                  id="fuzzing_linux"
+                  title="Fuzzing and finding vulnerabilities on Linux"
+                  environment="web"
+                  feedback-link="http://fuzzing.in">
+    
+      <google-codelab-step label="Introduction" duration="5">
+        <p>This workshop is aimed at providing hands on details on how to fuzz software and finding vulnerabilities on linux OS using various fuzzers like AFL, libfuzzers and honggfuzz.</p>
+<h2 is-upgraded>What you will be doing?</h2>
+<ol type="1">
+<li>You will be setting up your own environment, fuzzers and tools.</li>
+<li>Working on various excercises.</li>
+<li>Will be running various fuzzers to fuzz software.</li>
+<li>Debugging crashes to find root cause of vulnerabilities.</li>
+<li>Will also do crash triage, corpus minimization etc.</li>
+</ol>
+<p>This workshop contains various excercises on these topics, i will be walking you though the solutions as well. Feel free to ask questions whenever you have.</p>
+<h2 is-upgraded>What you will learn and key take aways</h2>
+<ol type="1">
+<li>What are common types of vulnerabilities - Buffer overflow, heap overflow, integer overflow, use after free, Double free, out of bound read/Write etc., few real life CVE analysis.</li>
+<li>Manually identifying the vulnerabilities in C code.</li>
+<li>What is fuzzing?</li>
+<li>Different types of fuzzers - dumb fuzzer, mutation fuzzer, coverage guided fuzzer</li>
+<li>How does coverage guideded fuzzer works - <strong>Binary instrumentation, code coverage, basic blocks</strong></li>
+<li>Fuzzing Process - corpus collection, corpus minimization, running fuzzers, crash triage, root cause analysis</li>
+<li>Fuzzing Sample C program using AFL,libfuzzer and Honggfuzz</li>
+<li>How to fuzz open source softwares - TcpDump using AFL and honggfuzz</li>
+<li>Reporting crashes and bug bounties</li>
+<li>QnA</li>
+<li>Conclusion</li>
+</ol>
+<h2 is-upgraded>What you will be needing</h2>
+<ol type="1">
+<li>A laptop/desktop with atleast 8gb RAM and 40GB storage.</li>
+<li>Vmware/virtualbox installed.</li>
+<li>Internet connection.</li>
+<li>willingness to learn :)</li>
+</ol>
+<h2 is-upgraded>Feel Free to -</h2>
+<ol type="1">
+<li>Ask questions, I don&#39;t want to speak alone :)</li>
+<li>Ask for help if you are facing any issue.</li>
+<li>Take a short break, its 3 hour long workshop.</li>
+<li>Correct me if I make any mistake.</li>
+</ol>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="About Me" duration="2">
+        <p><strong>Current: Senior Security Researcher @ McAfee,Bangalore,India</strong></p>
+<p><strong>Past: Security Researcher @ Symantec</strong></p>
+<p class="image-container"><img alt="Hardik Shah" src="img/8cafa15be2f5cbaf.png"></p>
+<p><strong>What I do?</strong></p>
+<ul>
+<li>Vulnerability, exploits, malware analysis.</li>
+<li>Fuzzing and bug hunting.</li>
+<li>Have around <strong>30+ CVEs</strong> in my name in various closed source and open source software.</li>
+<li><strong>MSRC 2018-19</strong> Most Valuable Researcher.</li>
+<li><strong>MSRC Q1 2020</strong> Top Contributing Researcher.</li>
+</ul>
+<p><strong>Offical Blog: </strong><a href="https://www.mcafee.com/blogs/author/hardik-shah/" target="_blank">https://www.mcafee.com/blogs/author/hardik-shah/</a></p>
+<p><strong>Twitter: </strong><a href="https://twitter.com/hardik05" target="_blank">@hardik05</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Workshop VM Download" duration="10">
+        <p>You can download workshop vm from here, it contains all the tools and softwares we will be using in our workshop:</p>
+<h2 is-upgraded>Download VM from here:</h2>
+<p><a href="https://drive.google.com/drive/folders/1vqdjpVh6kXP-mXWV_MCKn4NS_N4DsFw5" target="_blank">Click here</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Common types of Vulnerabilities" duration="20">
+        <h2 is-upgraded>What is a vulnerability?</h2>
+<p>Bug in the software.</p>
+<p><strong>Example:</strong></p>
+<ul>
+<li>if you send get request where uri length is more then 1000 bytes of data to a web server, it will crash.</li>
+<li>on opening an image file/office file application can crashes.</li>
+<li>On calling a particular System API with invalid parameter, system crashes.</li>
+</ul>
+<h2 is-upgraded>Vulnerabilities can be used to perform various unwanted activities like:</h2>
+<ul>
+<li><strong>Remote code execution</strong> – These types of vulnerabilities allows someone to execute malicious code on the victim&#39;s system.</li>
+<li><strong>Denial of service</strong> – These types of vulnerabilities can allow someone to crash the software or entire system.</li>
+<li><strong>Privilege Escalation</strong> – These types of vulnerabilities allows someone to escalte their privilegs from local account to admin account.</li>
+</ul>
+<h2 is-upgraded>How they can be used in malicious activity?</h2>
+<ul>
+<li>Leads to system compromise, ransomware, trojan, botnet, bitcoin miners, data theft etc. example - exploit kits.</li>
+<li>Industry effect – data theft, loss of productivity. Example - various targeted attacks.</li>
+</ul>
+<h2 is-upgraded>Common types of vulnerabilities</h2>
+<p>Integer overflow/underflow, stack/heap overflow, out of bound read/write, use after free, double free</p>
+<h3 is-upgraded>1. Integer Overflow</h3>
+<p>Vulnerability in integer data types, they way they store data.</p>
+<p>Example:</p>
+<pre><code language="language-c" class="language-c">unsigned int j;
+int i;
+</code></pre>
+<p>Size of integer = 4 bytes</p>
+<p>Max Value = 11111111 11111111 11111111 11111111</p>
+<p>Each bit can be either 0 or 1. so it can denote 2 ue it can store is = 2^32</p>
+<p><strong>Signed vs unsigned?</strong></p>
+<p><strong>MSB</strong> is used for signedness.</p>
+<p>1= 00000000000000000000000000000001</p>
+<p>-1 = 10000000000000000000000000000001</p>
+<p>Max value for signed int = <strong>0x7FFFFFFF</strong></p>
+<p>Max value for unsigned int = <strong>0xFFFFFFFF</strong></p>
+<p>What happens in this case?</p>
+<pre><code language="language-c" class="language-c">int i;
+unsigned int j;
+j = 0xFFFFFFFF + 1 
+</code></pre>
+<p>Result will become 0, carry 1 bit will be truncated.</p>
+<pre><code language="language-c" class="language-c">i = 0x7FFFFFFFF + 1
+</code></pre>
+<p>Result will become -0x8000000 (negative number) <img alt="Integer Overflow" src="img/83606e6757b9ff49.png"></p>
+<h3 is-upgraded>2. Integer Underflow</h3>
+<p>Size of integer = 4 bytes</p>
+<p>Signed vs unsigned?</p>
+<p>Range for signed int= -0x80000000 to 0x7FFFFFFF</p>
+<p>Range for unsigned int = 0 to 0xFFFFFFFF</p>
+<p>What happens in this case?</p>
+<pre><code language="language-c" class="language-c">int i;
+i = -0x80000000 – 1 = 0x7FFFFFFF
+</code></pre>
+<p>i = highest possible positive number.</p>
+<p class="image-container"><img alt="Integer Underflow" src="img/ac4b37a3cedb31a6.png"></p>
+<h3 is-upgraded>3. Stack Overflow</h3>
+<p>Stack Overflow - overflowing the local variable stored inside the stack. They can corrput data on the stack like return address and other variables. Example:</p>
+<pre><code language="language-c" class="language-c">Function foo(){
+char var1[8];
+char var2[100];
+memcpy(var1,var2,sizeof(var2)); 🡪 stack overflow
+}
+</code></pre>
+<p>Following is a real life example of a stack overflow vulnerability in vlc media player: <img alt="Stack Overflow" src="img/8782d099120f757e.png"> reference: <a href="https://hackerone.com/reports/489102" target="_blank">https://hackerone.com/reports/489102</a></p>
+<h3 is-upgraded>4. Heap overflow</h3>
+<p>Heap Overflow - heap are used when a process is not sure about the memory size. so they are allocated at run time by functions like malloc,calloc,realloc etc. Overflow in such memory allocation can corrupt various heap managment data. Example:</p>
+<pre><code language="language-c" class="language-c">function test(){
+char *var1 = (char*) malloc(8);
+char var2[100];
+memcpy(var1,var2,sizeof(var2)); 🡪 heap overflow
+}
+</code></pre>
+<h3 is-upgraded>5. Out of bound Read</h3>
+<p>Out of bound read - Memory access or write operation at beyond the allowed limits of Stack memory. Can occur in both - Stack and Heap memory.</p>
+<p>Example:</p>
+<pre><code language="language-c" class="language-c">char a[10];
+char b;
+b=a[100];  🡪OOB Read
+a[100] = ‘c&#39;; 🡪OOB Write
+</code></pre>
+<p>Following is a real life out of bound read issue in libgd: <img alt="Out of bound read" src="img/218dd1a360ac2c0b.png"> reference: <a href="https://github.com/libgd/libgd" target="_blank">https://github.com/libgd/libgd</a></p>
+<h3 is-upgraded>6. Out of bound Write</h3>
+<p>Out of bound Write - Memory access or write operation at beyond the allowed limits of heap memory. Can occur in both - Stack and Heap memory.</p>
+<p>Example:</p>
+<pre><code language="language-c" class="language-c">char* a = (char*)malloc(10);
+char b;
+b=a[100];  🡪 OOB read
+a[100] =‘c&#39;; 🡪OOB Write
+</code></pre>
+<h3 is-upgraded>7. Use after free</h3>
+<p>Use After free - Using a memory after it has been freed.</p>
+<p>Example:</p>
+<pre><code language="language-c" class="language-c">char *buff = (char*)malloc(10);
+free(buff);
+buff[0]=‘c&#39;; 🡪 use after free
+</code></pre>
+<p>Following is a real life example of an use after free vulnerability in libtiff: <img alt="use after free" src="img/ee3a903c7bbea31a.png"></p>
+<p>reference: <a href="https://www.asmail.be/msg0055359936.html" target="_blank">https://www.asmail.be/msg0055359936.html</a></p>
+<h3 is-upgraded>8. Double Free</h3>
+<p>Double free - Freeing allocated memory multiple time. Example:</p>
+<pre><code language="language-c" class="language-c">char *buff = (char*)malloc(10);
+free(buff);
+free(buff); 🡪 double free
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="What we have learned so far?" duration="0">
+        <h2 is-upgraded>Quick Recap</h2>
+<ul>
+<li>Different types of vulnerabilities</li>
+<li>Integer overflow, underflow</li>
+<li>Stack Heap overflow</li>
+<li>Use After Free/Double Free</li>
+<li>Out of bound read/Write</li>
+<li>Some real life CVE examples</li>
+<li>Any questions so far?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on Excercise 1" duration="10">
+        <p><strong>Goal: To get an idea of how to find vulnerabilities by looking at the code.</strong></p>
+<h2 is-upgraded>Manually indentifying vulnerabilities in C program</h2>
+<pre><code language="language-c" class="language-c">//https://github.com/hardik05/Damn_Vulnerable_C_Program/blob/master/imgRead.c
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+
+struct Image
+{
+	char header[4];
+	int width;
+	int height;
+	char data[10];
+};
+
+int ProcessImage(char* filename){
+
+	FILE *fp;
+	char ch;
+	struct Image img;
+
+	fp = fopen(filename,&#34;r&#34;); 
+
+	if(fp == NULL)
+	{
+		printf(&#34;\nCan&#39;t open file or file doesn&#39;t exist.&#34;);
+		exit(0);
+	}
+
+	printf(&#34;\n\tHeader\twidth\theight\tdata\t\r\n&#34;);
+
+	while(fread(&amp;img,sizeof(img),1,fp)&gt;0){
+		printf(&#34;\n\t%s\t%d\t%d\t%s\r\n&#34;,img.header,img.width,img.height,img.data);
+	
+		int size1 = img.width + img.height;
+		char* buff1=(char*)malloc(size1);
+
+		memcpy(buff1,img.data,sizeof(img.data));
+		free(buff1);
+	
+		if (size1/2==0){
+			free(buff1);
+		}
+		else{
+			if(size1 == 123456){
+				buff1[0]=&#39;a&#39;;
+			}
+		}
+
+		int size2 = img.width - img.height+100;
+		//printf(&#34;Size1:%d&#34;,size1);
+		char* buff2=(char*)malloc(size2);
+
+		memcpy(buff2,img.data,sizeof(img.data));
+
+		int size3= img.width/img.height;
+		//printf(&#34;Size2:%d&#34;,size3);
+
+		char buff3[10];
+		char* buff4 =(char*)malloc(size3);
+		memcpy(buff4,img.data,sizeof(img.data));
+
+		char OOBR_stack = buff3[size3+100]
+		char OOBR_heap = buff4[100];
+
+		buff3[size3+100]=&#39;c&#39;;
+		buff4[100]=&#39;c&#39;;
+
+		if(size3&gt;10){
+				buff4=0;
+		}
+		else{
+			free(buff4);
+		}
+
+		free(buff2);
+	}
+	fclose(fp);
+}
+
+int main(int argc,char **argv)
+{
+	ProcessImage(argv[1]);
+}
+
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Solution for excercise 1" duration="5">
+        <pre><code language="language-c" class="language-c">//https://github.com/hardik05/Damn_Vulnerable_C_Program/blob/master/imgRead.c
+
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+
+struct Image
+{
+	char header[4];
+	int width;
+	int height;
+	char data[10];
+};
+
+int ProcessImage(char* filename){
+
+	FILE *fp;
+	char ch;
+	struct Image img;
+
+	fp = fopen(filename,&#34;r&#34;); 
+
+	if(fp == NULL)
+	{
+		printf(&#34;\nCan&#39;t open file or file doesn&#39;t exist.&#34;);
+		exit(0);
+	}
+
+	printf(&#34;\n\tHeader\twidth\theight\tdata\t\r\n&#34;);
+
+	while(fread(&amp;img,sizeof(img),1,fp)&gt;0){
+		printf(&#34;\n\t%s\t%d\t%d\t%s\r\n&#34;,img.header,img.width,img.height,img.data);
+	
+		int size1 = img.width + img.height; //Vulnerability: integer overflow
+		char* buff1=(char*)malloc(size1);
+
+		memcpy(buff1,img.data,sizeof(img.data)); //Vulnerability: no data buffer size/malloc success check?
+		free(buff1);
+	
+		if (size1/2==0){
+			free(buff1); //Vulnerability: double free
+		}
+		else{
+			if(size1 == 123456){
+				buff1[0]=&#39;a&#39;; //Vulnerability: use after free
+			}
+		}
+
+		int size2 = img.width - img.height+100; //Vulnerability: integer underflow
+		//printf(&#34;Size1:%d&#34;,size1);
+		char* buff2=(char*)malloc(size2);
+
+		memcpy(buff2,img.data,sizeof(img.data));
+
+		int size3= img.width/img.height;
+		//printf(&#34;Size2:%d&#34;,size3);
+
+		char buff3[10];
+		char* buff4 =(char*)malloc(size3);
+		memcpy(buff4,img.data,sizeof(img.data));
+
+		char OOBR_stack = buff3[size3+100]; //Vulnerability: out of bound read (stack)
+		char OOBR_heap = buff4[100];
+
+		buff3[size3+100]=&#39;c&#39;; //Vulnerability: out of bound write (Stack)
+		buff4[100]=&#39;c&#39;; //Vulnerability: out of bound write (Heap)
+
+		if(size3&gt;10){
+				buff4=0; //memory leak?
+		}
+		else{
+			free(buff4);
+		}
+
+		free(buff2);
+	}
+	fclose(fp);
+}
+
+int main(int argc,char **argv)
+{
+	ProcessImage(argv[1]);
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fuzzing Theory" duration="30">
+        <h2 is-upgraded>Bug Hunting</h2>
+<h3 is-upgraded>Problem with the manual approach?</h3>
+<ul>
+<li>Manual code audit.</li>
+<li>Takes lot of time. Very slow.</li>
+<li>Not possible to cover all the code paths.</li>
+<li>Large code base, not possible for a single person to do audit.</li>
+<li>Not very productive.</li>
+<li>Things can be missed.</li>
+<li>Can not cover all the scenarios.</li>
+</ul>
+<h3 is-upgraded>Automated</h3>
+<ul>
+<li>Automate bug finding. Very fast.</li>
+<li>Can cover most of the code paths.</li>
+<li>No need to worry about size of the code.</li>
+<li>Can be done by an individual.</li>
+<li>Can be automated further to notify about crashes, issues.</li>
+</ul>
+<h3 is-upgraded>Fuzzing</h3>
+<p>Fuzzing is the process of automated bug finding. A fuzzer will generate or provide crafted input to a program and will monitor its behaviour. if its crashes then test case can be saved to further analysis and reproduction.</p>
+<p class="image-container"><img alt="fuzzing" src="img/b5f7fbb989687163.png"></p>
+<p>There are various types of fuzzers like:</p>
+<h3 is-upgraded>1. Dumb fuzzers</h3>
+<p>Generate random inputs.</p>
+<ul>
+<li><strong>Fuzzer</strong> - No idea of program path/input file format.</li>
+<li><strong>User</strong> - No understanding of file format/network protocol is required.</li>
+<li>Can take lot of time (depending up on your luck).</li>
+<li>Random input</li>
+<li>no matter how much user knows, fuzzer will always generate random inputs.</li>
+</ul>
+<p><strong>Example:</strong> radamsa</p>
+<p><a href="https://github.com/hardik05/Damn_Vulnerable_C_Program" target="_blank">https://github.com/hardik05/Damn_Vulnerable_C_Program</a></p>
+<p>You need to be lucky to find bugs in complex program with these fuzzers.</p>
+<h3 is-upgraded>2. Mutation/Generation fuzzers</h3>
+<p>Generate input based on predefined templates.</p>
+<ul>
+<li><strong>Fuzzer</strong> - No idea of program path but can generate input files based on given template.</li>
+<li><strong>User</strong> - Need understanding of input file or protocol.</li>
+<li>As good as a user knows about the things and can create templates.</li>
+</ul>
+<p><strong>Example:</strong> Peach, Sulley.</p>
+<p>You can find bugs but need to do work on understanding and generating file templates or network protocol structure.</p>
+<h3 is-upgraded>3. Coverage guideded fuzzers</h3>
+<p>Monitors program execution using compile time or runtime instrumentation and can generate new input files based on the paths taken.</p>
+<ul>
+<li><strong>Fuzzer</strong> - aware of program paths being taken and can change input based on that.</li>
+<li><strong>User</strong> - No idea of program path or file format is required.</li>
+<li>User don&#39;t need to do anything, fuzzer can handle input generation based on coverage data.</li>
+<li>Mutates file and check for new code path coverage/crash</li>
+<li><strong>New Code path -&gt; Add to Queue</strong></li>
+<li><strong>Crash -&gt; Save the input</strong> ☺ <img alt="coverage guided fuzzer" src="img/e336e0f57eb6c644.png"></li>
+</ul>
+<p><strong>Example:</strong> AFL,Honggfuzz,libfuzzer</p>
+<p>Very useful and successful in finding bugs.</p>
+<p>Interesting case study:</p>
+<p>pulling jpeg out of thin air: <a href="https://lcamtuf.blogspot.com/2014/11/pulling-jpegs-out-of-thin-air.html" target="_blank">https://lcamtuf.blogspot.com/2014/11/pulling-jpegs-out-of-thin-air.html</a></p>
+<pre><code language="language-bash" class="language-bash">$ mkdir in_dir
+$ echo &#39;hello&#39; &gt;in_dir/hello
+$ ./afl-fuzz -i in_dir -o out_dir ./jpeg-9a/djpeg
+</code></pre>
+<aside class="special"><p><strong>In this workshop we will only cover coverage guided fuzzers like AFL/Honggfuzz.</strong></p>
+</aside>
+<h2 is-upgraded>Basic blocks, Instrumentation and Code Coverage</h2>
+<h3 is-upgraded>1. Basic block</h3>
+<ul>
+<li>Consecutive lines of code with <em>no branches.</em> (code before program has to select a path/after taking a new path.)</li>
+<li>Entry point – control comes to this basic block.</li>
+<li>Exit point – control goes to another basic block.</li>
+</ul>
+<p>Consider following code:</p>
+<p class="image-container"><img alt="basic block" src="img/8e37ef0b3be2e893.png"></p>
+<p>What it looks like in IDA: <img alt="basic block IDA" src="img/14b6132a28e9add8.png"></p>
+<h3 is-upgraded>2. Code Coverage</h3>
+<ul>
+<li>Measure of the code covered by an input.</li>
+<li>More code coverage means higher the chances of finding bugs.</li>
+</ul>
+<aside class="special"><p><strong>Quick excercise - Check Damn vulenerable C program for code coverage and why having good coverage improves bug finding capabilities.</strong></p>
+</aside>
+<h3 is-upgraded>3. Instrumentation?</h3>
+<p>How to trace the program execution at runtime to check what code paths are being taken?</p>
+<ul>
+<li><strong>Basic Method</strong> - add printf in the code and debug.(not useful for fuzzing)</li>
+</ul>
+<p class="image-container"><img alt="basic instrumentation" src="img/5dce85a4782b86a4.png"></p>
+<ul>
+<li>Doesn&#39;t provide much data</li>
+<li>Need to do manual work.</li>
+</ul>
+<h2 is-upgraded>If source code is available.</h2>
+<ul>
+<li><strong>Compile time instrumentation</strong> - Adds instrumentation code at compile time. (used by afl/honggfuzz/libfuzzer when source code is avaialble)</li>
+</ul>
+<p class="image-container"><img alt="compile time instrumentation" src="img/c86ab442cf237e7e.png"></p>
+<ul>
+<li>Can automate things like coverage measurement, Removes manual efforts.</li>
+</ul>
+<h2 is-upgraded>If source code is not available.</h2>
+<ul>
+<li><strong>Runtime instrumentation</strong> - Used when source code is not available.</li>
+</ul>
+<p class="image-container"><img alt="runtime instrumentation" src="img/7fbe03c6b0222795.png"></p>
+<ul>
+<li>Adds instrumentation code at runtime. (Mostly used on windows, Dynamorio/Pin tools etc.)</li>
+</ul>
+<h2 is-upgraded>What Is AFL?</h2>
+<ul>
+<li>American Fuzzy Lop</li>
+<li>Created by Michael Zelwaski</li>
+<li>Fuzzer with instrumentation-guided genetic algorithm.</li>
+<li>Comes with set of utilities:  afl-fuzz, afl-cmin, afl-tmin, afl-showmap etc..</li>
+<li>Fork server/Persistent mode.</li>
+</ul>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Mode</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Details</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Fork server mode</p>
+</td><td colspan="1" rowspan="1"><p>creates copy of the process</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p>Persistent mode</p>
+</td><td colspan="1" rowspan="1"><p>loop around the function</p>
+</td></tr>
+</table>
+<ul>
+<li>Mutate the files based on various strategies.  Bitflip, byteflip, havoc, splice etc.</li>
+</ul>
+<h2 is-upgraded>So how does AFL works?</h2>
+<ul>
+<li>Adds Compile time instrumentation.</li>
+<li>Provides compiler wrappers afl-gcc,afl-g++, afl-clang, afl-clang++, afl-clang-fast, afl-clang-fast++</li>
+<li>uses binary rewriting technique.</li>
+<li>Add instrumentation at each basic block</li>
+<li>Each basic block will have a unique random id.</li>
+<li>Done by assembly equivalent of the following pseudo code:  <pre><code>cur_location = &lt;COMPILE_TIME_RANDOM &gt;;
+shared_mem[cur_location ^ prev_location ]++;
+prev_location = cur_location &gt;&gt; 1;
+A → B →C → D → E vs  A → B → D → C → E
+</code></pre>
+<img alt="how afl works" src="img/b5c07b74871f2733.gif"></li>
+</ul>
+<h2 is-upgraded>Fork Server Vs Persistent Mode</h2>
+<h3 is-upgraded>Fork Server Mode</h3>
+<ul>
+<li>Stop at main().</li>
+<li>Uses fork to create clone of the program.</li>
+<li>Process input and create another clone.</li>
+<li>Saves time in initializing program and thus offer speed improvements.</li>
+</ul>
+<h3 is-upgraded>Persistent Mode</h3>
+<ul>
+<li>Fork is still costly.</li>
+<li>Don&#39;t really need to kill child process after each run.</li>
+<li>Uses in process Fuzzing.</li>
+<li>Need to write a harness program,something like below: <img alt="harness" src="img/7d1e3769534e2f21.png"></li>
+</ul>
+<p>This is very useful when you want to fuzz a selected part of the program.</p>
+<p><strong>Reference:</strong></p>
+<p><a href="https://lcamtuf.blogspot.com/2014/10/fuzzing-binaries-without-execve.html" target="_blank">https://lcamtuf.blogspot.com/2014/10/fuzzing-binaries-without-execve.html</a></p>
+<p><a href="https://lcamtuf.blogspot.com/2015/06/new-in-afl-persistent-mode.html" target="_blank">https://lcamtuf.blogspot.com/2015/06/new-in-afl-persistent-mode.html</a>]</p>
+<h2 is-upgraded>Fuzzing strategies</h2>
+<h3 is-upgraded>AFL uses following fuzzing strategies:</h3>
+<table>
+<tr><td colspan="1" rowspan="1"><p><strong>Fuzzing Strategy</strong></p>
+</td><td colspan="1" rowspan="1"><p><strong>Details</strong></p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Bit Flip</strong></p>
+</td><td colspan="1" rowspan="1"><p>Flips a bit i.e. 1 becomes 0, 0 becomes 1 - this can be done in steps of 1⁄1,2⁄1,4⁄1,8⁄8 ....32⁄8 (same strategy will be used for byteflip as well)</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Byte Flip</strong></p>
+</td><td colspan="1" rowspan="1"><p>Flips a byte - this can be done in steps of 1⁄1,2⁄1,4⁄1,8⁄8 ....32⁄8</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Arithmetic</strong></p>
+</td><td colspan="1" rowspan="1"><p>Random arithmetic like addition/substraction of random values</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Havoc</strong></p>
+</td><td colspan="1" rowspan="1"><p>Random strategy - anythings from bit/bytes/interest/splice/addition/subtraction</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Dictionary</strong></p>
+</td><td colspan="1" rowspan="1"><p>User provided dictionary or auto discovered tokens.</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Interest</strong></p>
+</td><td colspan="1" rowspan="1"><p>Replace content in original file with interesting values like: 0xff,0x7f etc – 8⁄8,16⁄8..</p>
+</td></tr>
+<tr><td colspan="1" rowspan="1"><p><strong>Splice</strong></p>
+</td><td colspan="1" rowspan="1"><p>Splits and combine two or more files to get a new file.</p>
+</td></tr>
+</table>
+<p><strong>Reference:</strong></p>
+<p><a href="https://github.com/google/AFL/blob/master/docs/technical_details.txt" target="_blank">https://github.com/google/AFL/blob/master/docs/technical_details.txt</a></p>
+<h2 is-upgraded>Steps involved in the fuzzing:</h2>
+<p class="image-container"><img alt="fuzzing Steps" src="img/1b1bec4ea359d33d.png"></p>
+<h2 is-upgraded>Corpus Collection</h2>
+<ul>
+<li>A good file corpus will help to discover paths in short amount of time.</li>
+<li>Use regression/test case corpus if available for the software/libs.</li>
+</ul>
+<p>Example:</p>
+<ul>
+<li><strong>Image file corpus</strong> -&gt; <a href="https://lcamtuf.coredump.cx/afl/demo/" target="_blank">https://lcamtuf.coredump.cx/afl/demo/</a></li>
+<li><strong>Multimedia file corpus</strong> -&gt; <a href="http://samples.ffmpeg.org/" target="_blank">http://samples.ffmpeg.org/</a></li>
+<li><strong>Others</strong> -&gt; Search github/google</li>
+</ul>
+<h2 is-upgraded>Corpus Mimization</h2>
+<p>Why do we need to Minimize input corpus?</p>
+<ul>
+<li>Filter out the files which doesn&#39;t result in new path.</li>
+<li>Filter out large files.</li>
+</ul>
+<p>How?</p>
+<pre><code language="language-bash" class="language-bash">afl-cmin –i input –o mininput -- ./program @@
+</code></pre>
+<h2 is-upgraded>Root cause analysis</h2>
+<p>We found a crash by running fuzzer – now what?</p>
+<ul>
+<li>Which <strong>Field</strong> in file?</li>
+<li>What <strong>Value</strong> in the field?</li>
+<li>Which <strong>Condition</strong> in program? -&gt; <strong>=&gt;VULNERABILITY&lt;=</strong></li>
+</ul>
+<h2 is-upgraded>Crash Triage</h2>
+<p>if we find 1-2 crashes then we can do manual analysis but what if we find gundred or thousands of crashes?</p>
+<ul>
+<li>Many may be duplicate?</li>
+<li>How to Triage them?</li>
+<li>Thats called crash triage.</li>
+</ul>
+<p>There are various tools availble like:</p>
+<p><strong>Crashwalk, atriage, afl-collect</strong></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="What we have learned so far?" duration="0">
+        <h2 is-upgraded>Quick Recap</h2>
+<ul>
+<li>What is fuzzing?</li>
+<li>What are different types of fuzers : dumb fuzzer, mutation/generation fuzzer, coverage guided fuzzer.</li>
+<li>Basic blocks, code coverage and instrumentation</li>
+<li>Various fuzzing strategies</li>
+<li>Corpus collection, minimization</li>
+<li>Crash triage and root cause analysis</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on: Compiling and Installing AFL" duration="5">
+        <pre><code language="language-bash" class="language-bash">$ git clone https://github.com/google/AFL.git
+$ cd AFL
+$ make
+$ cd llvm_mode
+$ make
+$ cd ..
+$ make install
+</code></pre>
+<p>This will install various compiler wrappers and utilities like:</p>
+<ul>
+<li><strong>afl-gcc,afl-clang,afl-clang-fast</strong> - these will be used to instrument and compile C code.</li>
+<li><strong>afl-g++,afl-clang++,afl-clang-fast++</strong> - these will be used to instument and compile C++ code.</li>
+<li><strong>afl-gotcpu</strong> - utility to check available CPU cores on the system.</li>
+<li><strong>afl-cmin</strong> - utility to minimize corpus files, reduces <strong>number</strong> of files.</li>
+<li><strong>afl-showmap</strong> - shows coverage map.</li>
+<li><strong>afl-tmin</strong> - utility to trim a single file and removing other data which is not needed, reduces data in a <strong>single</strong> file.</li>
+</ul>
+<aside class="special"><p><strong>afl-cmin</strong> needs to be used before you start the fuzzing to minimize file corpus and <strong>afl-tmin</strong> needs to be used after you found a crash to reduce its size so that it helps in analysis.</p>
+</aside>
+<aside class="warning"><p>afl-tmin will take lot of time in minimising a file. in case you have huge input file corpus, be careful.</p>
+</aside>
+<aside class="special"><p>llvm_mode will enable support for afl-clang-fast and afl-clang-fast++. which will be used for persistent mode. This will require installation of clang and llvm on your system.</p>
+</aside>
+<p>you can install it by typing following command:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo apt install clang llvm
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Sanitizers and AFL env variables" duration="5">
+        <p>santizers helps in finding bugs at the eary stages of program execution.</p>
+<p>There are various types of sanitizers which can be enabled at compile time by passing required options. you need to add following flags at compile time if you want to enable any of the sanitizers below:</p>
+<pre><code>1. ASAN (-fsanitize=address)
+2. MSAN (-fsanitize=memory)
+3. UBSAN (-fsanitize=undefined)
+4. TSAN (-fsanitize=thread)
+</code></pre>
+<aside class="warning"><p>ASAN and MSAN are mutually exclusive.</p>
+</aside>
+<p class="image-container"><img alt="sanitizers" src="img/a99ef60c36df3b53.png"></p>
+<p>AFL has various environment variables like AFL_HARDEN, AFL_USE_ASAN and AFL_USE_MSAN etc. which can be used to enable support for this sanitizers as well as to do various fuzzing related customization. check here: <a href="https://github.com/mirrorer/afl/blob/master/docs/env_variables.txt" target="_blank">https://github.com/mirrorer/afl/blob/master/docs/env_variables.txt</a></p>
+<ul>
+<li><strong>Quick hands on excercise, go through above link and read about various env options.</strong></li>
+</ul>
+<h2 is-upgraded>Reference:</h2>
+<p><a href="https://clang.llvm.org/docs/AddressSanitizer.html" target="_blank">https://clang.llvm.org/docs/AddressSanitizer.html</a></p>
+<p><a href="https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html" target="_blank">https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html</a></p>
+<p><a href="https://clang.llvm.org/docs/MemorySanitizer.html" target="_blank">https://clang.llvm.org/docs/MemorySanitizer.html</a></p>
+<p><a href="https://clang.llvm.org/docs/ThreadSanitizer.html" target="_blank">https://clang.llvm.org/docs/ThreadSanitizer.html</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on Excercise 2" duration="15">
+        <p><strong>Goal: learning how to fuzz a program with AFL.</strong></p>
+<h2 is-upgraded>Fuzzing Damn vulnerable C program with AFL</h2>
+<p>Lets download it first:</p>
+<pre><code language="language-bash" class="language-bash">$ git clone https://github.com/hardik05/Damn_Vulnerable_C_Program.git
+</code></pre>
+<p>Let&#39;s compile it using afl-gcc/afl-clang(when nothing works, use afl-gcc,afl-g++) :</p>
+<pre><code language="language-bash" class="language-bash">$ afl-gcc -fsanitize=address,undefined -ggdb -O0 imgRead.c -o imgRead_afl
+</code></pre>
+<p>Generate some seed corpus</p>
+<pre><code language="language-bash" class="language-bash">$ mkdir in
+$ echo &#34;IMG&#34; &gt; in/1.img
+</code></pre>
+<p>Fuzz it</p>
+<pre><code language="language-bash" class="language-bash">$ afl-fuzz -i in -o out -m none -- ./imgRead_afl @@
+</code></pre>
+<p>you should see a screen like below: <img alt="afl run" src="img/355ed8887a7442a.gif"></p>
+<p>It has various status messages.</p>
+<p>not all are needed. you can read more about them here: <a href="https://github.com/google/AFL/blob/master/docs/status_screen.txt" target="_blank">https://github.com/google/AFL/blob/master/docs/status_screen.txt</a></p>
+<ul>
+<li><strong>Quick excercise, go to out directory and analyze various files and directory contents.</strong></li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Persistent mode?" duration="2">
+        <p>In persistent mode, AFL only fuzzes part of the program and not the entire program. this is useful when you only want to fuzz a specific functionality in a complex software. this offer lot of speed improvements over the fork server mode. you can insert the code you want to fuzz inside a while loop like this:</p>
+<pre><code language="language-c" class="language-c">while (__AFL_LOOP(1000)) {
+
+&lt;code you want to fuzz here&gt;
+}
+</code></pre>
+<aside class="special"><p>you need to use afl-clang-fast/afl-clang-fast++ else you will not be able to compile your program because afl uses LLVM pass for that.</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on excercise 3" duration="10">
+        <p><strong>Goal: Learning how to use persistent mode in AFL.</strong></p>
+<p>Change our imgRead.c to use persistent mode:</p>
+<pre><code language="language-c" class="language-c">//https://github.com/hardik05/Damn_Vulnerable_C_Program/blob/master/imgRead.c
+
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+
+struct Image
+{
+	char header[4];
+	int width;
+	int height;
+	char data[10];
+};
+
+int ProcessImage(char* filename){
+
+	FILE *fp;
+	char ch;
+	struct Image img;
+
+	fp = fopen(filename,&#34;r&#34;);
+
+	if(fp == NULL)
+	{
+		printf(&#34;\nCan&#39;t open file or file doesn&#39;t exist.&#34;);
+		exit(0);
+	}
+
+	printf(&#34;\n\tHeader\twidth\theight\tdata\t\r\n&#34;);
+
+	while(fread(&amp;img,sizeof(img),1,fp)&gt;0){
+		printf(&#34;\n\t%s\t%d\t%d\t%s\r\n&#34;,img.header,img.width,img.height,img.data);
+		
+		int size1 = img.width + img.height;
+		char* buff1=(char*)malloc(size1);
+
+		memcpy(buff1,img.data,sizeof(img.data));
+		free(buff1);
+	
+		if (size1/2==0){
+			free(buff1);
+		}
+		else{
+			if(size1 == 123456){
+				buff1[0]=&#39;a&#39;;
+			}
+		}
+
+		int size2 = img.width - img.height+100;
+		//printf(&#34;Size1:%d&#34;,size1);
+		char* buff2=(char*)malloc(size2);
+
+		memcpy(buff2,img.data,sizeof(img.data));
+
+		int size3= img.width/img.height;
+		//printf(&#34;Size2:%d&#34;,size3);
+
+		char buff3[10];
+		char* buff4 =(char*)malloc(size3);
+		memcpy(buff4,img.data,sizeof(img.data));
+
+		char OOBR = buff3[size3];
+
+		buff3[size3]=&#39;c&#39;;
+
+		if(size3&gt;10){
+				buff4=0;
+		}
+		else{
+			free(buff4);
+		}
+
+		free(buff2);
+	}
+	fclose(fp);
+}
+
+int main(int argc,char **argv)
+{
+	ProcessImage(argv[1]);
+}
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Solution for excercise 3" duration="5">
+        <h2 is-upgraded>Here is the solution:</h2>
+<pre><code language="language-c" class="language-c">/*
+Author: Hardik Shah
+Email: hardik05@gmail.com
+Web: http://hardik05.wordpress.com
+*/
+
+//a vulnerable c program to explain common vulnerability types
+//fuzz with AFL
+
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+
+struct Image
+{
+	char header[4];
+	int width;
+	int height;
+	char data[10];
+};
+
+int ProcessImage(char* filename){
+
+	FILE *fp;
+	char ch;
+	struct Image img;
+while (__AFL_LOOP(1000)) { //this is for persistent mode.
+	fp = fopen(filename,&#34;r&#34;); 
+
+	if(fp == NULL)
+	{
+		printf(&#34;\nCan&#39;t open file or file doesn&#39;t exist.&#34;);
+		exit(0);
+	}
+
+	printf(&#34;\n\tHeader\twidth\theight\tdata\t\r\n&#34;);
+
+	while(fread(&amp;img,sizeof(img),1,fp)&gt;0){
+		printf(&#34;\n\t%s\t%d\t%d\t%s\r\n&#34;,img.header,img.width,img.height,img.data);
+
+		//integer overflow 0x7FFFFFFF+1=0
+		//0x7FFFFFFF+2 = 1
+		//will cause very large/small memory allocation.
+		int size1 = img.width + img.height;
+		char* buff1=(char*)malloc(size1);
+
+		//heap buffer overflow
+		memcpy(buff1,img.data,sizeof(img.data));
+		free(buff1);
+		//double free	
+		if (size1/2==0){
+			free(buff1);
+		}
+		else{
+			//use after free
+			if(size1 == 123456){
+				buff1[0]=&#39;a&#39;;
+			}
+		}
+
+
+		//integer underflow 0-1=-1
+		//negative so will cause very large memory allocation
+		int size2 = img.width - img.height+100;
+		//printf(&#34;Size1:%d&#34;,size1);
+		char* buff2=(char*)malloc(size2);
+
+		//heap buffer overflow
+		memcpy(buff2,img.data,sizeof(img.data));
+
+		//divide by zero
+		int size3= img.width/img.height;
+		//printf(&#34;Size2:%d&#34;,size3);
+
+		char buff3[10];
+		char* buff4 =(char*)malloc(size3);
+		memcpy(buff4,img.data,sizeof(img.data));
+
+		//OOBR read bytes past buffer
+		char OOBR = buff3[size3];
+
+		//OOBW write bytes past buffer
+		buff3[size3]=&#39;c&#39;;
+
+		if(size3&gt;10){
+			//memory leak here
+			buff4=0;
+		}
+		else{
+			free(buff4);
+		}
+
+		free(buff2);
+
+
+	}
+	fclose(fp);
+	}//persistent mode loop ends here
+}
+
+int main(int argc,char **argv)
+{
+	ProcessImage(argv[1]);
+}
+</code></pre>
+<p>Compile it:</p>
+<pre><code language="language-bash" class="language-bash">$ afl-clang-fast -fsanitize=address,undefined -g imgRead.c -o imgRead_persistent
+$ afl-fuzz -i in/ -o out_per/ -m none -- ./imgRead_persistent @@
+</code></pre>
+<p>Check the speed difference between fork mode and persistent mode.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Parallel Fuzzing on muticore systems" duration="5">
+        <p>you can run multiple instances of AFL on your system in Master and Slave mode. this will help in utilizing all the cpu cores and finding bugs and will improve fuzzing speed.</p>
+<p>First lets see how many cores machine have, type this command:</p>
+<pre><code language="language-bash" class="language-bash">$ afl-gotcpu
+afl-gotcpu 2.57b by &lt;lcamtuf@google.com&gt;
+[*] Measuring per-core preemption rate (this will take 1.00 sec)...
+    Core #0: CAUTION (114%)
+    Core #1: AVAILABLE (99%)
+    Core #2: AVAILABLE (103%)
+    Core #6: AVAILABLE (109%)
+    Core #3: AVAILABLE (100%)
+    Core #7: AVAILABLE (105%)
+    Core #5: AVAILABLE (102%)
+    Core #4: AVAILABLE (106%)
+
+&gt;&gt;&gt; PASS: You can run more processes on 7 to 8 cores. &lt;&lt;&lt;
+</code></pre>
+<p>you can see that this machine has 8 cores so we can run 8 AFL instance. lets fuzz sample C program now. you need to add -M  for master instance and -S  to all the slave instance. they can sync up with each other.</p>
+<p>so run following commands:</p>
+<pre><code language="language-bash" class="language-bash">$ screen -S master
+$ afl-fuzz -M master -i in/ -o out/ -m none -- ./imgRead_afl @@
+</code></pre>
+<p>Press ctrl+d to detach from screen session, then type following to create another screen session:</p>
+<pre><code language="language-bash" class="language-bash">$screen -S slave1
+$ afl-fuzz -S slave1 -i in/ -o out/ -m none -- ./imgRead_afl @@
+</code></pre>
+<p>Only 1 master should be there but multiple slaves can be run. try this out.</p>
+<p>Following screenshot shows, how it looks:</p>
+<p class="image-container"><img alt="afl multicore" src="img/99004e7d660a21d.gif"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on excercise 4" duration="5">
+        <p><strong>Goal: Learning how to use afl in parallel mode to utilize available CPU cores.</strong></p>
+<ul>
+<li>Fuzz Damn Vulnerable C program by running 1 master and &lt; n slaves&gt;</li>
+<li>Check output directory, what you see there? how many folders?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fuzzing in Qemu Mode" duration="25">
+        <p>If you don&#39;t have source code then you can use Qemu mode to fuzz the binaries. for this go to AFL/qemu_mode and run following commands:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo ./build_qemu_support.sh
+</code></pre>
+<p>it will complain about some missing dependency so we need to install following packages:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo apt install libtool-bin
+$ sudo apt install bison
+$ sudo apt install libglib2.0-dev
+</code></pre>
+<p>then run again:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo ./build_qemu_support.sh
+</code></pre>
+<p>but latest version of qemu has some bug so again build script will fail. open ./build_qemu_support.sh look for following:</p>
+<pre><code language="language-bash" class="language-bash">tar xf &#34;$ARCHIVE&#34; || exit 1
+</code></pre>
+<p>change it to following to avoid unpacking failure:</p>
+<pre><code language="language-bash" class="language-bash">tar xf &#34;$ARCHIVE&#34; --exclude qemu-2.10.0/roms/u-boot/scripts/Kconfig || exit 1
+</code></pre>
+<p>after that run again:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo ./build_qemu_support.sh
+</code></pre>
+<p>again build will fail with following error:</p>
+<pre><code language="language-c" class="language-c">254 | _syscall0(int, gettid)
+ |                ^~~~~~
+ TOPDIR/tmp/work/x86_64-linux/qemu-native/3.1.0-r0/qemu-3.1.0/linux-user/syscall.c:185:13: note: in definition of macro ‘_syscall0&#39;
+ 185 | static type name (void)   \
+ |             ^~~~
+</code></pre>
+<p>for this we need to use a hack, open qemu/linux-user/syscall.c file and look for following at line 191 and 265 respectivly:</p>
+<pre><code language="language-c" class="language-c">static type name (void)
+static int gettid
+</code></pre>
+<p>just remove static and change it to following:</p>
+<pre><code language="language-c" class="language-c">type name (void)
+int gettid
+</code></pre>
+<p>after that again run build script:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo ./build_qemu_support.sh
+</code></pre>
+<p>it will take sometime to compile and compilation should succeed. After that go to AFL directory and install:</p>
+<pre><code language="language-bash" class="language-bash">$ AFL/qemu_mode# cd ..
+$ sudo make install
+</code></pre>
+<p>this will install afl-qemu-trace which is needed to use qemu mode. you are done installing it. Now lets compile our C program with gcc, type following commands:</p>
+<pre><code language="language-bash" class="language-bash">gcc imgRead.c -o imgRead_qemu
+</code></pre>
+<aside class="special"><p>note: sanitizers will not work with Qemu mode. so don&#39;t use any of the sanitizer flag while compiling. also dont use any of the afl compiler wrapper like afl-gcc or afl-clang. remember we want to fuzz blackbox, where source code is not available.</p>
+</aside>
+<p>After that lets fuzz it in Qemu mode, we need to give option -Q for it:</p>
+<pre><code language="language-bash" class="language-bash">afl-fuzz -Q -i in/ -o out/ -- ./imgRead_qemu
+</code></pre>
+<p>you should be able to see afl fuzzing screen.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="What we have learned so far?" duration="0">
+        <h2 is-upgraded>Quick Recap</h2>
+<ul>
+<li>Compiling and installing AFL</li>
+<li>Sanitizers</li>
+<li>Persistent mode</li>
+<li>Parallel fuzzing</li>
+<li>Qemu mode or blackbox fuzzing</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Crash Analysis using GDB" duration="10">
+        <p>Some helpful GDB commands:</p>
+<pre><code>help &lt;command&gt; - displays help
+
+b &lt;filename:linenumber&gt; - breakpoint
+disable b &lt;breakpoint&gt; - disable breakpoint
+enable b &lt;breakpoint&gt; - enable breakpoint
+info b - info on breakpoints
+
+si - step one instruction
+s - step till new source line
+
+ni - next instruction (step over)
+n - next line (step over)
+
+r - run
+c - continue
+
+fi - execute till return
+
+print &lt;var&gt; - prints value of variable
+set &lt;var&gt; - change value of the variable
+</code></pre>
+<p>Open imgRead_afl in GDB and provide crash file path with r option as shown below:</p>
+<pre><code language="language-bash" class="language-bash">$ gdb ./imgRead_afl
+(gdb) r out/crashes/id:000000,sig:06,src:000000,op:havoc,rep:128
+</code></pre>
+<aside class="special"><p>you need to generate a debug build and disable optimization. you can use flags -g and -O for this. example command: <strong>afl-gcc -fsanitize=address,undefined -ggdb -O0 imgread.c -o imgread_afl</strong></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on excercise 5" duration="15">
+        <p><strong>Goal: to learn root cause analysis using GDB.</strong></p>
+<ul>
+<li>Debug few crashes you found using afl and figure out following:</li>
+</ul>
+<ol type="1">
+<li>What is the condition in the program which is causing this crash?</li>
+<li>What are the fields and values in crash files which is causing this crash?</li>
+</ol>
+<p>This will be needed when you analyze any real world vulnerability/exploit.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Crash Triage" duration="20">
+        <h2 is-upgraded>Installing crashwalk</h2>
+<p>First we will install exploitable gdb plugin as this is needed by crashwalk and the path is hardcoded, so run following commands:</p>
+<pre><code language="language-bash" class="language-bash">mkdir ~/src
+cd ~/src
+git clone https://github.com/jfoote/exploitable.git
+</code></pre>
+<p>After we need to install golang, type this command:</p>
+<pre><code language="language-bash" class="language-bash">$ sudo apt install golang
+</code></pre>
+<p>and then we can install crashwalk:</p>
+<pre><code language="language-bash" class="language-bash">$ go get -u github.com/bnagy/crashwalk/cmd/...
+</code></pre>
+<p>it will install crashwalk binaries: cwtriage, cwdump, cwfind in ~/go/bin directory. Modify your system path so that these crashwalk binaries are available:</p>
+<pre><code language="language-bash" class="language-bash">export PATH=$PATH:~/go/bin
+</code></pre>
+<h2 is-upgraded>Triaging Crashes with cwtriage</h2>
+<p>First lets see what all options it have:</p>
+<pre><code language="language-bash" class="language-bash">$ cwtriage
+
+  cwtriage runs crashfiles with instrumentation and outputs results in various 
+  formats  
+  Usage: cwtriage -root /path/to/afl-dir [-match pattern] -- /path/to/target -in @@ -out whatever
+  ( @@ will be substituted for each crashfile )
+
+  -afl
+        Prefer the AFL recorded crashing command, if present
+  -every int
+        Run every n seconds (default -1)
+  -f string
+        Template filename to use while running crash
+  -ignore string
+        Directory skip pattern ( go regex syntax )
+  -match string
+        Match pattern for files ( go regex syntax )
+  -mem int
+        Memory limit for target processes (MB) (default -1)
+  -output string
+        Output format to use: [json pb text] (default &#34;text&#34;)
+  -root string
+        Root directory to look for crashes
+  -seen
+        Include seen results from the DB in the output
+  -seendb string
+        Path to BoltDB (default &#34;crashwalk.db&#34;)
+  -strict
+        Abort the whole run if any crashes fail to repro
+  -t int
+        Timeout for target processes (secs) (default 60)
+  -tidy
+        Move crashes that error under Run() to a tidy dir
+  -workers int
+        Number of concurrent workers (default 1)
+</code></pre>
+<p>It has built in afl support, so you can type following command:</p>
+<pre><code language="language-bash" class="language-bash">$ cwtriage -afl -root out
+</code></pre>
+<p>you will see something like this:</p>
+<pre><code language="language-bash" class="language-bash">2020/11/04 09:12:16 ------
+Command: ./imgRead_afl out/crashes/id:000000,sig:06,src:000000,op:havoc,rep:128
+File: out/crashes/id:000000,sig:06,src:000000,op:havoc,rep:128
+Memory Limit: -1
+Timeout: 60
+Error: no crash detected
+---------
+---CRASH SUMMARY---
+Filename: out/crashes/id:000001,sig:06,src:000000,op:havoc,rep:32
+SHA1: d5c3cd9fe0c7e4d95f1a27d86e2ad34b496b1d67
+Classification: PROBABLY_NOT_EXPLOITABLE
+Hash: 50aaa03fc7675a1c8baaa05d808c21dd.50aaa03fc7675a1c8baaa05d808c21dd
+Command: ./imgRead_afl out/crashes/id:000001,sig:06,src:000000,op:havoc,rep:32
+Faulting Frame:
+   ProcessImage @ 0x00000000004c6568: in /mnt/b/myworkwsl/Damn_Vulnerable_C_Program/imgRead_afl
+Disassembly:
+   0x00000000004c6553: mov rcx,QWORD PTR [rsp+0x8]
+   0x00000000004c6558: mov rdx,QWORD PTR [rsp]
+   0x00000000004c655c: lea rsp,[rsp+0x98]
+   0x00000000004c6564: mov eax,r14d
+   0x00000000004c6567: cdq
+=&gt; 0x00000000004c6568: idiv r15d
+   0x00000000004c656b: mov r14d,eax
+   0x00000000004c656e: mov r12,r13
+   0x00000000004c6571: mov WORD PTR [r13+0x7fff800c],0x200
+   0x00000000004c657b: movsxd r15,eax
+Stack Head (2 entries):
+   ProcessImage              @ 0x00000000004c6568: in /mnt/b/myworkwsl/Damn_Vulnerable_C_Program/imgRead_afl
+   main                      @ 0x00000000004c76c8: in /mnt/b/myworkwsl/Damn_Vulnerable_C_Program/imgRead_afl
+Registers:
+rax=0x000000000000ffff rbx=0x00007ffffffedd00 rcx=0x0000000000000000 rdx=0x0000000000000000
+rsi=0x0000000000000000 rdi=0x00007ffffffedb81 rbp=0x00007ffffffeddb0 rsp=0x00007ffffffedc80
+ r8=0x00007ffffffecf50  r9=0x0000000000000002 r10=0x00000000004d5973 r11=0x00000000004d5973
+r12=0x00007ffffffedca4 r13=0x00000fffffffdb90 r14=0x000000000000ffff r15=0x0000000000000000
+rip=0x00000000004c6568 efl=0x0000000000010202  cs=0x0000000000000033  ss=0x000000000000002b
+ ds=0x0000000000000000  es=0x0000000000000000  fs=0x0000000000000000  gs=0x0000000000000000
+Extra Data:
+   Description: Floating point exception signal
+   Short description: FloatingPointException (17/22)
+   Explanation: The target crashed on a floating point exception. This may indicate a division by zero or a number of other floating point errors. It is generally difficult to leverage these types of errors to gain control of the processor.
+---END SUMMARY---
+2020/11/04 09:12:18 ------
+Command: ./imgRead_afl out/crashes/id:000002,sig:06,src:000000,op:havoc,rep:128
+File: out/crashes/id:000002,sig:06,src:000000,op:havoc,rep:128
+Memory Limit: -1
+Timeout: 60
+Error: no crash detected
+</code></pre>
+<p>You will notice that not all the inputs are causing crash. you will see a message like this:</p>
+<pre><code>Error: no crash detected
+</code></pre>
+<p>this is because we have not given ASAN options to cwtriage. so run it again with following:</p>
+<pre><code language="language-bash" class="language-bash">$ ASAN_OPTIONS=&#34;abort_on_error=1:symbolize=0&#34; cwtriage -afl -seen -root out
+</code></pre>
+<aside class="special"><p>note the ASAN_OPTIONS and -seen in above command line.</p>
+</aside>
+<p>This will create a filenamed crashwalk.db. you can then use cwdump to dump the crash info:</p>
+<pre><code language="language-bash" class="language-bash">$ cwdump crashwalk.db
+</code></pre>
+<p>you can either redirect this output to a text file or use |more to go through them.</p>
+<p>you can also use cwfind to find all the files with the given hash. use following command:</p>
+<pre><code language="language-bash" class="language-bash">$ cwfind -db crashwalk.db b9bdc301f6ec7b1f38a58796cac7369e.dcde4daab363919b57d3903b9ffcea8c
+</code></pre>
+<p>you can see all the files which causes same crash.</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="What we have learned so far?" duration="0">
+        <h2 is-upgraded>Quick Recap</h2>
+<ul>
+<li>Root cause analysis using GDB</li>
+<li>Crash triage using crashwalk</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fuzzing with Honggfuzz" duration="15">
+        <p>Installing honggfuzz</p>
+<pre><code language="language-bash" class="language-bash">git clone https://github.com/google/honggfuzz.git
+make
+sudo apt install binutils-dev libunwind-dev
+sudo make install
+</code></pre>
+<p>How to compile program with HonggFuzz?</p>
+<pre><code language="language-bash" class="language-bash">hfuzz-clang -fsanitize=address imgRead.c -g –O0 -o imgRead_hfuzz
+</code></pre>
+<p>Fuzzing the program</p>
+<pre><code language="language-bash" class="language-bash">honggfuzz -i input -–workspace output -- ./imgRead ___FILE___
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fuzzing with libfuzzer" duration="10">
+        <ul>
+<li>libfuzzer is a coverage guided fuzzer.</li>
+<li>in process fuzzing, like AFL persistent mode.</li>
+<li>you need to write a harness and call a specific function:</li>
+</ul>
+<pre><code language="language-c" class="language-c">LLVMFuzzerTestOneInput(const uint8_t *Data, size_t Size)
+</code></pre>
+<p>your harness should call this function and not the standard main() function. when you compile your program with clang and libfuzzer support, it will call its main function, and then it will call <strong>LLVMFuzzerTestOneInput</strong> function with mutated data.</p>
+<p>this function expects 2 arguments:</p>
+<pre><code language="language-c" class="language-c">Data - this is the actual fuzzed or mutated data which will be passed to API you want to fuzz.
+Size - size of the Data.
+</code></pre>
+<h2 is-upgraded>Installing libfuzzer</h2>
+<p>Latest version of clang have libfuzzer in built. you just need to install clang.</p>
+<pre><code language="language-bash" class="language-bash">sudo apt install clang
+</code></pre>
+<h2 is-upgraded>how to compile program with libfuzzer?</h2>
+<pre><code language="language-bash" class="language-bash">clang -g -O1 -fsanitize=fuzzer mytarget.c # Builds the fuzz target w/o sanitizers
+clang -g -O1 -fsanitize=fuzzer,address mytarget.c # Builds the fuzz target with ASAN
+clang -g -O1 -fsanitize=fuzzer,signed-integer-overflow mytarget.c # Builds the fuzz target with a part of UBSAN
+clang -g -O1 -fsanitize=fuzzer,memory mytarget.c # Builds the fuzz target with MSAN
+</code></pre>
+<h2 is-upgraded>Compiling Damn Vulnerable C program with clang and libfuzzer support</h2>
+<p>use following command to compile it:</p>
+<pre><code language="language-bash" class="language-bash">clang -fsanitize=fuzzer,address,undefined -g imgRead_libfuzzer.c -o imgRead_libfuzzer
+</code></pre>
+<h2 is-upgraded>Fuzzing the program</h2>
+<pre><code language="language-bash" class="language-bash">./imgRead_libfuzzer
+</code></pre>
+<p>source &amp; reference: <a href="https://llvm.org/docs/LibFuzzer.html" target="_blank">https://llvm.org/docs/LibFuzzer.html</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Hands on excercise 6" duration="15">
+        <p><strong>Goal: How to fuzz a program with libfuzzer.</strong></p>
+<ul>
+<li>Modify imgRead.c program to use LLVMFUzzerTestOneInput function rather then using main function.</li>
+</ul>
+<h2 is-upgraded>Hints:</h2>
+<ol type="1">
+<li>you get mutated data and size of data, so you dont need to open any file.</li>
+<li>you just need to treat data as file contents i.e. it is a buffer which you just read from the file.</li>
+<li>you may need to do some typecasting to change it to structure Image.</li>
+</ol>
+<p>Solution is in the next page :)</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Solution for excercise 6" duration="20">
+        <p>First we need to change our program and need to add LLVMFuzzerTestOneInput function. so lets modify it:</p>
+<pre><code language="language-c" class="language-c">/*
+Author: Hardik Shah
+Email: hardik05@gmail.com
+Web: http://hardik05.wordpress.com
+*/
+
+//a vulnerable C program to explain common vulnerability types
+//fuzz with libfuzzer
+
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+#include&lt;stdint.h&gt;
+struct Image
+{
+	char header[4];
+	int width;
+	int height;
+	char data[10];
+};
+
+int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size){
+if(size&lt;=12){
+return 0;
+}
+	struct Image *img;
+	img = (struct Image*)data;
+		//integer overflow 0x7FFFFFFF+1=0
+		//0x7FFFFFFF+2 = 1
+		//will cause very large/small memory allocation.
+		int size1 = img-&gt;width + img-&gt;height;
+		char* buff1=(char*)malloc(size1);
+
+		//heap buffer overflow
+		memcpy(buff1,img-&gt;data,sizeof(img-&gt;data));
+		free(buff1);
+		//double free	
+		if (size1/3==0){
+			free(buff1);
+		}
+		else{
+			//use after free
+			if(size1/20 == 0){
+				buff1[0]=&#39;a&#39;;
+			}
+		}
+
+
+		//integer underflow 0-1=-1
+		//negative so will cause very large memory allocation
+		int size2 = img-&gt;width - img-&gt;height+100;
+		//printf(&#34;Size1:%d&#34;,size1);
+		char* buff2=(char*)malloc(size2);
+
+		//heap buffer overflow
+		memcpy(buff2,img-&gt;data,sizeof(img-&gt;data));
+
+		//divide by zero
+		int size3= img-&gt;width/img-&gt;height;
+		//printf(&#34;Size2:%d&#34;,size3);
+
+		char buff3[10];
+		char* buff4 =(char*)malloc(size3);
+		memcpy(buff4,img-&gt;data,sizeof(img-&gt;data));
+
+		//stack OOBR read bytes past buffer
+		char OOBR_stack = buff3[size3];
+
+		char OOBR_heap = buff4[size1];
+
+		//stack OOBW write bytes past buffer
+		buff3[size3]=&#39;c&#39;;
+		buff4[size1]=&#39;c&#39;;
+
+		if(size3/5==0){
+			//memory leak here
+			buff4=0;
+		}
+		else{
+			free(buff4);
+		}
+
+		free(buff2);
+
+
+}
+</code></pre>
+<h2 is-upgraded>compiling with clang and libfuzzer support</h2>
+<p>use following command to compile it:</p>
+<pre><code language="language-bash" class="language-bash">clang -fsanitize=fuzzer,address,undefined -g imgRead_libfuzzer.c -o imgRead_libfuzzer
+</code></pre>
+<h2 is-upgraded>Fuzzing the program</h2>
+<pre><code language="language-bash" class="language-bash">./imgRead_libfuzzer
+</code></pre>
+<p>but it stops at first crash. how can we run it continously?</p>
+<p>try this commands:</p>
+<pre><code language="language-bash" class="language-bash">./imgRead_libfuzzer -jobs=10
+./imgRead_libfuzzer -fork=1 -ignore_crashes=1
+</code></pre>
+<p>Press Ctrl+c to cancel.</p>
+<aside class="warning"><p>it has a bug where Ctrl+c doesn&#39;t work. https://github.com/google/oss-fuzz/issues/4547</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="What we have learned so far?" duration="0">
+        <h2 is-upgraded>Quick recap</h2>
+<ul>
+<li>How to install honggfuzz and fuzz a program with it?</li>
+<li>How to install libfuzzer and fuzz a simple program with it?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Fuzzing tcpdump" duration="20">
+        <p>Get the source code of tcpdump and libpcap.</p>
+<pre><code language="language-bash" class="language-bash">git clone https://github.com/the-tcpdump-group/tcpdump.git
+cd tcpdump
+git clone https://github.com/the-tcpdump-group/libpcap.git
+cd libpcap
+</code></pre>
+<h2 is-upgraded>Compile it using AFL</h2>
+<pre><code language="language-bash" class="language-bash">CC=afl-gcc CFLAGS=&#34;-g -fsanitize=address -fno-omit-frame-pointer&#34; LDFLAGS=&#34;-g -fsanitize=address -fno-omit-frame-pointer&#34; ./configure
+sudo make &amp;&amp; make install
+</code></pre>
+<p>it will complain about some missing dependencies, run following commands:</p>
+<pre><code language="language-bash" class="language-bash">sudo apt install flex bison
+</code></pre>
+<p>your compilation should be succssfull.</p>
+<h2 is-upgraded>How to get test corpus?</h2>
+<ul>
+<li>Check tests folder ☺</li>
+</ul>
+<h2 is-upgraded>How to minimize it?</h2>
+<p>use afl-cmin, run following command:</p>
+<pre><code language="language-bash" class="language-bash">afl-cmin –i tests –o mincorpus –m none -- ./tcpdump –vv –ee –nnr @@
+</code></pre>
+<p>You should see a screenshot something like below: <img alt="afl-cmin" src="img/9a7292ab6f4b8503.gif"></p>
+<h2 is-upgraded>Lets, Fuzz it!</h2>
+<pre><code language="language-bash" class="language-bash">afl-fuzz –i mincorpus –o fuzzoutput –m none -- ./tcpdump –vv –ee –nnr @@
+</code></pre>
+<p>yous should see something like this:</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Reporting bugs" duration="2">
+        <p>✅ Always report to vendor first.generally vendor have security@vendor.com email id. you can also check their website for security contact.</p>
+<p>✅ Dont disclose anything until vendor releases the patch.</p>
+<p>✅ Vendors may reward you with bug bounty for your work!</p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="What we have learned so far?" duration="0">
+        <h2 is-upgraded>Quick Recap</h2>
+<ul>
+<li>How to download and compile Tcpdump</li>
+<li>How to generate and minimize corpus</li>
+<li>How to fuzz it with AFL?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Whats next?" duration="5">
+        <ul>
+<li>Try <strong>AFL++</strong> - <a href="https://aflplus.plus/" target="_blank">https://aflplus.plus/</a> Community driven, active development, lot of inbuild features compared to vaniall AFL. Support multiple architecutre, blackbox binary fuzzing, custom mutators and has good folks to support.</li>
+<li>fuzz various open source software using any of the fuzzer discussed in this workshop.</li>
+<li>Try <strong>winafl</strong> - <a href="https://github.com/googleprojectzero/winafl" target="_blank">https://github.com/googleprojectzero/winafl</a> if you want to fuzz windows binaries.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Conclusion and QnA" duration="10">
+        <ul>
+<li>Fuzzing can help in finding diffrent types of bugs and help to improve overall quality of software.</li>
+<li>Fuzzing can save time,resources as it can be automated.</li>
+<li>Fuzzing should be part of SDLC.</li>
+<li>Sometimes you get broken and non working stuff but you willl earn alot.</li>
+<li>But in the end its worth it!</li>
+<li>Questions?</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Contact me?" duration="5">
+        <p><strong>My youtube channel on fuzzing: </strong><a href="https://www.youtube.com/channel/UCDX-6Auq06Fmwbh7zj5j8_A" target="_blank">Click here</a></p>
+<p><strong>Twitter: </strong><a href="https://twitter.com/hardik05" target="_blank">@hardik05</a></p>
+<p><strong>email:</strong> hardik05[AT]gmail[DOT]com</p>
+<p><strong>Website: </strong><a href="http://fuzzing.in" target="_blank">fuzzing.in</a></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Thanks" duration="0">
+        <p>Thanks everyone, hope you have enjoyed this workshop as much as I have enjoyed delivering it and creating contents and various excericses for it.</p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+  <script src="//support.google.com/inapp/api.js"></script>
+
+</body>
+</html>
