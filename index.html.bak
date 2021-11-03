@@ -3,11 +3,11 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="description" content="Fuzzing.in contains all the fuzzing workshops which i have delivered at various conferences. It contains details about AFL, honggfuzz, libfuzzers, Fuzzing theory, code coverage, binary instrumentation, crash triage, crashwalk, gdb, root cause analysis, vulnerabilities etc.".>
+<meta name="description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="generator" content="Codelabs">
-<meta name="application-name" content="fuzzing.in">
-<link rel="canonical" href="https://fuzzing.in/">
+<meta name="application-name" content="Codelabs">
+<link rel="canonical" href="https://example.com/">
 <link rel="preconnect" href="https://www.google-analytics.com">
 <script>
 window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
@@ -25,7 +25,7 @@ function openNav() {
 function closeNav() {
   document.getElementById("mySidepanel").style.width = "0";
         }</script>
-<title>Fuzzing.in</title>
+<title>Codelabs</title>
 <link rel="stylesheet" href="/styles/main.css">
 <link rel="import" href="/elements/elements.html">
 <style is="custom-style">
@@ -33,7 +33,7 @@ function closeNav() {
 </style>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="#455a64">
-<meta name="apple-mobile-web-app-title" content="fuzzing.in">
+<meta name="apple-mobile-web-app-title" content="Codelabs">
 <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="194x194" href="/images/favicons/favicon-194x194.png">
@@ -46,9 +46,9 @@ function closeNav() {
 <meta name="theme-color" content="#455a64">
 <meta name="og:type" property="og:type" content="website">
 <meta name="og:title" property="og:title" content="Codelabs">
-<meta name="og:description" property="og:description" content="Fuzzing.in contains all the fuzzing workshops which i have delivered at various conferences. It contains details about AFL, honggfuzz, libfuzzers, Fuzzing theory, code coverage, binary instrumentation, crash triage, crashwalk, gdb, root cause analysis, vulnerabilities etc.">
-<meta name="og:url" property="og:url" content="http://fuzzing.in/">
-<meta name="og:site_name" property="og:site_name" content="fuzzing.in">
+<meta name="og:description" property="og:description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
+<meta name="og:url" property="og:url" content="https://example.com/">
+<meta name="og:site_name" property="og:site_name" content="Codelabs">
 <meta name="og:determiner" property="og:determiner" content="the">
 <meta name="og:locale" property="og:locale" content="en_US">
 <meta name="og:image" property="og:image" content="/images/og-image.png">
@@ -56,12 +56,12 @@ function closeNav() {
 <meta name="og:image:type" property="og:image:type" content="image/png">
 <meta name="og:image:width" property="og:image:width" content="1200">
 <meta name="og:image:height" property="og:image:height" content="1200">
-<meta name="og:image:alt" property="og:image:alt" content="fuzzing.in">
+<meta name="og:image:alt" property="og:image:alt" content="Codelabs">
 <meta name="twitter:card" property="twitter:card" content="summary_large_image">
-<meta name="twitter:title" property="twitter:title" content="fuzzing.in">
-<meta name="twitter:description" property="twitter:description" content="Fuzzing.in contains all the fuzzing workshops which i have delivered at various conferences. It contains details about AFL, honggfuzz, libfuzzers, Fuzzing theory, code coverage, binary instrumentation, crash triage, crashwalk, gdb, root cause analysis, vulnerabilities etc.">
+<meta name="twitter:title" property="twitter:title" content="Codelabs">
+<meta name="twitter:description" property="twitter:description" content="Codelabs provide a guided, tutorial, hands-on coding experience. Most codelabs will step you through the process of building a small application, or adding a new feature to an existing application.">
 <meta name="twitter:image" property="twitter:image" content="/images/og-image.png">
-<meta name="twitter:url" property="twitter:url" content="http://fuzzing.in/">
+<meta name="twitter:url" property="twitter:url" content="https://example.com/">
 </head>
 <body id="app" is="body-bind" class="loading fullbleed">
 <paper-header-panel id="main" mode="standard" main>
