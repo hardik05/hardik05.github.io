@@ -1,0 +1,26 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2022-04-21T19:30:30+05:30",
+  "id": "fuzzing_with_afl",
+  "duration": 48,
+  "title": "Fuzzing softwares with AFL",
+  "summary": "",
+  "source": "fuzzing_with_afl.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "workshop"
+  ],
+  "tags": [
+    "afl",
+    "fuzzing",
+    "web"
+  ],
+  "feedback": "http://fuzzing.in",
+  "url": "fuzzing_with_afl"
+}
