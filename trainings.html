@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Sessions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        h2 {
+            color: #1a73e8;
+            border-bottom: 2px solid #1a73e8;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+        .training-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .training-session {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 20px;
+        }
+        .training-session:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .training-session img {
+            max-width: 25%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            align-self: flex-start; /* Aligns the image to the top */
+        }
+        .training-details {
+            flex: 1;
+        }
+        .training-title {
+            font-size: 1.5em;
+            color: #1a73e8;
+            margin-bottom: 15px;
+        }
+        .training-date, .training-location, .training-conference {
+            margin: 5px 0;
+            color: #666;
+        }
+        .training-date, .training-conference, .training-location {
+            font-weight: bold;
+        }
+        .training-description {
+            color: #555;
+            line-height: 1.6;
+            margin-top: 10px;
+        }
+        .training-description p {
+            margin: 10px 0;
+        }
+        .register-button {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #ffffff;
+            background-color: #1a73e8;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        .register-button:hover {
+            background-color: #0f5bbd;
+        }
+         /* Testimonial styles */
+         .testimonial-section {
+            background-color: #ffffff;
+            padding: 40px;
+            margin-top: 50px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .testimonial-section h3 {
+            color: #1a73e8;
+            margin-bottom: 20px;
+        }
+        .testimonial {
+            font-style: italic;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .testimonial-author {
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        /* Footer styles */
+        footer {
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 40px 0;
+        }
+        .footer-wrapper {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .link-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .link-list label {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+        }
+        .link-list a {
+            text-decoration: none;
+            color: #333;
+        }
+        .link-list a:hover {
+            text-decoration: underline;
+        }
+        .footerbar {
+            background-color: #fafafa;
+            color: #555;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .footerbar span {
+            color: #333;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Upcoming Training Sessions</h2>
+    <div class="training-container">
+        <!-- Upcoming Training Session Example -->
+        <div class="training-session">
+            <img src="https://yt3.googleusercontent.com/Pt5kliM_JmqEBgE_TWogSMMmTMejF68UEWwP2d_ELtJFwk5IHeAZnxxMQCUSQ31i_Gf5PgbC=s900-c-k-c0x00ffffff-no-rj" alt="Training Image">
+            <div class="training-details">
+                <div class="training-title">Practical Fuzzing - A Hands-On Learning Experience for Uncovering Vulnerabilities on Linux and Windows Platforms (Online)</div>
+                <div class="training-date"><strong>Start Date:</strong> 2025-04-01 | <strong>End Date:</strong> 2025-04-04</div>
+                <div class="training-conference"><strong>Conference:</strong> Blackhat Asia 2025</div>
+                <div class="training-location"><strong>Location:</strong> Online, Zoom</div>
+                
+                <div class="training-description">
+                    <p><strong>Training Overview:</strong></p>
+                    <p>Fuzzing is a powerful technique for identifying vulnerabilities in software. This hands-on training will cover the theory and practical aspects of fuzzing, including:</p>
+                    <ul>
+                        <li>Coverage-guided fuzzing</li>
+                        <li>Basic blocks and binary instrumentation</li>
+                        <li>Corpus collection and minimization</li>
+                        <li>Target selection</li>
+                        <li>Crash triage and root cause analysis</li>
+                        <li>Real-life CVE analysis</li>
+                    </ul>
+                    <p>Attendees will have the opportunity to practice fuzzing on both Windows and Linux platforms and apply the concepts learned to fuzz real-world software. This training is ideal for anyone with a basic understanding of software development and testing.</p>
+                    
+                    <p>The training will start with user-mode fuzzing, then progress to complex topics like Linux kernel fuzzing and firmware fuzzing.</p>
+                    
+                    <p>Participants will also learn about the different types of vulnerabilities that fuzzing can uncover, such as:</p>
+                    <ul>
+                        <li>Buffer overflows</li>
+                        <li>Heap overflows</li>
+                        <li>Integer overflows</li>
+                        <li>Use-after-free errors</li>
+                        <li>Out-of-bounds read/write errors</li>
+                    </ul>
+                    <p>We will discuss the causes of these vulnerabilities and how to address them through fuzzing. Additionally, other types of fuzzers, such as dumb fuzzers and mutation fuzzers, will be introduced along with their benefits and limitations. Attendees will also use tools like GDB and Crashwalk to debug crashes and perform root cause analysis.</p>
+                </div>
+                <a href="https://www.blackhat.com/asia-25/training/schedule/index.html#practical-fuzzing---a-hands-on-learning-experience-for-uncovering-vulnerabilities-on-linux-and-windows-platforms-online--42987" class="register-button">Register Now</a>
+            </div>
+        </div>
+    </div>
+
+    <h2>Completed Training Sessions</h2>
+    <div class="training-container">
+        <!-- Completed Training Session Example -->
+        <div class="training-session">
+            <img src="https://yt3.googleusercontent.com/Pt5kliM_JmqEBgE_TWogSMMmTMejF68UEWwP2d_ELtJFwk5IHeAZnxxMQCUSQ31i_Gf5PgbC=s900-c-k-c0x00ffffff-no-rj" alt="Training Image">
+            <div class="training-details">
+                <div class="training-title">Practical Fuzzing: A Hands-On Learning Experience for Uncovering Vulnerabilities on Linux and Windows Platforms</div>
+                <div class="training-date"><strong>Start Date:</strong> 2024-09-01 | <strong>End Date:</strong> 2024-09-04</div>
+                <div class="training-conference"><strong>Conference:</strong> Blackhat Asia 2024</div>
+                <div class="training-location"><strong>Location:</strong> Virtual</div>
+                
+                <div class="training-description">
+                    <p><strong>Training Overview:</strong></p>
+                    <div class="training-description">
+                        <p>Fuzzing is a powerful technique for identifying vulnerabilities in software. This hands-on training will cover both the theory and practical aspects of fuzzing, including:</p>
+                        <ul>
+                            <li>Coverage-guided fuzzing</li>
+                            <li>Basic blocks and binary instrumentation</li>
+                            <li>Corpus collection and minimization</li>
+                            <li>Target selection</li>
+                            <li>Crash triage and root cause analysis</li>
+                            <li>Real-life CVE analysis</li>
+                        </ul>
+                        <p>Attendees will have the opportunity to practice fuzzing on both <strong>Linux</strong> and <strong>Windows</strong> platforms. They will apply the concepts and techniques learned in the training to fuzz real-world software.</p>
+                        <p>We will also explore how to <strong>customize WinAFL</strong> to add new features and tailor it to specific needs. This training is designed to be <strong>beginner-friendly</strong> and suitable for individuals with a basic understanding of software development and testing.</p>
+                        
+                        <p><strong>Topics Covered:</strong></p>
+                        <ol>
+                            <li><strong>User Mode Fuzzing</strong>: Starting with fuzzing in user mode, we will gradually progress to more advanced topics.</li>
+                            <li><strong>Linux Kernel Fuzzing & Firmware Fuzzing</strong>: Learn how to fuzz the Linux kernel and embedded firmware.</li>
+                            <li><strong>Fuzzing Vulnerabilities</strong>: Understand the different types of vulnerabilities that fuzzing can uncover, including:
+                                <ul>
+                                    <li>Buffer overflows</li>
+                                    <li>Heap overflows</li>
+                                    <li>Integer overflows</li>
+                                    <li>Use-after-free errors</li>
+                                    <li>Out-of-bounds read/write errors</li>
+                                </ul>
+                                We will discuss the underlying causes and potential impacts of these vulnerabilities, as well as how to identify and address them through fuzzing.
+                            </li>
+                            <li><strong>Fuzzer Types</strong>: In addition to coverage-guided fuzzing, we will introduce other types of fuzzers such as:
+                                <ul>
+                                    <li>Dumb fuzzers</li>
+                                    <li>Mutation fuzzers</li>
+                                </ul>
+                                We will also discuss their benefits and limitations.
+                            </li>
+                            <li><strong>Debugging & Crash Analysis</strong>: Attendees will learn how to use powerful tools like:
+                                <ul>
+                                    <li><strong>GDB</strong></li>
+                                    <li><strong>WinDBG</strong></li>
+                                    <li><strong>Crashwalk</strong></li>
+                                </ul>
+                                These tools will help debug and analyze crashes, and perform root cause analysis to identify the underlying cause of vulnerabilities.
+                            </li>
+                            <li><strong>Advanced Debugging Techniques</strong>: Explore advanced debugging methods, including:
+                                <ul>
+                                    <li><strong>Time travel debugging</strong> on Windows</li>
+                                    <li><strong>Measuring code coverage</strong></li>
+                                    <li><strong>Collecting and minimizing corpus</strong></li>
+                                </ul>
+                            </li>
+                        </ol>
+                        <p>By the end of the training, attendees will be equipped with the skills and knowledge to conduct effective fuzzing on real-world software and identify critical vulnerabilities.</p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- Testimonial Section -->
+    <div class="testimonial-section">
+        <h3>What Our Participants Say</h3>
+        <div class="testimonial">
+            "This was the most comprehensive fuzzing course I've ever attended. The instructors were knowledgeable and the hands-on labs gave me the confidence to apply fuzzing techniques in real-world scenarios."
+        </div>
+        <div class="testimonial-author">Software Security Engineer</div>
+
+        <div class="testimonial">
+            "A must-attend for anyone serious about software security. The training not only covered fuzzing theory but also gave me real experience that I could immediately apply in my own work."
+        </div>
+        <div class="testimonial-author">Penetration Tester</div>
+    </div>
+    <footer id="footer">
+        <div class="footer-wrapper">
+            <div class="link-list">
+                <label>Twitter</label>
+                <ul>
+                    <li><a href="https://twitter.com/hardik05" target="_blank">@hardik05</a></li>
+                </ul>
+            </div>
+            <div class="link-list">
+                <label>Github</label>
+                <ul>
+                    <li><a href="https://github.com/hardik05/Damn_Vulnerable_C_Program" target="_blank">hardik05</a></li>
+                </ul>
+            </div>
+            <div class="link-list">
+                <label>LinkedIn</label>
+                <ul>
+                    <li><a href="https://www.linkedin.com/in/hardik05/" target="_blank">hardik05</a></li>
+                </ul>
+            </div>
+            <div class="link-list">
+                <label>YouTube</label>
+                <ul>
+                    <li><a href="https://www.youtube.com/c/MrHardik05" target="_blank">MrHardik05</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <div class="footerbar">
+        <div class="site-width layout horizontal center justified">
+            <span>
+                <a href="https://fuzzing.in">Terms</a>
+                &nbsp; | &nbsp;
+                <a href="https://fuzzing.in">Privacy</a>
+                &nbsp; | &nbsp; Note: Views expressed here and in contents are my own and not of my employers.
+            </span>
+        </div>
+    </div>
+</body>
+</html>
