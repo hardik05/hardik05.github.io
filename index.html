@@ -65,6 +65,39 @@ function closeNav() {
 <meta name="twitter:description" property="twitter:description" content="Fuzzing.in contains all the fuzzing workshops which I have delivered at various conferences. It contains details about AFL, honggfuzz, libfuzzers, Fuzzing theory, code coverage, binary instrumentation, crash triage, crashwalk, gdb, root cause analysis, vulnerabilities etc.">
 <meta name="twitter:image" property="twitter:image" content="/images/og-image.png">
 <meta name="twitter:url" property="twitter:url" content="http://fuzzing.in/">
+  <style>
+  /* Custom styling for the horizontal menu */
+  .menu-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .menu-container a {
+    text-decoration: none;
+    color: #455a64; /* Update to match your preferred color */
+    font-weight: bold;
+    padding: 8px 12px;
+  }
+
+  .menu-container a:hover {
+    color: #000; /* Add hover effect color */
+  }
+
+  /* Styling for search bar container */
+  #searchbar {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Styling for the main toolbar to align items horizontally */
+  .site-width.layout.horizontal {
+    display: flex;
+    align-items: center;
+  }
+</style>
 </head>
 <body id="app" is="body-bind" class="loading fullbleed">
   <!-- Highlighted Link Section -->
@@ -82,6 +115,14 @@ function closeNav() {
 <input is="iron-input" bind-value="{{searchVal}}" on-keydown="onSearchKeyDown">
 </paper-input-container>
 </div>
+  <!-- Menu container -->
+        <div class="menu-container">
+          <a href="https://fuzzing.in/trainings.html" target="_blank">Trainings</a>
+          <a href="https://hardik05.wordpress.com/about-me/" target="_blank">About</a>
+          <a href="https://hardik05.wordpress.com/" target="_blank">Blog</a>
+          <a href="https://hardik05.wordpress.com/vulnerabilities-advisories-exploits/" target="_blank">Published Advisories</a>
+          <a href="https://www.youtube.com/c/MrHardik05" target="_blank">My YouTube Channel</a>
+        </div>
 <div id="mySidepanel" class="sidepanel">
 <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 <a href="https://fuzzing.in/trainings.html" target="_blank">Trainings</a>
