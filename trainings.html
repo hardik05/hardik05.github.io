@@ -149,10 +149,36 @@
             color: #333;
             font-size: 14px;
         }
+         /* Custom styling for the horizontal menu */
+  .menu-container {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .menu-container a {
+    text-decoration: none;
+    color: #f1f1f0;    
+    font-weight: bold;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+
+  .menu-container a:hover {
+    color: #000; /* Add hover effect color */
+  }
     </style>
 </head>
 <body>
-
+  <!-- Menu container -->
+        <div class="menu-container">
+          <a href="https://fuzzing.in/trainings.html" target="_blank">Trainings</a>
+          <a href="https://hardik05.wordpress.com/about-me/" target="_blank">About</a>
+          <a href="https://hardik05.wordpress.com/" target="_blank">Blog</a>
+          <a href="https://hardik05.wordpress.com/vulnerabilities-advisories-exploits/" target="_blank">Published Advisories</a>
+          <a href="https://www.youtube.com/c/MrHardik05" target="_blank">My YouTube Channel</a>
+        </div>
     <h2>Upcoming Training Sessions</h2>
     <div class="training-container">
         <!-- Upcoming Training Session Example -->
