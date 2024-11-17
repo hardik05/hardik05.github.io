@@ -225,6 +225,41 @@
 .fuzzing-info ul li {
     margin: 5px 0;
 }
+/* Training Section Style */
+.training-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.training-list {
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.training-list li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.training-list li::before {
+    content: "✔️";
+    margin-right: 10px;
+    color: #3c7cbb;
+}
 
     </style>
 </head>
@@ -268,6 +303,32 @@
         <li>16GB RAM</li>
         <li>VMware installed</li>
     </ul>
+        <div class="training-section">
+    <h2 class="section-title">What You Will Learn</h2>
+    <ul class="training-list">
+        <li>Introduction to fuzzing and its importance in software security testing</li>
+        <li>How to set up a fuzzing environment and configure fuzzing tools</li>
+        <li>Practical knowledge of fuzzing techniques: mutation-based fuzzing, coverage-guided fuzzing, and more</li>
+        <li>How to analyze crash reports and debug vulnerable code</li>
+        <li>Effective strategies for triaging fuzzing results</li>
+        <li>Best practices for fuzzing real-world applications and systems</li>
+        <li>Hands-on experience using popular fuzzing tools like AFL, libFuzzer, and WinAFL</li>
+        <li>How to automate and scale fuzzing workflows for large applications</li>
+    </ul>
+</div>
+
+<div class="training-section">
+    <h2 class="section-title">Key Takeaways</h2>
+    <ul class="training-list">
+        <li>Understanding the fundamentals of fuzzing and its role in discovering software vulnerabilities</li>
+        <li>Ability to set up, run, and analyze results from fuzzing experiments</li>
+        <li>Practical experience with state-of-the-art fuzzing tools</li>
+        <li>Knowledge of debugging techniques for identifying and fixing crashes and bugs</li>
+        <li>Experience with the real-world application of fuzzing in securing software</li>
+        <li>Insight into best practices for managing fuzzing campaigns in both small and large-scale environments</li>
+    </ul>
+</div>
+
     </div>
 </section>
 
