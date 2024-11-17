@@ -296,6 +296,69 @@
     color: #3c7cbb;
 }
 
+.contact-form-section {
+    background-color: #ffffff;
+    padding: 40px;
+    margin-top: 50px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.contact-form-section h2 {
+    color: #1a73e8;
+    margin-bottom: 30px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    width: 100%;
+    text-align: left;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    color: #333;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.submit-button {
+    padding: 12px 20px;
+    background-color: #1a73e8;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.submit-button:hover {
+    background-color: #0f5bbd;
+}
 
     </style>
 </head>
@@ -362,11 +425,31 @@
                     <li>Experience with the real-world application of fuzzing in securing software</li>
                     <li>Insight into best practices for managing fuzzing campaigns in both small and large-scale environments</li>
                 </ul>
-        </div>     
+        </div>  
+
         
     </div>
 </section>
-
+    <section class="contact-form-section">
+    <div class="training-container">
+        <h2 class="section-title">Contact Us</h2>
+        <form action="https://formsubmit.co/hardik05@gmail.com" method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required placeholder="Your Full Name" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="Your Email Address" />
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" required placeholder="Your Message" rows="4"></textarea>
+            </div>
+            <button type="submit" class="submit-button">Send Message</button>
+        </form>
+    </div>
+</section>
     <h2>Upcoming Training Sessions</h2>
     <div class="training-container">
         <!-- Upcoming Training Session Example -->
