@@ -295,6 +295,75 @@
     margin-right: 10px;
     color: #3c7cbb;
 }
+/* General Training Section Styling */
+.training-details {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.training-list {
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.training-list li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.training-list li::before {
+    content: "✔️";
+    margin-right: 10px;
+    color: #3c7cbb;
+}
+
+.training-description {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* System Requirements Section */
+.system-requirements {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.requirements-list {
+    list-style-type: none;
+    padding-left: 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.requirements-list li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.requirements-list li::before {
+    content: "✔️";
+    margin-right: 10px;
+    color: #3c7cbb;
+}
 
 
     </style>
@@ -315,33 +384,36 @@
         <h2>What is Fuzzing?</h2>
         <p>Fuzzing, also known as fuzz testing, is an automated software testing technique that involves providing invalid, unexpected, or random inputs to a program. The aim is to identify security vulnerabilities, bugs, or crashes. This method has been instrumental in uncovering numerous critical vulnerabilities in widely-used software.</p>
 
-        <h3>Why Should You Learn Fuzzing?</h3>
-        <ul>
-            <li>Discover security flaws in software before attackers do.</li>
-            <li>Learn to use advanced tools like AFL, libFuzzer, and WinAFL.</li>
-            <li>Gain insights into root cause analysis and crash triage.</li>
-            <li>Prepare for tackling complex vulnerabilities in real-world scenarios.</li>
-        </ul>
-
-        <h3>Who Can Benefit from Fuzzing Training?</h3>
-        <p>Fuzzing is valuable for security researchers, software developers, and QA engineers. Whether you're a beginner or a seasoned professional, fuzzing can enhance your ability to identify and fix vulnerabilities effectively.</p>
-
-        <h3>Pre-requisites for Training</h3>
-        <p>Participants should have a basic understanding of:</p>
-        <ul>
-            <li>Programming (preferably C/C++).</li>
-            <li>Operating systems (Linux and Windows).</li>
-            <li>Debugging techniques.</li>
-        </ul>
-        <div class="system-requirements">
-    <h3 class="section-title">System Requirements</h3>
-    <ul class="requirements-list">
-        <li>Minimum 80GB disk space</li>
-        <li>16GB RAM</li>
-        <li>VMware installed</li>
+        <div class="training-details">
+    <h3 class="section-title">Why Should You Learn Fuzzing?</h3>
+    <ul class="training-list">
+        <li>Discover security flaws in software before attackers do.</li>
+        <li>Learn to use advanced tools like AFL, libFuzzer, and WinAFL.</li>
+        <li>Gain insights into root cause analysis and crash triage.</li>
+        <li>Prepare for tackling complex vulnerabilities in real-world scenarios.</li>
     </ul>
-</div>
-        <div class="training-section">
+
+    <h3 class="section-title">Who Can Benefit from Fuzzing Training?</h3>
+    <p class="training-description">Fuzzing is valuable for security researchers, software developers, and QA engineers. Whether you're a beginner or a seasoned professional, fuzzing can enhance your ability to identify and fix vulnerabilities effectively.</p>
+
+    <h3 class="section-title">Pre-requisites for Training</h3>
+    <p class="training-description">Participants should have a basic understanding of:</p>
+    <ul class="training-list">
+        <li>Programming (preferably C/C++).</li>
+        <li>Operating systems (Linux and Windows).</li>
+        <li>Debugging techniques.</li>
+    </ul>
+
+    <div class="system-requirements">
+        <h3 class="section-title">System Requirements</h3>
+        <ul class="requirements-list">
+            <li>Minimum 80GB disk space</li>
+            <li>16GB RAM</li>
+            <li>VMware installed</li>
+        </ul>
+    </div>
+</div>        
+<div class="training-section">
     <h2 class="section-title">What You Will Learn</h2>
     <ul class="training-list">
         <li>Introduction to fuzzing and its importance in software security testing</li>
