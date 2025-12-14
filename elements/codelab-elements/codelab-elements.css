@@ -30,6 +30,27 @@ google-codelab-about .codelab-title{width:100%;text-align:center;font-size:32px;
   --red: #ef4444;
 
   --code-bg: #020617;
+  --code-inline: #1f2937;
+}
+
+/* ---------- LIGHT MODE THEME ---------- */
+html.light {
+  --bg: #f8f9fa;
+  --surface: #ffffff;
+  --surface-2: #f1f3f4;
+  --border: #dadce0;
+
+  --text-main: #202124;
+  --text-muted: #5f6368;
+
+  --blue: #1a73e8;
+  --blue-strong: #185abc;
+  --emerald: #137333;
+  --amber: #ea8600;
+  --red: #d93025;
+
+  --code-bg: #f1f3f4;
+  --code-inline: #e8eaed;
 }
 
 /* ---------- PAGE ---------- */
@@ -124,8 +145,8 @@ google-codelab-step pre {
 }
 
 google-codelab-step code {
-  background: #1f2937 !important;
-  color: #f9fafb !important;
+  background: var(--code-inline) !important;
+  color: var(--text-main) !important;
 }
 
 /* ---------- CALLOUTS ---------- */
