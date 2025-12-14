@@ -212,6 +212,14 @@
                             <input type="checkbox" name="platform" value="network" checked class="filter-input form-checkbox text-blue-500 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded">
                             <span>Network/Protocol</span>
                         </label>
+                        <label class="flex items-center space-x-3 mb-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                            <input type="checkbox" name="platform" value="iot" checked class="filter-input form-checkbox text-blue-500 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded">
+                            <span>IoT & Embedded</span>
+                        </label>
+                        <label class="flex items-center space-x-3 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
+                            <input type="checkbox" name="platform" value="kernel" checked class="filter-input form-checkbox text-blue-500 bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600 rounded">
+                            <span>Kernel</span>
+                        </label>
                     </div>
 
                     <div class="mb-6">
@@ -342,6 +350,7 @@
                 duration: 1850,
                 date: "2023-06-06",
                 platforms: ["linux", "network"],
+                platforms: ["linux", "network", "kernel", "iot"],
                 link: "codelabs/Mastering_fuzzing_TyphoonCon23/index.html",
                 agendaLink: "mastering-fuzzing-agenda.html",
                 isFeatured: false,
