@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Practical Fuzzing Workshop: From Zero to 0-Day | Fuzzing.in</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="A 3-day hands-on training agenda covering Linux and Windows fuzzing, vulnerability analysis, crash triaging, and advanced techniques with AFL++ and WinAFL.">
+    <meta name="keywords" content="fuzzing agenda, training syllabus, AFL++, WinAFL, vulnerability discovery, security training">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/training-agenda.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fuzzing.in/training-agenda.html">
+    <meta property="og:title" content="Practical Fuzzing Workshop: From Zero to 0-Day | Fuzzing.in">
+    <meta property="og:description" content="Explore the 3-day agenda for our comprehensive, hands-on fuzzing workshop.">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fuzzing.in/training-agenda.html">
+    <meta property="twitter:title" content="Practical Fuzzing Workshop: From Zero to 0-Day | Fuzzing.in">
+    <meta property="twitter:description" content="Explore the 3-day agenda for our comprehensive, hands-on fuzzing workshop.">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>tailwind.config = { darkMode: 'class' };</script>
+    <script src="js/nav.js" defer></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .day-card {
+            border-top: 4px solid;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .day-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+        }
+        .day-1 { border-color: #3b82f6; } /* Blue */
+        .day-2 { border-color: #f59e0b; } /* Amber */
+        .day-3 { border-color: #10b981; } /* Emerald */
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                <img src="images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                FUZZING.IN
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="trainings.html" class="hover:text-blue-400 transition text-blue-400 font-bold">Trainings</a>
+                <a href="blog.html" class="hover:text-blue-400 transition">Blog</a>
+                <a href="advisories.html" class="hover:text-blue-400 transition">Advisories</a>
+                <a href="patents.html" class="hover:text-blue-400 transition">Patents</a>
+                <a href="publications.html" class="hover:text-blue-400 transition">Publications</a>
+                <a href="media.html" class="hover:text-blue-400 transition">Media</a>
+                <a href="about.html" class="hover:text-blue-400 transition">About</a>
+                <a href="contact.html" class="hover:text-blue-400 transition">Contact</a>
+                <a href="contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+            </nav>
+            <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <div class="text-center py-8 md:py-12 bg-white dark:bg-gray-900 rounded-xl transition-colors duration-300">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                Practical Fuzzing Workshop: From Zero to 0-Day
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mt-3 max-w-3xl mx-auto">
+                A 3-day hands-on training covering the theory and practice of modern fuzzing techniques on both Linux and Windows platforms.
+            </p>
+        </div>
+
+        <section class="mt-8 bg-white dark:bg-gray-800 p-8 md:p-12 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Course Overview</h2>
+            <p class="text-gray-600 dark:text-gray-300 mb-4 text-lg">
+                This intensely practical training demystifies the process of vulnerability discovery. Attendees will learn the complete fuzzing lifecycle: from target selection and corpus generation to advanced, coverage-guided fuzzing and automated crash analysis. The course covers user-mode fuzzing on Linux and Windows, and introduces concepts for kernel and firmware targets.
+            </p>
+            <p class="text-gray-600 dark:text-gray-300 text-lg">
+                You will gain hands-on experience with industry-standard tools like AFL++, WinAFL, GDB, and WinDbg, and learn to customize them to suit your needs. By the end of this training, you will have the skills and confidence to build your own fuzzing pipeline and start finding your own bugs.
+            </p>
+        </section>
+
+        <section class="mt-12">
+            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-10">3-Day Training Agenda</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Day 1 -->
+                <div class="day-card day-1 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-extrabold text-blue-400 mb-1">Day 1</h3>
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Fuzzing Fundamentals & The AFL++ Ecosystem</h4>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i><span>Vulnerability Classes & Manual Code Review</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i><span>The Fuzzing Mindset: Process & Tooling</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i><span>Deep Dive into Coverage-Guided Fuzzing (AFL++)</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i><span>Lab: Compiling & Fuzzing Your First Program</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i><span>Advanced AFL++: Dictionaries, CMPLog, and Persistent Mode</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-blue-500 mt-1 mr-3"></i><span>Fuzzing with QEMU and Cross-Arch Binaries</span></li>
+                    </ul>
+                </div>
+                
+                <!-- Day 2 -->
+                <div class="day-card day-2 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-extrabold text-amber-400 mb-1">Day 2</h3>
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Real-World Target Analysis & Crash Triaging</h4>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span>From Crash to Root Cause: Debugging with GDB</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span>Automating Crash Analysis with Crashwalk</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span>Lab: Fuzzing Common Libraries (TCPDump, libtiff)</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span>Case Studies: Analyzing Real-World Vulnerabilities</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span>Scaling Fuzzing Efforts for Large Projects</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-amber-500 mt-1 mr-3"></i><span>Hands-on Labs with ImageMagick & FFMpeg</span></li>
+                    </ul>
+                </div>
+
+                <!-- Day 3 -->
+                <div class="day-card day-3 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-extrabold text-emerald-400 mb-1">Day 3</h3>
+                    <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Windows Fuzzing & Advanced Techniques</h4>
+                    <ul class="space-y-3 text-gray-600 dark:text-gray-400 text-sm">
+                        <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-3"></i><span>Introduction to Windows Fuzzing with WinAFL</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-3"></i><span>Instrumentation on Windows with DynamoRIO</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-3"></i><span>Lab: Fuzzing Closed-Source Windows Binaries</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-3"></i><span>Advanced Windows Debugging: Time Travel Debugging (TTD)</span></li>
+                        <li class="flex items-start"><i class="fas fa-check-circle text-emerald-500 mt-1 mr-3"></i><span>Customizing WinAFL: Adding Features & Mutators</span></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Who Should Attend</h3>
+                <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                    <li class="flex items-center"><i class="fas fa-user-shield text-blue-400 mr-3"></i> Security Researchers & Penetration Testers</li>
+                    <li class="flex items-center"><i class="fas fa-code text-blue-400 mr-3"></i> Developers & QA Engineers</li>
+                    <li class="flex items-center"><i class="fas fa-bug text-blue-400 mr-3"></i> Bug Bounty Hunters & Hobbyists</li>
+                    <li class="flex items-center"><i class="fas fa-users text-blue-400 mr-3"></i> Product Security & AppSec Teams</li>
+                </ul>
+            </div>
+            <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Key Takeaways</h3>
+                 <ul class="space-y-2 text-gray-600 dark:text-gray-400">
+                    <li class="flex items-center"><i class="fas fa-cogs text-emerald-400 mr-3"></i>Build and operate a full fuzzing pipeline.</li>
+                    <li class="flex items-center"><i class="fas fa-crosshairs text-emerald-400 mr-3"></i>Effectively fuzz both open-source and closed-source targets.</li>
+                    <li class="flex items-center"><i class="fas fa-microscope text-emerald-400 mr-3"></i>Perform advanced crash analysis and root cause determination.</li>
+                    <li class="flex items-center"><i class="fas fa-tools text-emerald-400 mr-3"></i>Customize fuzzers for specific and complex targets.</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="mt-12 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 flex flex-col md:flex-row items-center gap-8">
+            <div class="flex-shrink-0">
+                <img src="images/hardik.webp" alt="Hardik Shah" class="w-32 h-32 rounded-full border-4 border-blue-500/50 object-cover object-top shadow-lg">
+            </div>
+            <div class="flex-grow">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">About the Trainer</h3>
+                <p class="text-gray-600 dark:text-gray-300">
+                    <strong>Hardik Shah (@hardik05)</strong> is a Principal Security Researcher with over 19 years of experience in the cybersecurity industry, having worked with leading companies like Sophos, McAfee, and Symantec. He specializes in fuzzing and vulnerability discovery, with over 50 CVEs to his name. Hardik is a seasoned trainer, having conducted workshops at premier security conferences including DEF CON, RSA, and BSides.
+                </p>
+                <a href="about.html" class="text-blue-400 font-semibold mt-2 inline-block hover:text-blue-300">Read Full Bio <i class="fas fa-arrow-right ml-1"></i></a>
+            </div>
+        </section>
+
+        <section class="mt-16 text-center">
+            <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ready to Master Fuzzing?</h2>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">Bring this hands-on workshop to your team. Get in touch for private training inquiries.</p>
+            <a href="contact.html" class="inline-flex items-center px-8 py-4 bg-emerald-600 rounded-lg text-white font-bold text-lg hover:bg-emerald-500 transition shadow-xl">
+                Inquire About Private Training
+            </a>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 mt-12 transition-colors duration-300">
+        <p class="text-gray-500 font-medium text-lg">
+            "Fuzzing is not magic; it's persistent, structured execution."
+        </p>
+        <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+            <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="mt-6 text-gray-600 text-xs space-x-4">
+            <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+            <span id="last-updated"></span>
+            <a href="#" class="hover:text-gray-400">Terms</a>
+            <a href="#" class="hover:text-gray-400">Privacy</a>
+        </div>
+        <div class="mt-4 text-gray-500 dark:text-gray-400 text-xs max-w-2xl mx-auto">
+            Disclaimer: The views and opinions expressed on this website are my own and do not necessarily reflect the official policy or position of my current or previous employers.
+        </div>
+    </footer>
+
+</body>
+</html>
