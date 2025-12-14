@@ -67,9 +67,10 @@ google-codelab #steps {
 
 /* ---------- TOP BAR ---------- */
 google-codelab #codelab-title {
-  background: rgba(17, 24, 39, 0.95) !important;
+  background: var(--header-bg) !important;
   border-bottom: 1px solid var(--border);
   color: var(--text-main);
+  backdrop-filter: blur(8px);
 }
 
 /* ---------- DRAWER ---------- */
