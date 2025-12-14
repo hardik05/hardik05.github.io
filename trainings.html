@@ -451,6 +451,16 @@
             renderWorkshops();
         });
 
+        // Check for URL parameters to pre-filter
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterParam = urlParams.get('filter');
+
+        if (filterParam === 'free') {
+            document.querySelector('input[name="type"][value="paid"]').checked = false;
+        } else if (filterParam === 'paid') {
+            document.querySelector('input[name="type"][value="free"]').checked = false;
+        }
+
         // Initial Render
         renderWorkshops();
     </script>
