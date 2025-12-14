@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "http://fuzzing.in/elements",
+  "mainga": "UA-49880327-14",
+  "updated": "2023-06-08T12:59:05+05:30",
+  "id": "Mastering_fuzzing_TyphoonCon23",
+  "duration": 1940,
+  "title": "Mastering Fuzzing: A Comprehensive Training on Identifying Vulnerabilities in Software",
+  "summary": "This is a fuzzing training course for TyphoonCon23.",
+  "source": "linux_fuzzing_workshop.md",
+  "theme": "",
+  "status": [
+    "published"
+  ],
+  "category": [
+    "workshop"
+  ],
+  "tags": [
+    "afl",
+    "afl++",
+    "fuzzing",
+    "honggfuzz",
+    "libfuzzer",
+    "web"
+  ],
+  "feedback": "http://fuzzing.in",
+  "url": "Mastering_fuzzing_TyphoonCon23"
+}
