@@ -2,5 +2,6 @@
 __pycache__/
 *.pyc
 *.log
-import_wp.py
+build.py
 wordpress.xml
+!codelabs/
