@@ -15,23 +15,23 @@ google-codelab-about .codelab-title{width:100%;text-align:center;font-size:32px;
 
 /* ---------- DESIGN TOKENS ---------- */
 :root {
-  --bg: #0f172a;
-  --surface: #111827;
-  --surface-2: #1f2937;
-  --border: #1f2937;
+  --bg: #020617;
+  --surface: #1e293b;
+  --surface-2: #0f172a;
+  --border: #334155;
 
-  --text-main: #f9fafb;
-  --text-muted: #9ca3af;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
 
-  --blue: #3b82f6;
-  --blue-strong: #2563eb;
-  --emerald: #10b981;
-  --amber: #f59e0b;
-  --red: #ef4444;
+  --blue: #60a5fa;
+  --blue-strong: #3b82f6;
+  --emerald: #34d399;
+  --amber: #fbbf24;
+  --red: #f87171;
 
-  --code-bg: #020617;
-  --code-inline: #1f2937;
-  --header-bg: rgba(17, 24, 39, 0.95);
+  --code-bg: #0f172a;
+  --code-inline: #334155;
+  --header-bg: rgba(2, 6, 23, 0.95);
 }
 
 /* ---------- LIGHT MODE THEME ---------- */
