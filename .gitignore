@@ -4,4 +4,9 @@ __pycache__/
 *.log
 build.py
 wordpress.xml
+sample-post.md
 !codelabs/
+!elements/
+!styles/
+!scripts/
+import_wp.py
