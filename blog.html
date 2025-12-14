@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog | Fuzzing Insights and Security Research | Fuzzing.in</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="Technical articles, case studies, and deep dives into vulnerability discovery methodology, fuzzing, and exploit development by Hardik Shah.">
+    <meta name="keywords" content="fuzzing blog, security research, vulnerability analysis, exploit development, CVE analysis, AFL, WinAFL">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/blog.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fuzzing.in/blog.html">
+    <meta property="og:title" content="Fuzzing Insights and Security Research | Fuzzing.in">
+    <meta property="og:description" content="Technical articles, case studies, and deep dives into vulnerability discovery methodology.">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fuzzing.in/blog.html">
+    <meta property="twitter:title" content="Fuzzing Insights and Security Research | Fuzzing.in">
+    <meta property="twitter:description" content="Technical articles, case studies, and deep dives into vulnerability discovery methodology.">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>tailwind.config = { darkMode: 'class' };</script>
+    <script src="js/nav.js" defer></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* background-color: #111827; */
+            /* color: #f3f4f6; */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .article-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-bottom: 4px solid transparent;
+        }
+        .article-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.2); /* Pink shadow for tech/blog feel */
+            border-bottom-color: #ec4899; /* Pink 500 */
+        }
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                <img src="images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                FUZZING.IN
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="trainings.html" class="hover:text-blue-400 transition">Trainings</a>
+                <a href="blog.html" class="hover:text-blue-400 transition text-blue-400 font-bold">Blog</a>
+                <a href="advisories.html" class="hover:text-blue-400 transition">Advisories</a>
+                <a href="patents.html" class="hover:text-blue-400 transition">Patents</a>
+                <a href="publications.html" class="hover:text-blue-400 transition">Publications</a>
+                <a href="media.html" class="hover:text-blue-400 transition">Media</a>
+                <a href="about.html" class="hover:text-blue-400 transition">About</a>
+                <a href="contact.html" class="hover:text-blue-400 transition">Contact</a>
+                <a href="contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+            </nav>
+            <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <div class="text-center py-8 md:py-12 bg-white dark:bg-gray-900 rounded-xl transition-colors duration-300">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                Fuzzing Insights and Security Research
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mt-3">
+                Technical articles, case studies, and deep dives into vulnerability discovery methodology.
+            </p>
+        </div>
+
+        <section class="mt-8 mb-12">
+            <div class="bg-white dark:bg-gray-800 p-6 md:p-10 rounded-xl shadow-2xl border-2 border-pink-500/50 transition-colors duration-300">
+                <div class="flex flex-col md:flex-row gap-6">
+                    <div id="featuredImageContainer" class="md:w-1/3 bg-gray-100 dark:bg-gray-700 h-48 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 font-semibold overflow-hidden">
+                        
+                    </div>
+                    
+                    <div class="md:w-2/3">
+                        <span class="px-3 py-1 bg-pink-600 rounded-full text-white text-xs font-bold uppercase tracking-widest">Featured Post</span>
+                        <h2 id="featuredTitle" class="text-3xl font-bold text-gray-900 dark:text-white mt-3 mb-3">
+                            From Crash to CVE: Automating Root Cause Analysis with GDB
+                        </h2>
+                        <div class="flex gap-4 text-gray-400 text-sm mb-4">
+                            <span><i class="far fa-calendar-alt"></i> <span id="featuredDate">Jan 20, 2026</span></span>
+                            <span><i class="far fa-clock"></i> <span id="featuredReadTime">12 min read</span></span>
+                            <span id="featuredCategory" class="text-pink-400 font-semibold">#CaseStudy</span>
+                        </div>
+                        <p id="featuredSummary" class="text-gray-600 dark:text-gray-300 mb-6">
+                            A step-by-step guide on streamlining the crash analysis phase, using GDB scripting and custom tools to quickly identify the vulnerable instruction set and write a reliable proof-of-concept.
+                        </p>
+                        <a id="featuredLink" href="#" class="inline-flex items-center px-4 py-2 bg-pink-600 rounded-lg text-white font-semibold hover:bg-pink-500 transition">
+                            Read the Full Article <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            
+            <aside class="md:col-span-1">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                    <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3">Categories</h3>
+
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-semibold">All Articles (18)</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Tooling & Setup (7)</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Case Studies (4)</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Advanced Techniques (3)</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Disclosure & CVEs (4)</a></li>
+                    </ul>
+
+                    <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+                        <input type="text" id="searchInput" placeholder="Search blog posts..." class="input-field w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 p-2 rounded">
+                    </div>
+                </div>
+            </aside>
+
+            <div id="postsContainer" class="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Posts will be loaded here via JavaScript -->
+            </div>
+            
+            <div class="md:col-span-3 text-center mt-12">
+                <button id="loadMoreBtn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                    Load More Articles
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 mt-12 transition-colors duration-300">
+        <p class="text-gray-500 font-medium text-lg">
+            "Fuzzing is not magic; it's persistent, structured execution."
+        </p>
+        <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+            <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="mt-6 text-gray-600 text-xs space-x-4">
+            <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+            <span id="last-updated"></span>
+            <a href="#" class="hover:text-gray-400">Terms</a>
+            <a href="#" class="hover:text-gray-400">Privacy</a>
+        </div>
+        <div class="mt-4 text-gray-500 dark:text-gray-400 text-xs max-w-2xl mx-auto">
+            Disclaimer: The views and opinions expressed on this website are my own and do not necessarily reflect the official policy or position of my current or previous employers.
+        </div>
+    </footer>
+
+    <script src="blog/posts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.getElementById('searchInput');
+            const postsContainer = document.getElementById('postsContainer');
+            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            let allPosts = window.blogPosts || [];
+            let gridPosts = [];
+            let visibleCount = 6;
+
+            // Sort posts by date (newest first)
+            allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            if (allPosts.length > 0) {
+                // Set Featured Post (Latest)
+                const featured = allPosts[0];
+                document.getElementById('featuredTitle').textContent = featured.title;
+                document.getElementById('featuredDate').textContent = featured.date;
+                document.getElementById('featuredReadTime').textContent = featured.read_time;
+                document.getElementById('featuredCategory').textContent = featured.category;
+                document.getElementById('featuredSummary').textContent = featured.summary;
+                document.getElementById('featuredLink').href = featured.link;
+                
+                if (featured.image) {
+                    document.getElementById('featuredImageContainer').innerHTML = 
+                        `<img src="${featured.image}" alt="${featured.title}" class="w-full h-full object-cover">`;
+                }
+
+                // Prepare grid posts (exclude featured)
+                gridPosts = allPosts.slice(1);
+                updateGrid();
+            }
+
+            function updateGrid() {
+                const postsToShow = gridPosts.slice(0, visibleCount);
+                renderPosts(postsToShow);
+                
+                if (visibleCount >= gridPosts.length) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'inline-block';
+                }
+            }
+
+            loadMoreBtn.addEventListener('click', () => {
+                visibleCount += 6;
+                updateGrid();
+            });
+
+            searchInput.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                if (!searchTerm) {
+                    updateGrid();
+                    return;
+                }
+                const filteredPosts = gridPosts.filter(post => 
+                    post.title.toLowerCase().includes(searchTerm) || 
+                    post.summary.toLowerCase().includes(searchTerm)
+                );
+                renderPosts(filteredPosts);
+                loadMoreBtn.style.display = 'none';
+            });
+
+            function renderPosts(posts) {
+                postsContainer.innerHTML = posts.map(post => `
+                    <a href="${post.link}" class="article-card block bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md transition-colors duration-300">
+                        ${post.image ? `<div class="h-48 mb-4 overflow-hidden rounded-lg"><img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover"></div>` : ''}
+                        <span class="text-xs font-semibold text-blue-400 uppercase tracking-widest mb-1 block">${post.category}</span>
+                        <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">${post.title}</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-3">${post.summary}</p>
+                        <div class="flex items-center gap-2 text-gray-500 text-xs">
+                            <i class="far fa-calendar-alt"></i> ${post.date}
+                            <span class="mx-1">|</span>
+                            <i class="far fa-clock"></i> ${post.read_time}
+                        </div>
+                    </a>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+</html>

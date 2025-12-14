@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advisories & CVEs | Fuzzing.in</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="List of security advisories and CVEs discovered by Hardik Shah through fuzzing and vulnerability research.">
+    <meta name="keywords" content="CVE, security advisories, vulnerability disclosure, zero-day, bug bounty, research">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/advisories.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fuzzing.in/advisories.html">
+    <meta property="og:title" content="Advisories & CVEs | Fuzzing.in">
+    <meta property="og:description" content="List of security advisories and CVEs discovered by Hardik Shah through fuzzing and vulnerability research.">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fuzzing.in/advisories.html">
+    <meta property="twitter:title" content="Advisories & CVEs | Fuzzing.in">
+    <meta property="twitter:description" content="List of security advisories and CVEs discovered by Hardik Shah through fuzzing and vulnerability research.">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>tailwind.config = { darkMode: 'class' };</script>
+    <script src="js/nav.js" defer></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* background-color: #111827; */
+            /* color: #f3f4f6; */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        /* Styling for the advisory table on desktop */
+        .advisory-table th, .advisory-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #374151; /* Gray 700 */
+        }
+        .advisory-table th {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            color: #9ca3af; /* Gray 400 */
+        }
+        .advisory-table tbody tr:hover {
+            background-color: #1f2937; /* Gray 800 */
+        }
+
+        /* Mobile Card Styling */
+        .advisory-card {
+            border-left: 4px solid #ef4444; /* Red 500 */
+        }
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                <img src="images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                FUZZING.IN
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="trainings.html" class="hover:text-blue-400 transition">Trainings</a>
+                <a href="blog.html" class="hover:text-blue-400 transition">Blog</a>
+                <a href="advisories.html" class="hover:text-blue-400 transition text-blue-400 font-bold">Advisories</a>
+                <a href="patents.html" class="hover:text-blue-400 transition">Patents</a>
+                <a href="publications.html" class="hover:text-blue-400 transition">Publications</a>
+                <a href="media.html" class="hover:text-blue-400 transition">Media</a>
+                <a href="about.html" class="hover:text-blue-400 transition">About</a>
+                <a href="contact.html" class="hover:text-blue-400 transition">Contact</a>
+                <a href="contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+            </nav>
+            <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <div class="text-center py-8 md:py-12 bg-white dark:bg-gray-900 rounded-xl transition-colors duration-300">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                Published Vulnerabilities and Advisories
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mt-3">
+                Official records of CVEs (Common Vulnerabilities and Exposures) discovered through fuzzing campaigns.
+            </p>
+        </div>
+
+        <section class="mt-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" id="advisory-count">Advisories</h2>
+                <input type="text" id="search-input" placeholder="Search CVEs or Products..." class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300 p-2 rounded-lg border border-gray-300 dark:border-gray-700 w-full md:w-auto mt-4 md:mt-0 focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+            <div class="hidden md:block overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
+                <table class="advisory-table w-full">
+                    <thead>
+                        <tr>
+                            <th>CVE ID</th>
+                            <th>Product / Vendor</th>
+                            <th>Type of Vulnerability</th>
+                            <th>Disclosure Date</th>
+                            <th>Advisory Link</th>
+                        </tr>
+                    </thead>
+                    <tbody id="advisory-table-body">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="advisory-cards-container" class="md:hidden space-y-4">
+                <!-- Populated by JS -->
+            </div>
+
+            <!-- Pagination Controls -->
+            <div id="pagination-controls" class="flex justify-center items-center space-x-2 mt-8">
+                <!-- Populated by JS -->
+            </div>
+            
+            <div class="mt-12 text-center bg-red-100 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-6 rounded-xl">
+                <h3 class="text-2xl font-bold text-red-400 mb-3">Want to find your own CVEs?</h3>
+                <p class="text-gray-700 dark:text-gray-300 mb-4">Our advanced training includes modules specifically on crash triaging and responsible disclosure.</p>
+                <a href="trainings.html" class="inline-flex items-center px-6 py-3 bg-red-600 rounded-lg text-white font-bold hover:bg-red-500 transition shadow-lg">
+                    See Advanced Workshops <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 mt-12 transition-colors duration-300">
+        <p class="text-gray-500 font-medium text-lg">
+            "Fuzzing is not magic; it's persistent, structured execution."
+        </p>
+        <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+            <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="mt-6 text-gray-600 text-xs space-x-4">
+            <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+            <span id="last-updated"></span>
+            <a href="#" class="hover:text-gray-400">Terms</a>
+            <a href="#" class="hover:text-gray-400">Privacy</a>
+        </div>
+        <div class="mt-4 text-gray-500 dark:text-gray-400 text-xs max-w-2xl mx-auto">
+            Disclaimer: The views and opinions expressed on this website are my own and do not necessarily reflect the official policy or position of my current or previous employers.
+        </div>
+    </footer>
+
+    <script>
+        const advisories = [
+            // 2022
+            { id: "CVE-2022-3213", product: "ImageMagick", type: "Vulnerability", date: "2022", link: "https://nvd.nist.gov/vuln/detail/CVE-2022-3213" },
+            { id: "Issue #487", product: "LibRaw", type: "Issue", date: "2022", link: "https://github.com/LibRaw/LibRaw/issues/487" },
+            { id: "Commit 264d91e", product: "ImageMagick", type: "Security Issue", date: "2022", link: "https://github.com/ImageMagick/ImageMagick/commit/264d91e02a2e9c6ec318d751956000d19d5617fc" },
+            { id: "Commit e389397", product: "ImageMagick", type: "Security Issue", date: "2022", link: "https://github.com/ImageMagick/ImageMagick/commit/e389397b2be1a1b586923f279b1f2c36b28b1eb0" },
+            { id: "Commit 2dc49e8", product: "ImageMagick", type: "Security Issue", date: "2022", link: "https://github.com/ImageMagick/ImageMagick/commit/2dc49e8b98051d1ed1eb52f84c93941e2f3f9bc8" },
+            { id: "Commit 2305c70", product: "ImageMagick", type: "Security Issue", date: "2022", link: "https://github.com/ImageMagick/ImageMagick/commit/2305c702ea8d2d911f1be2e7690103e2f3cc8a2e" },
+            // 2021
+            { id: "CVE-2021-40465", product: "Windows Text Shaping", type: "Remote Code Execution", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2021-40465" },
+            { id: "CVE-2021-1665", product: "Windows GDI+", type: "Remote Code Execution", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2021-1665" },
+            { id: "CVE-2020-27829", product: "ImageMagick", type: "Heap Overflow", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-27829" },
+            { id: "CVE-2020-35521", product: "LibTiff", type: "Memory Allocation Failure", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-35521" },
+            { id: "CVE-2020-35522", product: "LibTiff", type: "Memory Malloc Failure", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-35522" },
+            { id: "CVE-2020-35523", product: "LibTiff", type: "Integer Overflow", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-35523" },
+            { id: "CVE-2020-35524", product: "LibTiff", type: "Heap Buffer Overflow", date: "2021", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-35524" },
+            // 2020
+            { id: "CVE-2020-0744", product: "Windows GDI", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-0744" },
+            { id: "CVE-2020-0879", product: "Windows GDI", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-0879" },
+            { id: "CVE-2020-0874", product: "Windows GDI", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-0874" },
+            { id: "CVE-2020-0995", product: "Jet Database Engine", type: "Remote Code Execution", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-0995" },
+            { id: "CVE-2020-0964", product: "GDI+", type: "Remote Code Execution", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-0964" },
+            { id: "CVE-2020-0687", product: "Microsoft Graphics", type: "Remote Code Execution", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-0687" },
+            { id: "CVE-2020-1179", product: "Windows GDI", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-1179" },
+            { id: "CVE-2020-1145", product: "Windows GDI", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-1145" },
+            { id: "CVE-2020-1141", product: "Windows GDI", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-1141" },
+            { id: "CVE-2020-1160", product: "Microsoft Graphics Component", type: "Information Disclosure", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-1160" },
+            { id: "PSIRT-13326", product: "Adobe afdko", type: "Stack Buffer Overflow", date: "2020", link: "#" },
+            { id: "PSIRT-13328", product: "Adobe afdko", type: "Stack Use After Scope", date: "2020", link: "#" },
+            { id: "PSIRT-13332", product: "Adobe afdko", type: "Heap Use After Free", date: "2020", link: "#" },
+            { id: "PSIRT-13410", product: "Adobe afdko", type: "ASAN LargeMmapAllocator", date: "2020", link: "#" },
+            { id: "PSIRT-13411", product: "Adobe afdko", type: "Integer Overflow", date: "2020", link: "#" },
+            { id: "CVE-2020-8037", product: "TCPDump", type: "Memory Allocation", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-8037" },
+            { id: "CVE-2020-8038", product: "TCPDump", type: "Vulnerability", date: "2020", link: "https://nvd.nist.gov/vuln/detail/CVE-2020-8038" },
+            // 2019
+            { id: "CVE-2019-0580", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0580" },
+            { id: "CVE-2019-0579", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0579" },
+            { id: "CVE-2019-0576", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0576" },
+            { id: "CVE-2019-0577", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0577" },
+            { id: "CVE-2019-0538", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0538" },
+            { id: "CVE-2019-0879", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0879" },
+            { id: "CVE-2019-0889", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0889" },
+            { id: "CVE-2019-0891", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0891" },
+            { id: "CVE-2019-0899", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0899" },
+            { id: "CVE-2019-0902", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-0902" },
+            { id: "MSRC Case", product: "Microsoft", type: "Valid, No Fix (13-June-2019)", date: "2019-06-13", link: "#" },
+            { id: "MSRC Case", product: "Microsoft", type: "Valid, No Fix (20-Aug-19)", date: "2019-08-20", link: "#" },
+            { id: "MSRC Case", product: "Microsoft", type: "Valid, No Fix (15-Aug-19)", date: "2019-08-15", link: "#" },
+            { id: "CVE-2019-1243", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-1243" },
+            { id: "CVE-2019-1250", product: "Jet Database Engine", type: "Remote Code Execution", date: "2019", link: "https://nvd.nist.gov/vuln/detail/CVE-2019-1250" }
+        ];
+
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let searchQuery = '';
+
+        function renderAdvisories() {
+            const tableBody = document.getElementById('advisory-table-body');
+            const cardsContainer = document.getElementById('advisory-cards-container');
+            const countHeader = document.getElementById('advisory-count');
+            
+            tableBody.innerHTML = '';
+            cardsContainer.innerHTML = '';
+
+            const filteredAdvisories = advisories.filter(item => {
+                const term = searchQuery.toLowerCase();
+                return item.id.toLowerCase().includes(term) || 
+                       item.product.toLowerCase().includes(term) ||
+                       item.type.toLowerCase().includes(term);
+            });
+
+            countHeader.textContent = `Advisories (${filteredAdvisories.length} Total)`;
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredAdvisories.slice(start, end);
+
+            pageItems.forEach(item => {
+                // Render Table Row
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="text-red-400 font-bold">${item.id}</td>
+                    <td class="text-gray-900 dark:text-white">${item.product}</td>
+                    <td class="text-gray-600 dark:text-gray-300">${item.type}</td>
+                    <td class="text-gray-400">${item.date}</td>
+                    <td><a href="${item.link}" target="_blank" class="text-blue-400 hover:text-blue-300">Details <i class="fas fa-external-link-alt ml-1"></i></a></td>
+                `;
+                tableBody.appendChild(row);
+
+                // Render Mobile Card
+                const card = document.createElement('div');
+                card.className = 'advisory-card bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-xl font-bold text-red-400">${item.id}</h4>
+                        <span class="text-xs text-gray-500">${item.date}</span>
+                    </div>
+                    <p class="text-gray-900 dark:text-white font-medium mb-1">Product: ${item.product}</p>
+                    <p class="text-gray-600 dark:text-gray-300 text-sm mb-3">Type: ${item.type}</p>
+                    <a href="${item.link}" target="_blank" class="text-blue-400 hover:text-blue-300 text-sm font-semibold">View Details →</a>
+                `;
+                cardsContainer.appendChild(card);
+            });
+
+            renderPagination(filteredAdvisories.length);
+        }
+
+        function renderPagination(totalItems) {
+            const controls = document.getElementById('pagination-controls');
+            controls.innerHTML = '';
+            const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+            if (totalPages <= 1) return;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = `px-3 py-1 rounded-lg font-bold transition ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`;
+                btn.onclick = () => {
+                    currentPage = i;
+                    renderAdvisories();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                };
+                controls.appendChild(btn);
+            }
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            renderAdvisories();
+        });
+
+        // Initial Render
+        renderAdvisories();
+    </script>
+</body>
+</html>

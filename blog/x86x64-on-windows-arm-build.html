@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X86/X64 on Windows ARM build | Fuzzing.in</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="
+** This are some notes i have taken/prepared few years back while doing some research on x86/64 bit support on windows arm build. I couldnot finish it and then...">
+    <meta name="keywords" content="arm, windows">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/blog/x86x64-on-windows-arm-build.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="X86/X64 on Windows ARM build | Fuzzing.in">
+    <meta property="og:description" content="
+** This are some notes i have taken/prepared few years back while doing some research on x86/64 bit support on windows arm build. I couldnot finish it and then...">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+    <meta property="og:url" content="https://fuzzing.in/blog/x86x64-on-windows-arm-build.html">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="X86/X64 on Windows ARM build | Fuzzing.in">
+    <meta property="twitter:description" content="
+** This are some notes i have taken/prepared few years back while doing some research on x86/64 bit support on windows arm build. I couldnot finish it and then...">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="../images/logo.jpg" type="image/jpeg">
+    
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = { 
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="../js/nav.js" defer></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar for code blocks */
+        pre::-webkit-scrollbar { height: 8px; }
+        pre::-webkit-scrollbar-track { background: #374151; border-radius: 4px; }
+        pre::-webkit-scrollbar-thumb { background: #6b7280; border-radius: 4px; }
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Header (Paths adjusted with ../ for subdirectory) -->
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="../index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                <img src="../images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                FUZZING.IN
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="../index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="../trainings.html" class="hover:text-blue-400 transition">Trainings</a>
+                <a href="../blog.html" class="hover:text-blue-400 transition text-blue-400 font-bold">Blog</a>
+                <a href="../advisories.html" class="hover:text-blue-400 transition">Advisories</a>
+                <a href="../patents.html" class="hover:text-blue-400 transition">Patents</a>
+                <a href="../publications.html" class="hover:text-blue-400 transition">Publications</a>
+                <a href="../media.html" class="hover:text-blue-400 transition">Media</a>
+                <a href="../about.html" class="hover:text-blue-400 transition">About</a>
+                <a href="../contact.html" class="hover:text-blue-400 transition">Contact</a>
+                <a href="../contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+            </nav>
+            <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 max-w-4xl">
+        
+        <!-- Breadcrumb / Back Link -->
+        <div class="mb-8">
+            <a href="../blog.html" class="text-blue-500 hover:text-blue-400 font-semibold flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Back to Blog
+            </a>
+        </div>
+
+        <!-- Article Header -->
+        <header class="mb-10 text-center md:text-left">
+            <span class="inline-block px-3 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                Uncategorized
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
+                X86/X64 on Windows ARM build
+            </h1>
+            <div class="flex flex-wrap items-center gap-6 text-gray-500 dark:text-gray-400 text-sm">
+                <div class="flex items-center gap-2">
+                    <img src="../images/hardik.webp" alt="Author" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 object-cover">
+                    <span class="font-medium text-gray-900 dark:text-gray-200">Hardik Shah</span>
+                </div>
+                <span class="hidden md:inline">•</span>
+                <div class="flex items-center gap-2">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>March 13, 2024</span>
+                </div>
+                <span class="hidden md:inline">•</span>
+                <div class="flex items-center gap-2">
+                    <i class="far fa-clock"></i>
+                    <span>10 min read</span>
+                </div>
+                
+                <!-- Share Buttons -->
+                <div class="flex items-center gap-3 md:ml-auto">
+                    <a href="#" id="share-twitter" target="_blank" class="text-gray-500 hover:text-blue-400 transition text-lg" title="Share on Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" id="share-linkedin" target="_blank" class="text-gray-500 hover:text-blue-700 transition text-lg" title="Share on LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" id="share-facebook" target="_blank" class="text-gray-500 hover:text-blue-600 transition text-lg" title="Share on Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" id="share-email" class="text-gray-500 hover:text-red-500 transition text-lg" title="Share via Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <button id="copy-link-btn" class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition text-lg" title="Copy Link">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Featured Image (Optional) -->
+        <div class="mb-10 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+            <!-- FEATURED_IMAGE_START -->
+            <div class="bg-gray-100 dark:bg-gray-800 h-64 md:h-96 flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-6xl"></i>
+                <!-- <img src="../images/blog/your-image.jpg" alt="Cover Image" class="w-full h-full object-cover"> -->
+            </div>
+            <!-- FEATURED_IMAGE_END -->
+        </div>
+
+        <!-- Table of Contents -->
+        <div id="toc" class="hidden mb-10 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Table of Contents</h3>
+            <nav>
+                <ul id="toc-list" class="space-y-2 text-sm text-gray-600 dark:text-gray-300"></ul>
+            </nav>
+        </div>
+
+        <!-- Article Content -->
+        <!-- 'prose' class activates Tailwind Typography plugin -->
+        <article class="prose prose-lg prose-slate dark:prose-invert max-w-none">
+            <!-- CONTENT_START -->
+<!-- wp:paragraph -->
+<p>** This are some notes i have taken/prepared few years back while doing some research on x86/64 bit support on windows arm build. I couldnot finish it and then never got time to work on it again, this may be useful for someone.**</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>windows 10 supported x86 on arm<br>windows 11 added support for x64 as well</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>from: https://learn.microsoft.com/en-us/windows/win32/winprog64/wow64-implementation-details</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>WOW64 is an emulator which allows 32 bit windows apps as well as 32 bit arm application in 64bit arm windows.<br>wow64 emulator runs in user mode and it provides interfaces between 32 bit version of ntdll.dll and the kernel of proceccsor and intercepts kernel calls.<br>following are the dlls used for this:<br>Wow64.dll provides the core emulation infrastructure and the thunks for the Ntoskrnl.exe entry-point functions.<br>Wow64Win.dll provides thunks for the Win32k.sys entry-point functions.<br>(x64 only) Wow64Cpu.dll provides support for running x86 programs on x64.<br>(Intel Itanium only) IA32Exec.bin contains the x86 software emulator.<br>(Intel Itanium only) Wowia32x.dll provides the interface between IA32Exec.bin and WOW64.<br>(ARM64 only) xtajit.dll contains the x86 software emulator.<br>(ARM64 only) wowarmw.dll provides support for running ARM32 programs on ARM64.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>These DLLs, along with the 64-bit version of Ntdll.dll, are the only 64-bit binaries that can be loaded into a 32-bit process. On Windows 10 on ARM, CHPE (Compiled Hybrid Portable Executable) binaries may also be loaded into an x86 32-bit process.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>At startup, Wow64.dll loads the x86 version of Ntdll.dll (or the CHPE version, if enabled) and runs its initialization code, which loads all necessary 32-bit DLLs.<br>Almost all 32-bit DLLs are unmodified copies of 32-bit Windows binaries, though some are loaded as CHPE for performance reasons. Some of these DLLs are written to behave differently on WOW64 than they do on 32-bit Windows, usually because they share memory with 64-bit system components. All user-mode address space above the 32-bit limit is reserved by the system.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Instead of using the x86 system-service call sequence, 32-bit binaries that make system calls are rebuilt to use a custom calling sequence. This calling sequence is inexpensive for WOW64 to intercept because it remains entirely in user mode. When the custom calling sequence is detected, the WOW64 CPU transitions back to native 64-bit mode and calls into Wow64.dll. Thunking is done in user mode to reduce the impact on the 64-bit kernel and to reduce the risk of a bug in the thunk that might cause a kernel-mode crash, data corruption, or a security hole. The thunks extract arguments from the 32-bit stack, extend them to 64 bits, then make the native system call.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Registry Redirector - isolates 32-bit and 64-bit applications by providing separate logical views of certain portions of the registry on WOW64. The registry redirector intercepts 32-bit and 64-bit registry calls to their respective logical registry views and maps them to the corresponding physical registry location. The redirection process is transparent to the application. Therefore, a 32-bit application can access registry data as if it were running on 32-bit Windows even if the data is stored in a different location on 64-bit Windows.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Redirected keys are mapped to physical locations under Wow6432Node. For example, HKEY_LOCAL_MACHINE\Software is redirected to HKEY_LOCAL_MACHINE\Software\Wow6432Node. However, the physical location of redirected keys should be considered reserved by the system. Applications should not access a key's physical location directly, because this location may change. For more information, see Accessing an Alternate Registry View.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Windows 10 on ARM: Redirected 32-bit ARM keys are mapped to physical locations under WowAA32Node.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To help 32-bit applications that write REG_SZ or REG_EXPAND_SZ data containing %ProgramFiles% or %commonprogramfiles% to the registry, WOW64 intercepts these write operations and replaces them with "%ProgramFiles(x86)%" and "%commonprogramfiles(x86)%". For example, if the Program Files directory is on the C drive, then "%ProgramFiles(x86)%" expands to "C:\Program Files (x86)". The replacement occurs only if the following conditions are met:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The string must begin with %ProgramFiles% or %commonprogramfiles%. If the string begins with a space or any character other than %, it is not replaced.<br>The case of %ProgramFiles% or %commonprogramfiles% must be exactly as shown because the string comparison is case-sensitive. For example, if the string begins with %CommonProgramFiles% instead of %commonprogramfiles%, it is not replaced.<br>The string cannot exceed MAX_PATH*2+15 characters. If it exceeds this length, it is not replaced.<br>The key cannot be opened with KEY_WOW64_64KEY. This flag specifies that operations on the key should be performed on the 64-bit registry view, so it is not replaced. For more information, see Accessing an Alternate Registry View.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>File System Redirector - The %windir%\System32 directory is reserved for 64-bit applications on 64-bit Windows. Most DLL file names were not changed when 64-bit versions of the DLLs were created, so 32-bit versions of the DLLs are stored in a different directory. WOW64 hides this difference by using a file system redirector.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In most cases, whenever a 32-bit application attempts to access %windir%\System32, %windir%\lastgood\system32, or %windir%\regedit.exe, the access is redirected to an architecture-specific path.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Original Path Redirected Path for 32-bit x86 Processes Redirected Path for 32-bit ARM Processes<br>%windir%\System32 %windir%\SysWOW64 %windir%\SysArm32<br>%windir%\lastgood\system32 %windir%\lastgood\SysWOW64 %windir%\lastgood\SysArm32<br>%windir%\regedit.exe %windir%\SysWOW64\regedit.exe %windir%\ SysArm32\regedit.exe</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Arm 32 bit and 64 bit</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Arm64x PE files which contains arm64 bit code and arm64EC code togehter.<br>EC= emulation compatible</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>can use a function is IsWow64Process2<br>BOOL IsWow64Process2(<br>[in] HANDLE hProcess,<br>[out] USHORT *pProcessMachine,<br>[out, optional] USHORT *pNativeMachine<br>);</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>outputl values wil be<br>IMAGE_FILE_MACHINE_ARM</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>0x01c0</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ARM Little-Endian</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>IMAGE_FILE_MACHINE_THUMB</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>0x01c2</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ARM Thumb/Thumb-2 Little-Endian</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>IMAGE_FILE_MACHINE_ARMNT</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>0x01c4</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ARM Thumb-2 Little-Endian</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>IMAGE_FILE_MACHINE_ARM64</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>0xAA64</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>ARM64 Little-Endian</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>from: https://learn.microsoft.com/en-us/windows/arm/arm64ec?source=recommendations<br>arm64ec - Arm64EC (“Emulation Compatible”) enables you to build new native apps or incrementally transition existing x64 apps to take advantage of the native speed and performance possible with Arm-powered devices, including better power consumption, battery life, and accelerated AI &amp; ML workloads.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Arm64EC is a new application binary interface (ABI) for apps running on Arm devices with Windows 11. It is a Windows 11 feature that requires the use of the Windows 11 SDK and is not available on Windows 10 on Arm.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Interoperability<br>Code built as Arm64EC is interoperable with x64 code running under emulation within the same process. The Arm64EC code in the process runs with native performance, while any x64 code runs using emulation that comes built-in with Windows 11. Even if your app relies on existing dependencies or plugins that don't yet support Arm, you can start to rebuild parts of your app as Arm64EC to gain the benefits of native performance.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Arm64EC guarantees interoperability with x64 by following x64 software conventions including calling convention, stack usage, data structure layout, and preprocessor definitions. However, Arm64EC code is not compatible with code built as Arm64, which uses a different set of software conventions.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The Windows 11 on Arm operating system itself relies heavily on Arm64EC's interoperability to enable running x64 applications. Most operating system code loaded by an x64 app running on Windows 11 on Arm will have been compiled as Arm64EC, enabling native performance for that code without the application knowing.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>An x64 or Arm64EC process can load and call into both x64 and Arm64EC binaries, whereas an Arm64 process can only load Arm64 binaries. Both architectures can load Arm64X binaries as those contain code for both x64 and Arm64.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Any x64 code, including code from dependencies, in an Arm64EC process will run under emulation in your app. Prioritizing the most CPU-intensive dependencies to transition from x64 to Arm64EC will have the greatest impact toward improving your app's performance.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Identifying Arm64EC binaries and apps - For developers interested in identifying these binaries, you can see them in a developer command prompt using link /dump /headers</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>File Type: EXECUTABLE IMAGE<br>FILE HEADER VALUES<br>8664 machine (x64) (ARM64X)</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The combination of (x64) and (ARM64X) indicates that some portion of the binary has been recompiled as Arm64EC, even though the binary still appears to be x64. A binary with a machine header that contains (ARM64) and (ARM64X) is an Arm64X PE file that can be loaded into both x64 and Arm64 apps.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Windows Task Manager can also be used to identify if an app has been compiled as Arm64EC. In the Details tab of Task manager, the Architecture column will show ARM64 (x64 compatible) for applications whose main executable has been partially or completely compiled as Arm64EC.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>from https://learn.microsoft.com/en-us/windows/arm/arm64ec-abi:<br>It also implies that any Arm64 registers which cannot be fitted into the x64 CONTEXT must not be used, as their values can be lost anytime an operation using CONTEXT occurs (and some can be asynchronous and unexpected, such as the Garbage Collection operation of a Managed Language Runtime, or an APC).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The mapping rules between Arm64EC and x64 registers are represented by the Arm64EC_NT_CONTEXT structure in the Windows headers, present in the SDK. This structure is essentially a union of the CONTEXT structure, exactly as it is defined for x64, but with an extra Arm64 register overlay.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For example, RCX maps to X0, RDX to X1, RSP to SP, RIP to PC, etc. We can also see how the registers x13, x14, x23, x24, x28, v16-v31 have no representation and, thus, cannot be used in Arm64EC.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>This register usage restriction is the first difference between the Arm64 Classic and EC ABIs.</p>
+<!-- /wp:paragraph -->
+<!-- CONTENT_END -->
+        </article>
+
+        <!-- Tags & Share -->
+        <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-sm font-semibold text-gray-500 dark:text-gray-400 mr-2">Tags:</span>
+                    <!-- TAGS_START -->
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">arm</a>
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">windows</a>
+
+<!-- TAGS_END -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Navigation -->
+        <!-- POST_NAVIGATION_START -->
+<div class="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 dark:border-gray-700 pt-6 mt-8 gap-4">
+                <a href="my-training-on-fuzzing-at-typhooncon23.html" class="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition group text-left w-full md:w-1/2">
+                    <i class="fas fa-arrow-left mr-3 group-hover:-translate-x-1 transition-transform"></i>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Previous</span>
+                        <span class="font-semibold line-clamp-1">My training on fuzzing at TyphoonCon23</span>
+                    </div>
+                </a>
+                <div class="w-full md:w-1/2"></div></div>
+<!-- POST_NAVIGATION_END -->
+
+        <!-- Related Posts -->
+        <div class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-10">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h3>
+            <div id="relatedPosts" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 mt-12 transition-colors duration-300">
+        <p class="text-gray-500 font-medium text-lg">
+            "Fuzzing is not magic; it's persistent, structured execution."
+        </p>
+        <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+            <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="mt-6 text-gray-600 text-xs space-x-4">
+            <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+            <span id="last-updated"></span>
+            <a href="#" class="hover:text-gray-400">Terms</a>
+            <a href="#" class="hover:text-gray-400">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="posts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTitle = document.querySelector('h1').innerText.trim();
+            const relatedContainer = document.getElementById('relatedPosts');
+            
+            if (!window.blogPosts || !relatedContainer) return;
+
+            // Get current category
+            const categoryEl = document.querySelector('header span.uppercase');
+            const currentCategory = categoryEl ? categoryEl.innerText.trim() : '';
+
+            // Filter posts
+            let related = window.blogPosts.filter(post => 
+                post.title !== currentTitle && 
+                post.category === currentCategory
+            );
+
+            // Fallback to recent if not enough related
+            if (related.length < 3) {
+                const recent = window.blogPosts.filter(post => post.title !== currentTitle && !related.includes(post));
+                related = related.concat(recent).slice(0, 3);
+            } else {
+                related = related.slice(0, 3);
+            }
+
+            relatedContainer.innerHTML = related.map(post => {
+                // Fix link for relative path (remove 'blog/' prefix)
+                const relativeLink = post.link.replace(/^blog\//, '');
+                
+                return `
+                <a href="${relativeLink}" class="block group">
+                    ${post.image ? `<div class="h-40 mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"><img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>` : '<div class="h-40 mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400"><i class="fas fa-newspaper text-3xl"></i></div>'}
+                    <h4 class="font-bold text-gray-900 dark:text-white group-hover:text-blue-400 transition line-clamp-2">${post.title}</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">${post.date}</p>
+                </a>
+            `}).join('');
+        });
+
+        // Table of Contents Generator
+        document.addEventListener('DOMContentLoaded', () => {
+            const article = document.querySelector('article');
+            const tocContainer = document.getElementById('toc');
+            const tocList = document.getElementById('toc-list');
+            
+            if (!article || !tocContainer || !tocList) return;
+
+            const headings = article.querySelectorAll('h2, h3');
+            
+            if (headings.length < 2) {
+                return; 
+            }
+
+            tocContainer.classList.remove('hidden');
+
+            headings.forEach((heading, index) => {
+                if (!heading.id) {
+                    heading.id = `heading-${index}`;
+                }
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${heading.id}`;
+                a.textContent = heading.innerText;
+                a.className = heading.tagName === 'H3' ? 'ml-4 hover:text-blue-500 transition' : 'font-semibold hover:text-blue-500 transition';
+                
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        });
+
+        // Share Buttons Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            
+            document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${title}&url=${url}`;
+            document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            document.getElementById('share-email').href = `mailto:?subject=${title}&body=Check out this article: ${url}`;
+            
+            document.getElementById('copy-link-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    const icon = document.querySelector('#copy-link-btn i');
+                    icon.className = 'fas fa-check text-emerald-500';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-link';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

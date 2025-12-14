@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuzzing.in | Master Software Vulnerability Fuzzing</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="Master software vulnerability fuzzing with Hardik Shah. Practical training on Linux, Windows, and OSS platforms. Learn AFL++, libFuzzer, and crash analysis.">
+    <meta name="keywords" content="fuzzing, software security, vulnerability research, AFL++, libFuzzer, training, Hardik Shah, exploit development, 0-day">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fuzzing.in/">
+    <meta property="og:title" content="Fuzzing.in | Master Software Vulnerability Fuzzing">
+    <meta property="og:description" content="Master software vulnerability fuzzing with Hardik Shah. Practical training on Linux, Windows, and OSS platforms.">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fuzzing.in/">
+    <meta property="twitter:title" content="Fuzzing.in | Master Software Vulnerability Fuzzing">
+    <meta property="twitter:description" content="Master software vulnerability fuzzing with Hardik Shah. Practical training on Linux, Windows, and OSS platforms.">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>tailwind.config = { darkMode: 'class' };</script>
+    <script src="js/nav.js" defer></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* background-color: #111827; Removed hardcoded color */
+            /* color: #f3f4f6; Removed hardcoded color */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .tech-bg {
+            /* Subtle background for tech feel */
+            background-image: radial-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .btn-primary {
+            transition: all 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5);
+        }
+        /* Marquee Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+            width: max-content;
+        }
+        .mask-linear-fade:hover .animate-marquee { animation-play-state: paused; }
+        .mask-linear-fade {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 tech-bg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <div class="infographic-container rounded-xl overflow-hidden pb-12 mx-auto bg-white dark:bg-gray-900 shadow-2xl transition-colors duration-300">
+        
+        <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+            <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                    <img src="images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                    FUZZING.IN
+                </a>
+                <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                    <a href="index.html" class="hover:text-blue-400 transition">Home</a>
+                    <a href="trainings.html" class="hover:text-blue-400 transition">Trainings</a>
+                    <a href="blog.html" class="hover:text-blue-400 transition">Blog</a>
+                    <a href="advisories.html" class="hover:text-blue-400 transition">Advisories</a>
+                    <a href="patents.html" class="hover:text-blue-400 transition">Patents</a>
+                    <a href="publications.html" class="hover:text-blue-400 transition">Publications</a>
+                    <a href="media.html" class="hover:text-blue-400 transition">Media</a>
+                    <a href="about.html" class="hover:text-blue-400 transition">About</a>
+                    <a href="contact.html" class="hover:text-blue-400 transition">Contact</a>
+                    <a href="contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+                </nav>
+                <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+            </div>
+        </header>
+
+        <section class="p-8 md:p-16 text-center bg-white dark:bg-gray-900 transition-colors duration-300">
+            <div class="max-w-4xl mx-auto">
+                <p class="text-lg md:text-xl font-medium text-blue-500 dark:text-blue-400 mb-6 italic">
+                    "Fuzzing is not magic; it's persistent, structured execution."
+                </p>
+                <h1 class="text-4xl md:text-6xl font-black tracking-tighter mb-4 text-gray-900 dark:text-white">
+                    Master Software Vulnerability Fuzzing.
+                </h1>
+                <h2 class="text-xl md:text-2xl font-light text-blue-400 mb-8">
+                    Practical, hands-on training for finding 0-days on Linux, Windows, and OSS platforms.
+                </h2>
+                <a href="trainings.html" class="btn btn-primary inline-flex items-center space-x-2 px-8 py-3 bg-blue-600 rounded-lg text-white font-bold text-lg shadow-lg">
+                    <i class="fas fa-rocket"></i>
+                    <span>Explore All Workshops</span>
+                </a>
+                
+                <div class="mt-12 text-gray-500 font-semibold uppercase tracking-widest text-sm">
+                    Featured at Leading Security Conferences
+                </div>
+                <div class="mt-6 overflow-hidden relative w-full max-w-5xl mx-auto mask-linear-fade">
+                    <div class="flex gap-12 items-center opacity-70 animate-marquee">
+                        <!-- Original List -->
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">DEFCON</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">RSA Conference</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">Black Hat</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">POC</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">TyphoonCon</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">BSides Delhi</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">BSides Dublin</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">Grayhat</span>
+                        <!-- Duplicate List for Seamless Loop -->
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">DEFCON</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">RSA Conference</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">Black Hat</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">POC</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">TyphoonCon</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">BSides Delhi</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">BSides Dublin</span>
+                        <span class="text-xl text-gray-700 dark:text-white whitespace-nowrap">Grayhat</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="p-8 md:p-16">
+            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">YOUR PATH TO EXPLOIT DISCOVERY</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <div class="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-xl border-t-4 border-blue-500 shadow-xl transition-all hover:scale-[1.02]">
+                    <div class="p-4 rounded-full bg-blue-500/20 mb-4 text-blue-400">
+                        <i class="fas fa-vial fa-2x"></i>
+                    </div>
+                    <h4 class="font-extrabold text-xl mb-3 text-gray-900 dark:text-white">THE TOOLKIT (FOUNDATION)</h4>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Master open-source fuzzers like AFL++, libFuzzer, and Honggfuzz. Learn setup, instrumentation, and corpus generation.</p>
+                    <a href="trainings.html" class="text-blue-400 font-semibold text-sm mt-auto hover:text-blue-300">View Starter Trainings →</a>
+                </div>
+
+                <div class="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-xl border-t-4 border-amber-500 shadow-xl transition-all hover:scale-[1.02]">
+                    <div class="p-4 rounded-full bg-amber-500/20 mb-4 text-amber-400">
+                        <i class="fas fa-laptop-code fa-2x"></i>
+                    </div>
+                    <h4 class="font-extrabold text-xl mb-3 text-gray-900 dark:text-white">PLATFORM DEEP DIVE (APPLICATION)</h4>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Focus on advanced fuzzing for Windows binaries, IoT devices, network protocols, and kernel modules.</p>
+                    <a href="trainings.html" class="text-amber-400 font-semibold text-sm mt-auto hover:text-amber-300">Explore Advanced Workshops →</a>
+                </div>
+
+                <div class="flex flex-col items-center text-center bg-white dark:bg-gray-800 p-6 rounded-xl border-t-4 border-emerald-500 shadow-xl transition-all hover:scale-[1.02]">
+                    <div class="p-4 rounded-full bg-emerald-500/20 mb-4 text-emerald-400">
+                        <i class="fas fa-handshake fa-2x"></i>
+                    </div>
+                    <h4 class="font-extrabold text-xl mb-3 text-gray-900 dark:text-white">CRASH TO CVE (DISCLOSURE)</h4>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4">Learn crash triaging, root cause analysis, exploit development basics, and responsible disclosure protocols.</p>
+                    <a href="advisories.html" class="text-emerald-400 font-semibold text-sm mt-auto hover:text-emerald-300">See Published Advisories →</a>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="bg-white dark:bg-gray-800 border-y border-gray-200 dark:border-gray-700 p-8 md:p-16 transition-colors duration-300">
+            <div class="max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8">
+                <div class="text-center md:text-left md:w-2/3">
+                    <h3 class="text-3xl font-extrabold text-gray-900 dark:text-white mb-2 flex items-center justify-center md:justify-start gap-3">
+                        <i class="fas fa-users-cog text-emerald-400"></i>
+                        Private Training for Teams
+                    </h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-lg">
+                        Accelerate your security team's skills with custom-tailored fuzzing workshops designed for your specific tech stack. Get direct, personalized mentorship.
+                    </p>
+                </div>
+                <div class="md:w-1/3 text-center">
+                    <a href="contact.html" class="btn btn-secondary inline-block px-6 py-3 bg-emerald-600 rounded-lg text-white font-bold hover:bg-emerald-500 transition shadow-lg">
+                        Inquire Now
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="py-16 bg-gray-50 dark:bg-gray-800/30 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 overflow-hidden">
+            <h3 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Testimonials</h3>
+            
+            <div class="relative w-full mask-linear-fade">
+                <div class="flex gap-6 animate-marquee items-stretch">
+                    <!-- Original List -->
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The 'Mastering Fuzzing' training was a game-changer for my career. The hands-on labs with AFL++ and custom mutators helped me find my first CVE within weeks."</p>
+                        <p class="relative z-10 text-right text-sm text-blue-500 font-bold mt-4">- Security Engineer</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Hardik's deep knowledge of Windows internals made the binary fuzzing workshop incredibly valuable. Highly recommended for anyone looking to move beyond basic web app sec."</p>
+                        <p class="relative z-10 text-right text-sm text-emerald-500 font-bold mt-4">- Vulnerability Researcher</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Excellent content delivery and pacing. The section on crash triaging saved our team countless hours. A must-attend for product security teams."</p>
+                        <p class="relative z-10 text-right text-sm text-amber-500 font-bold mt-4">- AppSec Lead</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The practical exercises on fuzzing network protocols were exactly what I needed. Great balance of theory and practice."</p>
+                        <p class="relative z-10 text-right text-sm text-purple-500 font-bold mt-4">- Network Security Engineer</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"One of the best security trainings I've attended. The instructor explains complex concepts clearly."</p>
+                        <p class="relative z-10 text-right text-sm text-pink-500 font-bold mt-4">- Security Consultant</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Learned so much about AFL and libFuzzer. The custom mutator section was brilliant."</p>
+                        <p class="relative z-10 text-right text-sm text-indigo-500 font-bold mt-4">- Software Engineer</p>
+                    </div>
+
+                    <!-- Duplicate List for Seamless Loop -->
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The 'Mastering Fuzzing' training was a game-changer for my career. The hands-on labs with AFL++ and custom mutators helped me find my first CVE within weeks."</p>
+                        <p class="relative z-10 text-right text-sm text-blue-500 font-bold mt-4">- Security Engineer</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Hardik's deep knowledge of Windows internals made the binary fuzzing workshop incredibly valuable. Highly recommended for anyone looking to move beyond basic web app sec."</p>
+                        <p class="relative z-10 text-right text-sm text-emerald-500 font-bold mt-4">- Vulnerability Researcher</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Excellent content delivery and pacing. The section on crash triaging saved our team countless hours. A must-attend for product security teams."</p>
+                        <p class="relative z-10 text-right text-sm text-amber-500 font-bold mt-4">- AppSec Lead</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The practical exercises on fuzzing network protocols were exactly what I needed. Great balance of theory and practice."</p>
+                        <p class="relative z-10 text-right text-sm text-purple-500 font-bold mt-4">- Network Security Engineer</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"One of the best security trainings I've attended. The instructor explains complex concepts clearly."</p>
+                        <p class="relative z-10 text-right text-sm text-pink-500 font-bold mt-4">- Security Consultant</p>
+                    </div>
+
+                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center">
+                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
+                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Learned so much about AFL and libFuzzer. The custom mutator section was brilliant."</p>
+                        <p class="relative z-10 text-right text-sm text-indigo-500 font-bold mt-4">- Software Engineer</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="p-8 md:p-16">
+            <h3 class="text-2xl font-bold text-center mb-8 text-gray-900 dark:text-white">LATEST INSIGHTS FROM THE BLOG</h3>
+
+            <div class="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-xl p-6 md:p-8 border border-gray-200 dark:border-gray-700 transition-shadow hover:shadow-[0_0_20px_rgba(59,130,246,0.2)]">
+                <div class="flex items-center gap-4 mb-3">
+                    <span class="px-3 py-1 bg-blue-500/20 text-blue-300 rounded text-xs font-bold uppercase">Featured Article</span>
+                    <span id="latest-insight-date" class="text-gray-500 text-sm"><i class="far fa-calendar-alt"></i> Dec 10, 2025</span>
+                </div>
+                <h4 id="latest-insight-title" class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                    Why Fuzzing is NOT Just for Linux: Windows Fuzzing with Custom Instrumentation
+                </h4>
+                <p id="latest-insight-summary" class="text-gray-600 dark:text-gray-400 mb-6">
+                    A deep dive into setting up advanced fuzzing environments for closed-source Windows applications, bypassing common hurdles, and achieving high coverage.
+                </p>
+                <a id="latest-insight-link" href="blog.html#featured-post" class="text-blue-400 font-semibold hover:text-blue-300">
+                    Continue Reading <i class="fas fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </section>
+
+        <section class="p-8 md:p-16 bg-gray-50 dark:bg-gray-800/30 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <h3 class="text-2xl font-bold text-center mb-12 text-gray-900 dark:text-white">LATEST VIDEOS</h3>
+            <div id="latest-videos-container" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                
+                <!-- Video 1 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:-translate-y-1">
+                    <div class="relative pb-[56.25%] h-0">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/ZGH9vk-gPxM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">Analyzing and finding root cause of a vulnerability with time travel debugging</h4>
+                    </div>
+                </div>
+
+                <!-- Video 2 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:-translate-y-1">
+                    <div class="relative pb-[56.25%] h-0">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/Ed1anYoGTyA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">Fuzzing with libAFL: Understanding and running libAFL forkserver fuzzer</h4>
+                    </div>
+                </div>
+
+                <!-- Video 3 -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:-translate-y-1">
+                    <div class="relative pb-[56.25%] h-0">
+                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/7zalwpE5nN4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">Fuzzing open source software with AFL - Texas Cyber Summit</h4>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div class="text-center mt-10">
+                <a href="https://youtube.com/c/MrHardik05" target="_blank" class="inline-flex items-center px-6 py-3 bg-red-600 rounded-lg text-white font-bold hover:bg-red-500 transition shadow-lg">
+                    <i class="fab fa-youtube mr-2"></i> Subscribe for More
+                </a>
+            </div>
+        </section>
+
+        <section class="p-8 md:p-16 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
+            <div class="max-w-4xl mx-auto">
+                <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-8">QUICK ACCESS & CREDIBILITY</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border-l-4 border-red-500 shadow-md border border-gray-200 dark:border-gray-700">
+                        <i class="fas fa-bug text-red-400 w-6 h-6 mb-2"></i>
+                        <h4 class="font-bold text-xl mb-1 text-gray-900 dark:text-white">Latest Vulnerability Disclosures</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Review recently published CVEs and technical write-ups.</p>
+                        <a href="advisories.html" class="text-red-400 font-semibold text-sm mt-3 block hover:text-red-300">View Advisories Page →</a>
+                    </div>
+                    
+                    <div class="bg-white dark:bg-gray-800 p-6 rounded-xl border-l-4 border-purple-500 shadow-md border border-gray-200 dark:border-gray-700">
+                        <i class="fab fa-github text-purple-400 w-6 h-6 mb-2"></i>
+                        <h4 class="font-bold text-xl mb-1 text-gray-900 dark:text-white">Training PPT Slides & Code</h4>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm">Access free code examples and slides from conference workshops.</p>
+                        <a href="https://github.com/hardik05" target="_blank" class="text-purple-400 font-semibold text-sm mt-3 block hover:text-purple-300">Go to GitHub Repository →</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 transition-colors duration-300">
+            <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+                <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+            </div>
+            <div class="mt-6 text-gray-600 text-xs space-x-4">
+                <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+                <span id="last-updated"></span>
+                <a href="#" class="hover:text-gray-400">Terms</a>
+                <a href="#" class="hover:text-gray-400">Privacy</a>
+            </div>
+            <div class="mt-4 text-gray-500 dark:text-gray-400 text-xs max-w-2xl mx-auto">
+                Disclaimer: The views and opinions expressed on this website are my own and do not necessarily reflect the official policy or position of my current or previous employers.
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="blog/posts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // TODO: Replace 'YOUR_CHANNEL_ID' with your actual YouTube Channel ID (e.g., UCxxxxxxxxxxxxxxxxx)
+            // You can find this by viewing the source of your channel page and searching for "channel_id"
+            const channelId = 'UCDX-6Auq06Fmwbh7zj5j8_A'; 
+            
+            if (channelId === 'YOUR_CHANNEL_ID') return; // Don't run if ID not set
+
+            const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+            const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'ok' && data.items.length > 0) {
+                        const container = document.getElementById('latest-videos-container');
+                        container.innerHTML = data.items.slice(0, 3).map(item => {
+                            const videoId = item.guid.split(':')[2];
+                            return `
+                                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 transition-all hover:-translate-y-1">
+                                    <div class="relative pb-[56.25%] h-0">
+                                        <iframe class="absolute top-0 left-0 w-full h-full" src="https://www.youtube.com/embed/${videoId}" title="${item.title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    </div>
+                                    <div class="p-4">
+                                        <h4 class="font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">${item.title}</h4>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    }
+                })
+                .catch(e => console.error('Error fetching YouTube videos:', e));
+
+            // Latest Insight Logic
+            if (window.blogPosts && window.blogPosts.length > 0) {
+                const latestPost = window.blogPosts[0];
+                const dateEl = document.getElementById('latest-insight-date');
+                const titleEl = document.getElementById('latest-insight-title');
+                const summaryEl = document.getElementById('latest-insight-summary');
+                const linkEl = document.getElementById('latest-insight-link');
+
+                if (dateEl) dateEl.innerHTML = `<i class="far fa-calendar-alt"></i> ${latestPost.date}`;
+                if (titleEl) titleEl.textContent = latestPost.title;
+                if (summaryEl) summaryEl.textContent = latestPost.summary;
+                if (linkEl) linkEl.href = latestPost.link;
+            }
+        });
+    </script>
+</body>
+</html>

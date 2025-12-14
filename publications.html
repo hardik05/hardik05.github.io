@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publications | Fuzzing.in</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="Research papers, whitepapers, and articles on software security and fuzzing published by Hardik Shah.">
+    <meta name="keywords" content="security publications, research papers, fuzzing research, malware analysis, whitepapers">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/publications.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://fuzzing.in/publications.html">
+    <meta property="og:title" content="Publications & Research Papers | Fuzzing.in">
+    <meta property="og:description" content="Research papers, whitepapers, and articles on software security and fuzzing.">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://fuzzing.in/publications.html">
+    <meta property="twitter:title" content="Publications & Research Papers | Fuzzing.in">
+    <meta property="twitter:description" content="Research papers, whitepapers, and articles on software security and fuzzing.">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="images/logo.jpg" type="image/jpeg">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>tailwind.config = { darkMode: 'class' };</script>
+    <script src="js/nav.js" defer></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            /* background-color: #111827; */
+            /* color: #f3f4f6; */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .pub-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 4px solid #3b82f6; /* Blue 500 */
+        }
+        .pub-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
+        }
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                <img src="images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                FUZZING.IN
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="trainings.html" class="hover:text-blue-400 transition">Trainings</a>
+                <a href="blog.html" class="hover:text-blue-400 transition">Blog</a>
+                <a href="advisories.html" class="hover:text-blue-400 transition">Advisories</a>
+                <a href="patents.html" class="hover:text-blue-400 transition">Patents</a>
+                <a href="publications.html" class="hover:text-blue-400 transition text-blue-400 font-bold">Publications</a>
+                <a href="media.html" class="hover:text-blue-400 transition">Media</a>
+                <a href="about.html" class="hover:text-blue-400 transition">About</a>
+                <a href="contact.html" class="hover:text-blue-400 transition">Contact</a>
+                <a href="contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+            </nav>
+            <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <div class="text-center py-8 md:py-12 bg-white dark:bg-gray-900 rounded-xl transition-colors duration-300">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                Publications & Articles
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 mt-3">
+                Research papers, technical blogs, and magazine articles on security analysis.
+            </p>
+        </div>
+
+        <section class="mt-8 max-w-4xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6 border-b border-gray-200 dark:border-gray-700 pb-4">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white" id="pub-count">All Publications</h2>
+                <div class="flex flex-col md:flex-row gap-4 mt-4 md:mt-0 w-full md:w-auto">
+                    <select id="sort-select" class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300 p-2 rounded-lg border border-gray-300 dark:border-gray-700 focus:border-blue-500 focus:ring-blue-500">
+                        <option value="newest">Date (Newest)</option>
+                        <option value="oldest">Date (Oldest)</option>
+                        <option value="title_asc">Title (A-Z)</option>
+                        <option value="title_desc">Title (Z-A)</option>
+                    </select>
+                    <input type="text" id="search-input" placeholder="Search title or description..." class="bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-300 p-2 rounded-lg border border-gray-300 dark:border-gray-700 w-full md:w-auto focus:border-blue-500 focus:ring-blue-500">
+                </div>
+            </div>
+            <div id="publications-container" class="space-y-6">
+                <!-- Populated by JS -->
+            </div>
+            <div id="pagination-controls" class="flex justify-center items-center space-x-2 mt-8">
+                <!-- Populated by JS -->
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 mt-12 transition-colors duration-300">
+        <p class="text-gray-500 font-medium text-lg">
+            "Fuzzing is not magic; it's persistent, structured execution."
+        </p>
+        <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+            <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="mt-6 text-gray-600 text-xs space-x-4">
+            <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+            <span id="last-updated"></span>
+            <a href="#" class="hover:text-gray-400">Terms</a>
+            <a href="#" class="hover:text-gray-400">Privacy</a>
+        </div>
+        <div class="mt-4 text-gray-500 dark:text-gray-400 text-xs max-w-2xl mx-auto">
+            Disclaimer: The views and opinions expressed on this website are my own and do not necessarily reflect the official policy or position of my current or previous employers.
+        </div>
+    </footer>
+
+    <script>
+        const publications = [
+            {
+                title: "Fuzzing ImageMagick and Digging Deeper into CVE-2020-27829",
+                source: "McAfee Labs",
+                link: "https://www.mcafee.com/blogs/other-blogs/mcafee-labs/fuzzing-imagemagick-and-digging-deeper-into-cve-2020-27829/",
+                desc: "A deep dive into fuzzing ImageMagick, explaining the discovery process and technical details of the heap buffer overflow vulnerability (CVE-2020-27829)."
+            },
+            {
+                title: "Analyzing CVE-2021-1665 – Remote Code Execution Vulnerability in Windows GDI+",
+                source: "McAfee Labs",
+                link: "https://www.mcafee.com/blogs/other-blogs/mcafee-labs/analyzing-cve-2021-1665-remote-code-execution-vulnerability-in-windows-gdi/",
+                desc: "Technical analysis of a critical Remote Code Execution vulnerability in the Windows Graphics Device Interface (GDI+) component."
+            },
+            {
+                title: "Jet Database Engine Flaw May Lead to Exploitation: Analyzing CVE-2018-8423",
+                source: "McAfee Labs",
+                link: "https://securingtomorrow.mcafee.com/other-blogs/mcafee-labs/jet-database-engine-flaw-may-lead-to-exploitation-analyzing-cve-2018-8423/",
+                desc: "Investigation into a vulnerability within the Microsoft Jet Database Engine, detailing how it could be exploited by attackers."
+            },
+            {
+                title: "Hackers Bypassed Adobe Flash Protection Mechanism (CVE-2018-4878)",
+                source: "McAfee Labs",
+                link: "https://securingtomorrow.mcafee.com/mcafee-labs/hackers-bypassed-adobe-flash-protection-mechanism/",
+                desc: "Analysis of a zero-day vulnerability in Adobe Flash Player used in targeted attacks, bypassing existing protection mechanisms."
+            },
+            {
+                title: "Apache Struts at Rest: Analyzing Remote Code Execution Vulnerability CVE-2017-9805",
+                source: "McAfee Labs",
+                link: "https://securingtomorrow.mcafee.com/mcafee-labs/apache-struts-at-rest-analyzing-remote-code-execution-vulnerability-cve-2017-9805/",
+                desc: "A look at the critical RCE vulnerability in the Apache Struts REST plugin, explaining the XML deserialization issue."
+            },
+            {
+                title: "Analyzing CVE-2017-9791: Apache Struts Vulnerability Can Lead to Remote Code Execution",
+                source: "McAfee Labs",
+                link: "https://securingtomorrow.mcafee.com/mcafee-labs/analyzing-cve-2017-9791-apache-struts-vulnerability-can-lead-remote-code-execution/",
+                desc: "Breakdown of the S2-048 vulnerability in Apache Struts 2, demonstrating how the Struts 1 plugin could be exploited."
+            },
+            {
+                title: "Analyzing CVE-2017-3731: Truncated Packets Can Cause Denial of Service in OpenSSL",
+                source: "McAfee Labs",
+                link: "https://securingtomorrow.mcafee.com/mcafee-labs/analyzing-cve-2017-3731-truncated-packets-can-cause-denial-service-openssl/",
+                desc: "Research into how malformed, truncated packets could cause a crash in OpenSSL, leading to a Denial of Service condition."
+            },
+            {
+                title: "Analyzing CVE-2016-9311: NTPd Vulnerability Can Lead to Denial of Service",
+                source: "McAfee Labs",
+                link: "https://securingtomorrow.mcafee.com/mcafee-labs/analyzing-cve-2016-9311-ntpd-vulnerability-can-lead-denial-service/",
+                desc: "Analysis of a vulnerability in the Network Time Protocol daemon (NTPd) that allows attackers to crash the service."
+            },
+            {
+                title: "Pinterest Scams",
+                source: "Virus Bulletin Magazine (Sept 2012)",
+                link: "http://www.virusbtn.com/virusbulletin/archive/2012/09/vb201209-Pinterest-scams.dkb?mobile_on=no",
+                desc: "An early investigation into the proliferation of scams and spam on the Pinterest social media platform."
+            },
+            {
+                title: "Peering into a Pinterest Scam Toolkit",
+                source: "McAfee Labs",
+                link: "http://blogs.mcafee.com/mcafee-labs/peering-into-a-pinterest-scam-toolkit",
+                desc: "Technical dissection of the automated toolkits used by scammers to generate spam and malicious links on Pinterest."
+            },
+            {
+                title: "Delving Deeply into a Bitcoin Botnet",
+                source: "McAfee Labs",
+                link: "http://blogs.mcafee.com/mcafee-labs/delving-deeply-into-a-bitcoin-botnet",
+                desc: "Research into botnets repurposing infected machines for Bitcoin mining, analyzing their infrastructure and impact."
+            },
+            {
+                title: "VertexNet Botnet Hides Behind AutoIT",
+                source: "McAfee Labs",
+                link: "http://blogs.mcafee.com/mcafee-labs/vertexnet-botnet-hides-behind-autoit",
+                desc: "Analysis of the VertexNet botnet, focusing on its use of AutoIT scripting for obfuscation and evasion."
+            },
+            {
+                title: "Inside Adobe Reader Zero-Day Exploit CVE-2011-2462",
+                source: "McAfee Labs",
+                link: "http://blogs.mcafee.com/mcafee-labs/inside-adobe-reader-zero-day-exploit-cve-2011-2462",
+                desc: "Deep dive into the U3D memory corruption zero-day exploit in Adobe Reader, explaining the heap spray and ROP chain."
+            },
+            {
+                title: "Facebook Scam Analysis",
+                source: "Symantec Connect",
+                link: "http://www.symantec.com/connect/node/1724331",
+                desc: "Breakdown of social engineering tactics and scam campaigns targeting Facebook users."
+            },
+            {
+                title: "Analyzing Malicious Code",
+                source: "Hakin9 Magazine",
+                link: "http://hakin9.org/analyzing-malicious-code/",
+                desc: "A guide on methodologies and tools for analyzing malicious code and understanding malware behavior."
+            },
+            {
+                title: "Software Security and Reverse Engineering",
+                source: "Infosec Writers & Developer IQ Magazine",
+                link: "http://www.infosecwriters.com/text_resources/pdf/software_security_and_reverse_engineering.pdf",
+                desc: "An article providing a brief introduction to software reverse engineering concepts and their application in security."
+            },
+            {
+                title: "Understanding SQL Injection",
+                source: "Infosec Writers & Developer IQ Magazine",
+                link: "http://www.infosecwriters.com/text_resources/pdf/SQL_Injection_HShah.pdf",
+                desc: "Comprehensive explanation of SQL Injection vulnerabilities, how they occur, and how to prevent them."
+            },
+            {
+                title: "Understanding Cross Site Scripting (XSS)",
+                source: "Infosec Writers & Developer IQ Magazine",
+                link: "http://www.infosecwriters.com/Papers/XSS_HShah.pdf",
+                desc: "Detailed overview of Cross-Site Scripting (XSS) attacks, including types of XSS and mitigation strategies."
+            }
+        ];
+
+        const itemsPerPage = 5;
+        let currentPage = 1;
+        let searchQuery = '';
+        let sortOption = 'newest';
+
+        function renderPublications() {
+            const container = document.getElementById('publications-container');
+            const controls = document.getElementById('pagination-controls');
+            const countHeader = document.getElementById('pub-count');
+            
+            container.innerHTML = '';
+            controls.innerHTML = '';
+
+            const filteredPublications = publications.filter(pub => {
+                const term = searchQuery.toLowerCase();
+                return pub.title.toLowerCase().includes(term) || 
+                       pub.desc.toLowerCase().includes(term) ||
+                       pub.source.toLowerCase().includes(term);
+            });
+
+            if (sortOption === 'oldest') {
+                filteredPublications.reverse();
+            } else if (sortOption === 'title_asc') {
+                filteredPublications.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (sortOption === 'title_desc') {
+                filteredPublications.sort((a, b) => b.title.localeCompare(a.title));
+            }
+
+            countHeader.textContent = `Publications (${filteredPublications.length})`;
+
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageItems = filteredPublications.slice(start, end);
+
+            if (pageItems.length === 0) {
+                container.innerHTML = '<p class="text-gray-400 text-center py-8">No publications found matching your search.</p>';
+                return;
+            }
+
+            pageItems.forEach(pub => {
+                const card = document.createElement('div');
+                card.className = 'pub-card bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300';
+                card.innerHTML = `
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">${pub.title}</h3>
+                    <p class="text-gray-400 text-sm mb-3 font-semibold">${pub.source}</p>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed">${pub.desc}</p>
+                    <a href="${pub.link}" target="_blank" class="text-blue-400 hover:text-blue-300 font-semibold inline-flex items-center">
+                        Read Article <i class="fas fa-external-link-alt ml-2"></i>
+                    </a>
+                `;
+                container.appendChild(card);
+            });
+
+            const totalPages = Math.ceil(filteredPublications.length / itemsPerPage);
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = i;
+                    btn.className = `px-4 py-2 rounded-lg font-bold transition ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`;
+                    btn.onclick = () => {
+                        currentPage = i;
+                        renderPublications();
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    };
+                    controls.appendChild(btn);
+                }
+            }
+        }
+
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            currentPage = 1;
+            renderPublications();
+        });
+
+        document.getElementById('sort-select').addEventListener('change', (e) => {
+            sortOption = e.target.value;
+            currentPage = 1;
+            renderPublications();
+        });
+
+        renderPublications();
+    </script>
+</body>
+</html>

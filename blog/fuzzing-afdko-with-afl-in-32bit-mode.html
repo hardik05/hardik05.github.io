@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuzzing afdko with AFL in 32bit Mode | Fuzzing.in</title>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-82JZEHCFPE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-82JZEHCFPE');
+    </script>
+    <meta name="description" content="
+
+
+
+
+Introduction:
+
+
+
+Afdko is a set of tools for building opentype fonts from Postscript and true type fonts. this was previously fuzzed by j00ru of google P0....">
+    <meta name="keywords" content="adobe, afdko, AFL, font, fuzzing">
+    <meta name="author" content="Hardik Shah">
+    <link rel="canonical" href="https://fuzzing.in/blog/fuzzing-afdko-with-afl-in-32bit-mode.html">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Fuzzing afdko with AFL in 32bit Mode | Fuzzing.in">
+    <meta property="og:description" content="
+
+
+
+
+Introduction:
+
+
+
+Afdko is a set of tools for building opentype fonts from Postscript and true type fonts. this was previously fuzzed by j00ru of google P0....">
+    <meta property="og:image" content="https://fuzzing.in/images/logo.jpg">
+    <meta property="og:url" content="https://fuzzing.in/blog/fuzzing-afdko-with-afl-in-32bit-mode.html">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Fuzzing afdko with AFL in 32bit Mode | Fuzzing.in">
+    <meta property="twitter:description" content="
+
+
+
+
+Introduction:
+
+
+
+Afdko is a set of tools for building opentype fonts from Postscript and true type fonts. this was previously fuzzed by j00ru of google P0....">
+    <meta property="twitter:image" content="https://fuzzing.in/images/logo.jpg">
+
+    <link rel="icon" href="../images/logo.jpg" type="image/jpeg">
+    
+    <!-- Tailwind CSS with Typography Plugin -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = { 
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        };
+    </script>
+    <script src="../js/nav.js" defer></script>
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbar for code blocks */
+        pre::-webkit-scrollbar { height: 8px; }
+        pre::-webkit-scrollbar-track { background: #374151; border-radius: 4px; }
+        pre::-webkit-scrollbar-thumb { background: #6b7280; border-radius: 4px; }
+    </style>
+</head>
+<body class="py-4 md:py-10 px-2 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+
+    <!-- Header (Paths adjusted with ../ for subdirectory) -->
+    <header class="sticky top-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+        <div class="container mx-auto flex justify-between items-center p-4 md:p-6">
+            <a href="../index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
+                <img src="../images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+                FUZZING.IN
+            </a>
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="../index.html" class="hover:text-blue-400 transition">Home</a>
+                <a href="../trainings.html" class="hover:text-blue-400 transition">Trainings</a>
+                <a href="../blog.html" class="hover:text-blue-400 transition text-blue-400 font-bold">Blog</a>
+                <a href="../advisories.html" class="hover:text-blue-400 transition">Advisories</a>
+                <a href="../patents.html" class="hover:text-blue-400 transition">Patents</a>
+                <a href="../publications.html" class="hover:text-blue-400 transition">Publications</a>
+                <a href="../media.html" class="hover:text-blue-400 transition">Media</a>
+                <a href="../about.html" class="hover:text-blue-400 transition">About</a>
+                <a href="../contact.html" class="hover:text-blue-400 transition">Contact</a>
+                <a href="../contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+                    <i class="fas fa-moon theme-toggle-icon"></i>
+                </button>
+            </nav>
+            <button class="md:hidden text-2xl text-gray-900 dark:text-white"><i class="fas fa-bars"></i></button>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 max-w-4xl">
+        
+        <!-- Breadcrumb / Back Link -->
+        <div class="mb-8">
+            <a href="../blog.html" class="text-blue-500 hover:text-blue-400 font-semibold flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Back to Blog
+            </a>
+        </div>
+
+        <!-- Article Header -->
+        <header class="mb-10 text-center md:text-left">
+            <span class="inline-block px-3 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-600 dark:text-pink-400 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+                Uncategorized
+            </span>
+            <h1 class="text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
+                Fuzzing afdko with AFL in 32bit Mode
+            </h1>
+            <div class="flex flex-wrap items-center gap-6 text-gray-500 dark:text-gray-400 text-sm">
+                <div class="flex items-center gap-2">
+                    <img src="../images/hardik.webp" alt="Author" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600 object-cover">
+                    <span class="font-medium text-gray-900 dark:text-gray-200">Hardik Shah</span>
+                </div>
+                <span class="hidden md:inline">•</span>
+                <div class="flex items-center gap-2">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>August 08, 2020</span>
+                </div>
+                <span class="hidden md:inline">•</span>
+                <div class="flex items-center gap-2">
+                    <i class="far fa-clock"></i>
+                    <span>5 min read</span>
+                </div>
+                
+                <!-- Share Buttons -->
+                <div class="flex items-center gap-3 md:ml-auto">
+                    <a href="#" id="share-twitter" target="_blank" class="text-gray-500 hover:text-blue-400 transition text-lg" title="Share on Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" id="share-linkedin" target="_blank" class="text-gray-500 hover:text-blue-700 transition text-lg" title="Share on LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" id="share-facebook" target="_blank" class="text-gray-500 hover:text-blue-600 transition text-lg" title="Share on Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="#" id="share-email" class="text-gray-500 hover:text-red-500 transition text-lg" title="Share via Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <button id="copy-link-btn" class="text-gray-500 hover:text-gray-900 dark:hover:text-white transition text-lg" title="Copy Link">
+                        <i class="fas fa-link"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Featured Image (Optional) -->
+        <div class="mb-10 rounded-xl overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700">
+            <!-- FEATURED_IMAGE_START -->
+            <div class="bg-gray-100 dark:bg-gray-800 h-64 md:h-96 flex items-center justify-center text-gray-400">
+                <i class="fas fa-image text-6xl"></i>
+                <!-- <img src="../images/blog/your-image.jpg" alt="Cover Image" class="w-full h-full object-cover"> -->
+            </div>
+            <!-- FEATURED_IMAGE_END -->
+        </div>
+
+        <!-- Table of Contents -->
+        <div id="toc" class="hidden mb-10 p-6 bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">Table of Contents</h3>
+            <nav>
+                <ul id="toc-list" class="space-y-2 text-sm text-gray-600 dark:text-gray-300"></ul>
+            </nav>
+        </div>
+
+        <!-- Article Content -->
+        <!-- 'prose' class activates Tailwind Typography plugin -->
+        <article class="prose prose-lg prose-slate dark:prose-invert max-w-none">
+            <!-- CONTENT_START -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Introduction:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Afdko is a set of tools for building opentype fonts from Postscript and true type fonts. this was previously fuzzed by j00ru of google P0. This library was also used in various adobe products and in windows too. so if you find a issue in it, there are chances that that issue is also present in adobe or windows product as well. although not all the afdko code paths are reachable in windows or adobe. by default this gets compiled in 64 bit. which has its own disadvantages like you can use -m option with AFL which limits the memory for the process. because of this we may miss some unusual crashes with ASAN.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In this post i will cover how to fuzz Afdko using AFL in 32 bit mode.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Downloading the source:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>we can simply clone following git repo:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>https://github.com/adobe-type-tools/afdko</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Compiling</strong>:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>after you have downloaded the sources, you can go to "afdko/c" directory and run following commands:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>CC=afl-gcc ./builalllinux release</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>this will compile and create various exe files. the file of our interest is <strong>"tx"</strong> which is present in "afdko/c/tx/exe/linux" folder.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Fuzzing:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>after we have instrumented file with afl we can simply run the command:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>afl-fuzz -i input -o output -m none -- ./tx -cff @@</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>this will start the fuzzing. you can also run multiple instances with 1 master and n number of slaves if you have multicore available.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>but there are some issue with this:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>no ASAN/MSAN/UBSAN support</li><li>no 32 bit build.</li></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p><strong>Compiling in 32 bit mode with ASAN/UBSAN</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>lets compile it with ASAN/MSAN/UBSAN</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>we need to change couple of files for this and add following to compile it with GCC:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>+CFLAGS = $(STD_OPTS) -m32 -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>+LDFLAGS = $(STD_OPTS) -m32 -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>this will make sure that the build is 32 bit and is compiled with ASAN/UBSAN support. as ASAN and MSAN are mutually exclusive, they wont work together. so you can use either one of them depending on your need.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>once you compiled the 32 bit build, you can again run afl as below with  the corpus you have:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>afl-fuzz -i input -o output -m 800 -- ./tx -cff @@</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>note that -m 800 will set 800MB as memory limit, so if program tries to allocate huge memory like 1GB+ you will get crash. i in fact found couple of such cases where program tries to allocate huge memory because of corrupted headers. this may easily lead to DOS condition.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>PS: i have created a patch file for compiling it with 32bit and ASAN/UBSAN. please contact me if you need it. it should be simple though to do at your own. but i did spent lot of time in figuring it out as i am not much in to linux. so happy to help if you need it.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Results:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>I fuzzed this for few weeks and found lot of crashes. finally i reported around 8 issues to Afdko which where fixed. although i haven't received any CVEs for them as Afdko issue don't get any CVEs. but it was a good learning experience for me.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Thanks to Afdko team and Adobe PSIRT for their help in getting the reported issues fixed. they have released a new version 3.5.0 which fixes all the issues i have reported to them.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p><strong>Exercise for the readers:</strong></p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>i have omitted various details from this post, if you are interested in learning more, you can try following:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true} -->
+<ol><li>figure out which files needs to be modified to compile it in 32 bit with ASAN/MSAN. also check if there is already any build option for this which you can use.</li><li>how to get good corpus so that your fuzzing yields in some good crashes?</li><li>figure out which adobe and windows product may be using this library?</li><li>if you get lot of crashes, how will you triage them?</li></ol>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- CONTENT_END -->
+        </article>
+
+        <!-- Tags & Share -->
+        <div class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-sm font-semibold text-gray-500 dark:text-gray-400 mr-2">Tags:</span>
+                    <!-- TAGS_START -->
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">adobe</a>
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">afdko</a>
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">AFL</a>
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">font</a>
+<a href="#" class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-full text-sm hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-500 transition">fuzzing</a>
+
+<!-- TAGS_END -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Post Navigation -->
+        <!-- POST_NAVIGATION_START -->
+<div class="flex flex-col md:flex-row justify-between items-center border-t border-gray-200 dark:border-gray-700 pt-6 mt-8 gap-4">
+                <a href="using-pip-with-proxy.html" class="flex items-center text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition group text-left w-full md:w-1/2">
+                    <i class="fas fa-arrow-left mr-3 group-hover:-translate-x-1 transition-transform"></i>
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Previous</span>
+                        <span class="font-semibold line-clamp-1">using pip with proxy</span>
+                    </div>
+                </a>
+                
+                <a href="winafl-useful-commands.html" class="flex items-center justify-end text-gray-600 dark:text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition group text-right w-full md:w-1/2">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-500 block mb-1">Next</span>
+                        <span class="font-semibold line-clamp-1">WinAFL useful commands</span>
+                    </div>
+                    <i class="fas fa-arrow-right ml-3 group-hover:translate-x-1 transition-transform"></i>
+                </a>
+                </div>
+<!-- POST_NAVIGATION_END -->
+
+        <!-- Related Posts -->
+        <div class="mt-16 border-t border-gray-200 dark:border-gray-700 pt-10">
+            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Related Posts</h3>
+            <div id="relatedPosts" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-100 dark:bg-gray-900 p-8 text-center border-t border-gray-200 dark:border-gray-800 mt-12 transition-colors duration-300">
+        <p class="text-gray-500 font-medium text-lg">
+            "Fuzzing is not magic; it's persistent, structured execution."
+        </p>
+        <div class="mt-4 flex justify-center space-x-6 text-2xl">
+            <a href="https://twitter.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.linkedin.com/in/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-linkedin-in"></i></a>
+            <a href="#" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-youtube"></i></a>
+            <a href="https://github.com/hardik05" target="_blank" class="text-gray-500 hover:text-blue-400 transition"><i class="fab fa-github"></i></a>
+        </div>
+        <div class="mt-6 text-gray-600 text-xs space-x-4">
+            <span>&copy; <span id="current-year">2024</span> Fuzzing.in</span>
+            <span id="last-updated"></span>
+            <a href="#" class="hover:text-gray-400">Terms</a>
+            <a href="#" class="hover:text-gray-400">Privacy</a>
+        </div>
+    </footer>
+
+    <script src="posts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentTitle = document.querySelector('h1').innerText.trim();
+            const relatedContainer = document.getElementById('relatedPosts');
+            
+            if (!window.blogPosts || !relatedContainer) return;
+
+            // Get current category
+            const categoryEl = document.querySelector('header span.uppercase');
+            const currentCategory = categoryEl ? categoryEl.innerText.trim() : '';
+
+            // Filter posts
+            let related = window.blogPosts.filter(post => 
+                post.title !== currentTitle && 
+                post.category === currentCategory
+            );
+
+            // Fallback to recent if not enough related
+            if (related.length < 3) {
+                const recent = window.blogPosts.filter(post => post.title !== currentTitle && !related.includes(post));
+                related = related.concat(recent).slice(0, 3);
+            } else {
+                related = related.slice(0, 3);
+            }
+
+            relatedContainer.innerHTML = related.map(post => {
+                // Fix link for relative path (remove 'blog/' prefix)
+                const relativeLink = post.link.replace(/^blog\//, '');
+                
+                return `
+                <a href="${relativeLink}" class="block group">
+                    ${post.image ? `<div class="h-40 mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800"><img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300"></div>` : '<div class="h-40 mb-4 overflow-hidden rounded-lg bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-400"><i class="fas fa-newspaper text-3xl"></i></div>'}
+                    <h4 class="font-bold text-gray-900 dark:text-white group-hover:text-blue-400 transition line-clamp-2">${post.title}</h4>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">${post.date}</p>
+                </a>
+            `}).join('');
+        });
+
+        // Table of Contents Generator
+        document.addEventListener('DOMContentLoaded', () => {
+            const article = document.querySelector('article');
+            const tocContainer = document.getElementById('toc');
+            const tocList = document.getElementById('toc-list');
+            
+            if (!article || !tocContainer || !tocList) return;
+
+            const headings = article.querySelectorAll('h2, h3');
+            
+            if (headings.length < 2) {
+                return; 
+            }
+
+            tocContainer.classList.remove('hidden');
+
+            headings.forEach((heading, index) => {
+                if (!heading.id) {
+                    heading.id = `heading-${index}`;
+                }
+
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${heading.id}`;
+                a.textContent = heading.innerText;
+                a.className = heading.tagName === 'H3' ? 'ml-4 hover:text-blue-500 transition' : 'font-semibold hover:text-blue-500 transition';
+                
+                li.appendChild(a);
+                tocList.appendChild(li);
+            });
+        });
+
+        // Share Buttons Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const url = encodeURIComponent(window.location.href);
+            const title = encodeURIComponent(document.title);
+            
+            document.getElementById('share-twitter').href = `https://twitter.com/intent/tweet?text=${title}&url=${url}`;
+            document.getElementById('share-linkedin').href = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+            document.getElementById('share-facebook').href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+            document.getElementById('share-email').href = `mailto:?subject=${title}&body=Check out this article: ${url}`;
+            
+            document.getElementById('copy-link-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    const icon = document.querySelector('#copy-link-btn i');
+                    icon.className = 'fas fa-check text-emerald-500';
+                    setTimeout(() => {
+                        icon.className = 'fas fa-link';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
