@@ -31,6 +31,7 @@ google-codelab-about .codelab-title{width:100%;text-align:center;font-size:32px;
 
   --code-bg: #020617;
   --code-inline: #1f2937;
+  --header-bg: rgba(17, 24, 39, 0.95);
 }
 
 /* ---------- LIGHT MODE THEME ---------- */
@@ -51,6 +52,7 @@ html.light {
 
   --code-bg: #f1f3f4;
   --code-inline: #e8eaed;
+  --header-bg: rgba(255, 255, 255, 0.95);
 }
 
 /* ---------- PAGE ---------- */
