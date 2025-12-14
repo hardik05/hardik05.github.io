@@ -150,8 +150,14 @@ google-codelab-step pre {
 google-codelab-step code {
   background: var(--code-inline) !important;
   color: var(--text-main) !important;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
 }
 
+google-codelab-step pre > code {
+  background: transparent !important;
+  padding: 0;
+}
 /* ---------- CALLOUTS ---------- */
 google-codelab-step aside.note,
 google-codelab-step aside.notice {
