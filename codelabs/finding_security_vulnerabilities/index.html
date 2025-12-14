@@ -1601,6 +1601,17 @@ return 0;
         );
       });
     })();
+
+    // Codelab navigation enhancement
+    document.addEventListener('google-codelab-ready', () => {
+        const backArrow = document.querySelector('google-codelab #arrow-back');
+        if (backArrow) {
+            backArrow.href = '../../trainings.html';
+            backArrow.title = 'Back to Trainings';
+            const icon = backArrow.querySelector('i');
+            if(icon) icon.textContent = 'arrow_back'; // Use Material Icon for consistency
+        }
+    });
   </script>
 
 </body>

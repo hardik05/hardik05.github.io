@@ -184,6 +184,19 @@
             let currentCategory = 'all';
             let currentSearch = '';
 
+            const categoryMap = {
+                "0 day analysis": "Case Studies",
+                "exploit kits": "Case Studies",
+                "Conference": "Talks & Events",
+                "AFL": "Tooling & Setup",
+                "fuzzing": "Tooling & Setup",
+                "Fuzzin": "Tooling & Setup", // Typo in original data
+                "winafl": "Tooling & Setup",
+                "coding": "Advanced Techniques",
+                "windbg, ttd": "Advanced Techniques",
+                "Security": "Miscellaneous"
+            };
+
             // Sort posts by date (newest first)
             allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
@@ -205,17 +218,18 @@
             }
 
             function renderCategories() {
-                const categories = {};
+                const cleanCategories = {};
                 allPosts.forEach(post => {
                     const cat = post.category ? post.category.trim() : 'Uncategorized';
-                    categories[cat] = (categories[cat] || 0) + 1;
+                    const cleanCat = categoryMap[cat] || 'Miscellaneous';
+                    cleanCategories[cleanCat] = (cleanCategories[cleanCat] || 0) + 1;
                 });
 
                 categoryList.innerHTML = '';
                 let html = `<li><button data-category="all" class="category-btn w-full text-left text-blue-500 font-bold hover:text-blue-400 transition">All Articles (${allPosts.length})</button></li>`;
                 
-                Object.keys(categories).sort().forEach(cat => {
-                    html += `<li><button data-category="${cat}" class="category-btn w-full text-left text-gray-400 hover:text-blue-400 transition">${cat} (${categories[cat]})</button></li>`;
+                Object.keys(cleanCategories).sort().forEach(cat => {
+                    html += `<li><button data-category="${cat}" class="category-btn w-full text-left text-gray-400 hover:text-blue-400 transition">${cat} (${cleanCategories[cat]})</button></li>`;
                 });
                 
                 categoryList.innerHTML = html;
@@ -241,8 +255,9 @@
                 // Filter by Category
                 if (currentCategory !== 'all') {
                     filtered = filtered.filter(p => {
-                        const pCat = p.category ? p.category.trim() : 'Uncategorized';
-                        return pCat === currentCategory;
+                        const rawCat = p.category ? p.category.trim() : 'Uncategorized';
+                        const cleanCat = categoryMap[rawCat] || 'Miscellaneous';
+                        return cleanCat === currentCategory;
                     });
                 }
 
