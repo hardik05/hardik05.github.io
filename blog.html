@@ -97,7 +97,7 @@
             </p>
         </div>
 
-        <section class="mt-8 mb-12">
+        <section class="mt-8 mb-12" id="featuredSection">
             <div class="bg-white dark:bg-gray-800 p-6 md:p-10 rounded-xl shadow-2xl border-2 border-pink-500/50 transition-colors duration-300">
                 <div class="flex flex-col md:flex-row gap-6">
                     <div id="featuredImageContainer" class="md:w-1/3 bg-gray-100 dark:bg-gray-700 h-48 rounded-lg flex items-center justify-center text-gray-500 dark:text-gray-400 font-semibold overflow-hidden">
@@ -131,13 +131,7 @@
                 <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 transition-colors duration-300">
                     <h3 class="text-xl font-bold mb-6 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3">Categories</h3>
 
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-semibold">All Articles (18)</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Tooling & Setup (7)</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Case Studies (4)</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Advanced Techniques (3)</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-blue-400 transition">Disclosure & CVEs (4)</a></li>
-                    </ul>
+                    <ul class="space-y-3" id="categoryList"></ul>
 
                     <div class="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
                         <input type="text" id="searchInput" placeholder="Search blog posts..." class="input-field w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 p-2 rounded">
@@ -150,9 +144,7 @@
             </div>
             
             <div class="md:col-span-3 text-center mt-12">
-                <button id="loadMoreBtn" class="px-6 py-3 bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-900 dark:text-white font-semibold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
-                    Load More Articles
-                </button>
+                <div id="pagination-controls" class="flex justify-center items-center space-x-2"></div>
             </div>
         </section>
 
@@ -184,62 +176,151 @@
         document.addEventListener('DOMContentLoaded', () => {
             const searchInput = document.getElementById('searchInput');
             const postsContainer = document.getElementById('postsContainer');
-            const loadMoreBtn = document.getElementById('loadMoreBtn');
+            const categoryList = document.getElementById('categoryList');
             let allPosts = window.blogPosts || [];
             let gridPosts = [];
-            let visibleCount = 6;
+            const itemsPerPage = 6;
+            let currentPage = 1;
+            let currentCategory = 'all';
+            let currentSearch = '';
 
             // Sort posts by date (newest first)
             allPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            if (allPosts.length > 0) {
-                // Set Featured Post (Latest)
-                const featured = allPosts[0];
-                document.getElementById('featuredTitle').textContent = featured.title;
-                document.getElementById('featuredDate').textContent = featured.date;
-                document.getElementById('featuredReadTime').textContent = featured.read_time;
-                document.getElementById('featuredCategory').textContent = featured.category;
-                document.getElementById('featuredSummary').textContent = featured.summary;
-                document.getElementById('featuredLink').href = featured.link;
+            function updateFeatured(post) {
+                if (!post) return;
+                document.getElementById('featuredTitle').textContent = post.title;
+                document.getElementById('featuredDate').textContent = post.date;
+                document.getElementById('featuredReadTime').textContent = post.read_time;
+                document.getElementById('featuredCategory').textContent = post.category;
+                document.getElementById('featuredSummary').textContent = post.summary;
+                document.getElementById('featuredLink').href = post.link;
                 
-                if (featured.image) {
+                if (post.image) {
                     document.getElementById('featuredImageContainer').innerHTML = 
-                        `<img src="${featured.image}" alt="${featured.title}" class="w-full h-full object-cover">`;
+                        `<img src="${post.image}" alt="${post.title}" class="w-full h-full object-cover">`;
+                } else {
+                    document.getElementById('featuredImageContainer').innerHTML = '';
+                }
+            }
+
+            function renderCategories() {
+                const categories = {};
+                allPosts.forEach(post => {
+                    const cat = post.category ? post.category.trim() : 'Uncategorized';
+                    categories[cat] = (categories[cat] || 0) + 1;
+                });
+
+                categoryList.innerHTML = '';
+                let html = `<li><button data-category="all" class="category-btn w-full text-left text-blue-500 font-bold hover:text-blue-400 transition">All Articles (${allPosts.length})</button></li>`;
+                
+                Object.keys(categories).sort().forEach(cat => {
+                    html += `<li><button data-category="${cat}" class="category-btn w-full text-left text-gray-400 hover:text-blue-400 transition">${cat} (${categories[cat]})</button></li>`;
+                });
+                
+                categoryList.innerHTML = html;
+
+                document.querySelectorAll('.category-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        currentCategory = btn.dataset.category;
+                        applyFilters();
+                        
+                        document.querySelectorAll('.category-btn').forEach(b => {
+                            b.classList.remove('text-blue-500', 'font-bold');
+                            b.classList.add('text-gray-400');
+                        });
+                        btn.classList.remove('text-gray-400');
+                        btn.classList.add('text-blue-500', 'font-bold');
+                    });
+                });
+            }
+
+            function applyFilters() {
+                let filtered = allPosts;
+
+                // Filter by Category
+                if (currentCategory !== 'all') {
+                    filtered = filtered.filter(p => {
+                        const pCat = p.category ? p.category.trim() : 'Uncategorized';
+                        return pCat === currentCategory;
+                    });
                 }
 
-                // Prepare grid posts (exclude featured)
-                gridPosts = allPosts.slice(1);
+                // Filter by Search
+                if (currentSearch) {
+                    const term = currentSearch.toLowerCase();
+                    filtered = filtered.filter(post => 
+                        post.title.toLowerCase().includes(term) || 
+                        post.summary.toLowerCase().includes(term)
+                    );
+                }
+
+                const featuredSection = document.getElementById('featuredSection');
+                const featuredLink = document.getElementById('featuredLink');
+
+                if (filtered.length > 1) {
+                    updateFeatured(filtered[0]);
+                    gridPosts = filtered.slice(1);
+                    featuredSection.style.display = 'block';
+                    featuredLink.style.display = 'inline-flex';
+                } else if (filtered.length === 1) {
+                    gridPosts = filtered;
+                    featuredSection.style.display = 'none';
+                } else {
+                    gridPosts = [];
+                    document.getElementById('featuredTitle').textContent = 'No posts found';
+                    document.getElementById('featuredSummary').textContent = 'Try adjusting your search or category filters.';
+                    document.getElementById('featuredDate').textContent = '';
+                    document.getElementById('featuredReadTime').textContent = '';
+                    document.getElementById('featuredCategory').textContent = '';
+                    document.getElementById('featuredImageContainer').innerHTML = '';
+                    featuredLink.style.display = 'none';
+                    featuredSection.style.display = 'block';
+                }
+                currentPage = 1;
                 updateGrid();
+            }
+
+            if (allPosts.length > 0) {
+                renderCategories();
+                applyFilters();
+            } else {
+                categoryList.innerHTML = '<li class="text-gray-500 italic">No categories found.</li>';
+                postsContainer.innerHTML = '<p class="text-center text-gray-500 col-span-3">No posts available. Check if posts.js is loaded correctly.</p>';
             }
 
             function updateGrid() {
-                const postsToShow = gridPosts.slice(0, visibleCount);
-                renderPosts(postsToShow);
+                const totalPages = Math.ceil(gridPosts.length / itemsPerPage);
+                const start = (currentPage - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                const postsToShow = gridPosts.slice(start, end);
                 
-                if (visibleCount >= gridPosts.length) {
-                    loadMoreBtn.style.display = 'none';
-                } else {
-                    loadMoreBtn.style.display = 'inline-block';
+                renderPosts(postsToShow);
+                renderPagination(totalPages);
+            }
+
+            function renderPagination(totalPages) {
+                const controls = document.getElementById('pagination-controls');
+                controls.innerHTML = '';
+
+                if (totalPages <= 1) return;
+
+                for (let i = 1; i <= totalPages; i++) {
+                    const btn = document.createElement('button');
+                    btn.textContent = i;
+                    btn.className = `px-3 py-1 rounded-lg font-bold transition ${i === currentPage ? 'bg-blue-600 text-white' : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-300 dark:hover:bg-gray-600'}`;
+                    btn.onclick = () => {
+                        currentPage = i;
+                        updateGrid();
+                        document.getElementById('featuredSection').scrollIntoView({ behavior: 'smooth' });
+                    };
+                    controls.appendChild(btn);
                 }
             }
 
-            loadMoreBtn.addEventListener('click', () => {
-                visibleCount += 6;
-                updateGrid();
-            });
-
             searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase();
-                if (!searchTerm) {
-                    updateGrid();
-                    return;
-                }
-                const filteredPosts = gridPosts.filter(post => 
-                    post.title.toLowerCase().includes(searchTerm) || 
-                    post.summary.toLowerCase().includes(searchTerm)
-                );
-                renderPosts(filteredPosts);
-                loadMoreBtn.style.display = 'none';
+                currentSearch = e.target.value;
+                applyFilters();
             });
 
             function renderPosts(posts) {
