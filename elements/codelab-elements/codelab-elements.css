@@ -35,22 +35,22 @@ google-codelab-about .codelab-title{width:100%;text-align:center;font-size:32px;
 
 /* ---------- LIGHT MODE THEME ---------- */
 html.light {
-  --bg: #f8f9fa;
-  --surface: #ffffff;
-  --surface-2: #f1f3f4;
-  --border: #dadce0;
+  --bg: #F9FAFB;
+  --surface: #FFFFFF;
+  --surface-2: #F3F4F6;
+  --border: #E5E7EB;
 
-  --text-main: #202124;
-  --text-muted: #5f6368;
+  --text-main: #1F2937;
+  --text-muted: #6B7280;
 
-  --blue: #1a73e8;
-  --blue-strong: #185abc;
-  --emerald: #137333;
-  --amber: #ea8600;
-  --red: #d93025;
+  --blue: #3B82F6;
+  --blue-strong: #2563EB;
+  --emerald: #10B981;
+  --amber: #F59E0B;
+  --red: #EF4444;
 
-  --code-bg: #f1f3f4;
-  --code-inline: #e8eaed;
+  --code-bg: #F3F4F6;
+  --code-inline: #E5E7EB;
   --header-bg: rgba(255, 255, 255, 0.95);
 }
 
