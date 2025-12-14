@@ -46,6 +46,31 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://fuzzing.in/mastering-fuzzing-agenda.html</loc>
+    <lastmod>2025-12-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fuzzing.in/training-agenda.html</loc>
+    <lastmod>2025-12-14</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fuzzing.in/codelabs/finding_security_vulnerabilities/index.html</loc>
+    <lastmod>2025-12-14</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fuzzing.in/codelabs/Mastering_fuzzing_TyphoonCon23/index.html</loc>
+    <lastmod>2025-12-14</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://fuzzing.in/codelabs/Practical_Fuzzing/index.html</loc>
+    <lastmod>2025-12-14</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://fuzzing.in/blog/x86x64-on-windows-arm-build.html</loc>
     <lastmod>2024-03-13</lastmod>
     <priority>0.6</priority>
