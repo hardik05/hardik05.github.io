@@ -196,3 +196,33 @@ google-codelab-step table td {
   background: var(--emerald) !important;
   color: white !important;
 }
+
+/* =========================================================
+   SYNTAX HIGHLIGHTING COLOR OVERRIDES
+   ========================================================= */
+
+/* Default (Dark Mode) - Refined for better aesthetics */
+google-codelab-step pre .pln, google-codelab-step code .pln { color: #e2e8f0 !important; } /* slate-200 */
+google-codelab-step pre .pun, google-codelab-step code .pun { color: #94a3b8 !important; } /* slate-400 */
+google-codelab-step pre .str, google-codelab-step code .str { color: #a5b4fc !important; } /* indigo-300 */
+google-codelab-step pre .kwd, google-codelab-step code .kwd { color: #f472b6 !important; } /* pink-400 */
+google-codelab-step pre .com, google-codelab-step code .com { color: #94a3b8 !important; font-style: italic; } /* slate-400 */
+google-codelab-step pre .typ, google-codelab-step code .typ { color: #7dd3fc !important; } /* sky-300 */
+google-codelab-step pre .lit, google-codelab-step code .lit { color: #818cf8 !important; } /* indigo-400 */
+google-codelab-step pre .tag, google-codelab-step code .tag { color: #f472b6 !important; } /* pink-400 */
+google-codelab-step pre .atn, google-codelab-step code .atn { color: #c084fc !important; } /* purple-400 */
+google-codelab-step pre .atv, google-codelab-step code .atv { color: #a5b4fc !important; } /* indigo-300 */
+google-codelab-step pre .dec, google-codelab-step code .dec { color: #94a3b8 !important; } /* slate-400 */
+
+/* Light Mode */
+html.light google-codelab-step pre .pln, html.light google-codelab-step code .pln { color: #334155 !important; } /* slate-700 */
+html.light google-codelab-step pre .pun, html.light google-codelab-step code .pun { color: #64748b !important; } /* slate-500 */
+html.light google-codelab-step pre .str, html.light google-codelab-step code .str { color: #4f46e5 !important; } /* indigo-700 */
+html.light google-codelab-step pre .kwd, html.light google-codelab-step code .kwd { color: #be185d !important; } /* pink-700 */
+html.light google-codelab-step pre .com, html.light google-codelab-step code .com { color: #64748b !important; font-style: italic; } /* slate-500 */
+html.light google-codelab-step pre .typ, html.light google-codelab-step code .typ { color: #0369a1 !important; } /* sky-700 */
+html.light google-codelab-step pre .lit, html.light google-codelab-step code .lit { color: #4338ca !important; } /* indigo-800 */
+html.light google-codelab-step pre .tag, html.light google-codelab-step code .tag { color: #be185d !important; } /* pink-700 */
+html.light google-codelab-step pre .atn, html.light google-codelab-step code .atn { color: #7e22ce !important; } /* purple-700 */
+html.light google-codelab-step pre .atv, html.light google-codelab-step code .atv { color: #4f46e5 !important; } /* indigo-700 */
+html.light google-codelab-step pre .dec, html.light google-codelab-step code .dec { color: #64748b !important; } /* slate-500 */
