@@ -1,49 +1,56 @@
-<!DOCTYPE <!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
 	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用AFL模糊测试开源软件</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style> body { font-family: 'Inter', sans-serif; } </style>
 </head>
-<body>
-<h1>用AFL模糊测试开源软件</h1>
-<font size="3" color="#ff9900">目录:</font><br/>
-<dir>
-<li><a href="1. 简介.html">1. 简介</a></li>
-<li><a href="2. 关于我.html">2. 关于我</a></li>
-<li><a href="3. 专题研讨会虚拟机下载.html">3. 专题研讨会虚拟机下载</a></li>
-<li><a href="4. 漏洞的常见类型 什么是漏洞？.html">4. 漏洞的常见类型 什么是漏洞？</a></li>
-<li><a href="5. 迄今为止，我们学到了什么？快速回顾一下.html">5. 迄今为止，我们学到了什么？快速回顾一下</a></li>
-<li><a href="6. 实践练习1.html">6. 实践练习1</a></li>
-<li><a href="7. 练习1的解决方案.html">7. 练习1的解决方案</a></li>
-<li><a href="8. 模糊测试理论追踪.html">8. 模糊测试理论追踪</a></li>
-<li><a href="9. 迄今为止，我们学到了什么？快速回顾一下.html">9. 迄今为止，我们学到了什么？快速回顾一下</a></li>
-<li><a href="10. 实践：编译和安装AFL.html">10. 实践：编译和安装AFL</a></li>
-<li><a href="11. Sanitizers和AFL env变量.html">11. Sanitizers和AFL env变量</a></li>
-<li><a href="12. 实践练习 2.html">12. 实践练习 2</a></li>
-<li><a href="13. 持久性模式？.html">13. 持久性模式？</a></li>
-<li><a href="14. 实践练习 3.html">14. 实践练习 3</a></li>
-<li><a href="15. 练习3的解决方案如下：.html">15. 练习3的解决方案如下：</a></li>
-<li><a href="16. 在多核系统上的并行模糊测试.html">16. 在多核系统上的并行模糊测试</a></li>
-<li><a href="17. 实践练习 4.html">17. 实践练习 4</a></li>
-<li><a href="18. Qemu模式下的模糊测试.html">18. Qemu模式下的模糊测试</a></li>
-<li><a href="19. 迄今为止我们学到了什么？快速回顾.html">19. 迄今为止我们学到了什么？快速回顾</a></li>
-<li><a href="20. 使用GDB的分析崩溃.html">20. 使用GDB的分析崩溃</a></li>
-<li><a href="21. 实践练习 5.html">21. 实践练习 5</a></li>
-<li><a href="22. 安装crashwalk分类崩溃.html">22. 安装crashwalk分类崩溃</a></li>
-<li><a href="23. 迄今为止我们学到了什么？快速回顾.html">23. 迄今为止我们学到了什么？快速回顾</a></li>
-<li><a href="24. 用Honggfuzz进行模糊测试.html">24. 用Honggfuzz进行模糊测试</a></li>
-<li><a href="25. 用libfuzzer进行模糊测试.html">25. 用libfuzzer进行模糊测试</a></li>
-<li><a href="26. 实践练习 6.html">26. 实践练习 6</a></li>
-<li><a href="27. 练习6的解决方案.html">27. 练习6的解决方案</a></li>
-<li><a href="28. 迄今为止我们学到了什么？快速回顾.html">28. 迄今为止我们学到了什么？快速回顾</a></li>
-<li><a href="29.模糊测试 tcpdump.html">29.模糊测试 tcpdump</a></li>
-<li><a href="30. 报告错误.html">30. 报告错误</a></li>
-<li><a href="31. 迄今为止，我们学到了什么？快速回顾一下.html">31. 迄今为止，我们学到了什么？快速回顾一下</a></li>
-<li><a href="32. 接下来是什么？.html">32. 接下来是什么？</a></li>
-<li><a href="33. 总结和疑问解答.html">33. 总结和疑问解答</a></li>
-<li><a href="34. 联系我吗？.html">34. 联系我吗？</a></li>
-<li><a href="35. 谢谢.html">35. 谢谢</a></li>
-<li><a href="AFL status_screen.html">AFL status_screen</a></li>
-<li><a href="用AFL模糊测试开源软件.chm">用AFL模糊测试开源软件.chm</a></li>
-</dir>
-<body>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-8 md:p-12 max-w-4xl mx-auto transition-colors duration-300">
+    <h1 class="text-3xl md:text-4xl font-bold mb-6 text-blue-600 dark:text-blue-400">用AFL模糊测试开源软件</h1>
+    <div class="mb-4">
+        <span class="text-lg font-semibold text-amber-500">目录:</span>
+    </div>
+    <ul class="space-y-2 list-disc list-inside marker:text-blue-500">
+        <li><a href="1. 简介.html" class="hover:text-blue-500 hover:underline transition-colors">1. 简介</a></li>
+        <li><a href="2. 关于我.html" class="hover:text-blue-500 hover:underline transition-colors">2. 关于我</a></li>
+        <li><a href="3. 专题研讨会虚拟机下载.html" class="hover:text-blue-500 hover:underline transition-colors">3. 专题研讨会虚拟机下载</a></li>
+        <li><a href="4. 漏洞的常见类型 什么是漏洞？.html" class="hover:text-blue-500 hover:underline transition-colors">4. 漏洞的常见类型 什么是漏洞？</a></li>
+        <li><a href="5. 迄今为止，我们学到了什么？快速回顾一下.html" class="hover:text-blue-500 hover:underline transition-colors">5. 迄今为止，我们学到了什么？快速回顾一下</a></li>
+        <li><a href="6. 实践练习1.html" class="hover:text-blue-500 hover:underline transition-colors">6. 实践练习1</a></li>
+        <li><a href="7. 练习1的解决方案.html" class="hover:text-blue-500 hover:underline transition-colors">7. 练习1的解决方案</a></li>
+        <li><a href="8. 模糊测试理论追踪.html" class="hover:text-blue-500 hover:underline transition-colors">8. 模糊测试理论追踪</a></li>
+        <li><a href="9. 迄今为止，我们学到了什么？快速回顾一下.html" class="hover:text-blue-500 hover:underline transition-colors">9. 迄今为止，我们学到了什么？快速回顾一下</a></li>
+        <li><a href="10. 实践：编译和安装AFL.html" class="hover:text-blue-500 hover:underline transition-colors">10. 实践：编译和安装AFL</a></li>
+        <li><a href="11. Sanitizers和AFL env变量.html" class="hover:text-blue-500 hover:underline transition-colors">11. Sanitizers和AFL env变量</a></li>
+        <li><a href="12. 实践练习 2.html" class="hover:text-blue-500 hover:underline transition-colors">12. 实践练习 2</a></li>
+        <li><a href="13. 持久性模式？.html" class="hover:text-blue-500 hover:underline transition-colors">13. 持久性模式？</a></li>
+        <li><a href="14. 实践练习 3.html" class="hover:text-blue-500 hover:underline transition-colors">14. 实践练习 3</a></li>
+        <li><a href="15. 练习3的解决方案如下：.html" class="hover:text-blue-500 hover:underline transition-colors">15. 练习3的解决方案如下：</a></li>
+        <li><a href="16. 在多核系统上的并行模糊测试.html" class="hover:text-blue-500 hover:underline transition-colors">16. 在多核系统上的并行模糊测试</a></li>
+        <li><a href="17. 实践练习 4.html" class="hover:text-blue-500 hover:underline transition-colors">17. 实践练习 4</a></li>
+        <li><a href="18. Qemu模式下的模糊测试.html" class="hover:text-blue-500 hover:underline transition-colors">18. Qemu模式下的模糊测试</a></li>
+        <li><a href="19. 迄今为止我们学到了什么？快速回顾.html" class="hover:text-blue-500 hover:underline transition-colors">19. 迄今为止我们学到了什么？快速回顾</a></li>
+        <li><a href="20. 使用GDB的分析崩溃.html" class="hover:text-blue-500 hover:underline transition-colors">20. 使用GDB的分析崩溃</a></li>
+        <li><a href="21. 实践练习 5.html" class="hover:text-blue-500 hover:underline transition-colors">21. 实践练习 5</a></li>
+        <li><a href="22. 安装crashwalk分类崩溃.html" class="hover:text-blue-500 hover:underline transition-colors">22. 安装crashwalk分类崩溃</a></li>
+        <li><a href="23. 迄今为止我们学到了什么？快速回顾.html" class="hover:text-blue-500 hover:underline transition-colors">23. 迄今为止我们学到了什么？快速回顾</a></li>
+        <li><a href="24. 用Honggfuzz进行模糊测试.html" class="hover:text-blue-500 hover:underline transition-colors">24. 用Honggfuzz进行模糊测试</a></li>
+        <li><a href="25. 用libfuzzer进行模糊测试.html" class="hover:text-blue-500 hover:underline transition-colors">25. 用libfuzzer进行模糊测试</a></li>
+        <li><a href="26. 实践练习 6.html" class="hover:text-blue-500 hover:underline transition-colors">26. 实践练习 6</a></li>
+        <li><a href="27. 练习6的解决方案.html" class="hover:text-blue-500 hover:underline transition-colors">27. 练习6的解决方案</a></li>
+        <li><a href="28. 迄今为止我们学到了什么？快速回顾.html" class="hover:text-blue-500 hover:underline transition-colors">28. 迄今为止我们学到了什么？快速回顾</a></li>
+        <li><a href="29.模糊测试 tcpdump.html" class="hover:text-blue-500 hover:underline transition-colors">29.模糊测试 tcpdump</a></li>
+        <li><a href="30. 报告错误.html" class="hover:text-blue-500 hover:underline transition-colors">30. 报告错误</a></li>
+        <li><a href="31. 迄今为止，我们学到了什么？快速回顾一下.html" class="hover:text-blue-500 hover:underline transition-colors">31. 迄今为止，我们学到了什么？快速回顾一下</a></li>
+        <li><a href="32. 接下来是什么？.html" class="hover:text-blue-500 hover:underline transition-colors">32. 接下来是什么？</a></li>
+        <li><a href="33. 总结和疑问解答.html" class="hover:text-blue-500 hover:underline transition-colors">33. 总结和疑问解答</a></li>
+        <li><a href="34. 联系我吗？.html" class="hover:text-blue-500 hover:underline transition-colors">34. 联系我吗？</a></li>
+        <li><a href="35. 谢谢.html" class="hover:text-blue-500 hover:underline transition-colors">35. 谢谢</a></li>
+        <li><a href="AFL status_screen.html" class="hover:text-blue-500 hover:underline transition-colors">AFL status_screen</a></li>
+        <li><a href="用AFL模糊测试开源软件.chm" class="hover:text-blue-500 hover:underline transition-colors">用AFL模糊测试开源软件.chm</a></li>
+    </ul>
+</body>
 </html>
