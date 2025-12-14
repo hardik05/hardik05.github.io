@@ -15,23 +15,22 @@ google-codelab-about .codelab-title{width:100%;text-align:center;font-size:32px;
 
 /* ---------- DESIGN TOKENS ---------- */
 :root {
-  --bg: #020617;
-  --surface: #1e293b;
-  --surface-2: #0f172a;
-  --border: #334155;
+  --bg: #111827;
+  --surface: #1F2937;
+  --surface-2: #1F2937;
+  --border: #374155;
 
-  --text-main: #f1f5f9;
-  --text-muted: #94a3b8;
+  --text-main: #F3F4F6;
+  --text-muted: #D1D5DB;
 
   --blue: #60a5fa;
   --blue-strong: #3b82f6;
   --emerald: #34d399;
   --amber: #fbbf24;
   --red: #f87171;
-
-  --code-bg: #0f172a;
-  --code-inline: #334155;
-  --header-bg: rgba(2, 6, 23, 0.95);
+  --code-bg: #030712;
+  --code-inline: #374155;
+  --header-bg: rgba(17, 24, 39, 0.95);
 }
 
 /* ---------- LIGHT MODE THEME ---------- */
@@ -107,6 +106,7 @@ google-codelab google-codelab-step {
 google-codelab-step .instructions {
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
+  border-top: 4px solid var(--blue);
   border-radius: 14px;
   box-shadow: 0 25px 60px -30px rgba(59,130,246,0.4);
 }
