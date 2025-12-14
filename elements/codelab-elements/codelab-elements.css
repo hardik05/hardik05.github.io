@@ -80,7 +80,7 @@ google-codelab #drawer {
 google-codelab #drawer ol li a {
   background: var(--surface) !important;
   border: 1px solid var(--border) !important;
-  color: var(--text-muted) !important;
+  color: var(--text-main) !important;
 }
 
 google-codelab #drawer ol li[selected] a {
@@ -127,7 +127,7 @@ google-codelab-step .instructions h4 {
 google-codelab-step .instructions p,
 google-codelab-step .instructions li,
 google-codelab-step .instructions td {
-  color: var(--text-muted) !important;
+  color: var(--text-main) !important;
 }
 
 /* ---------- LINKS ---------- */
