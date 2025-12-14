@@ -9,6 +9,7 @@
   <title>Finding security vulnerabilities through fuzzing</title>
   <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
   <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../elements/codelab-elements/codelab-elements.css">
   <style>
     .success {
@@ -21,8 +22,8 @@
 </head>
 <body>
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
-  <button id="theme-toggle" style="position: fixed; top: 12px; left: 50%; transform: translateX(-50%); z-index: 10001; background: var(--surface-2, #1f2937); color: var(--text-main, white); border: 1px solid var(--border, #1f2937); border-radius: 8px; padding: 8px 12px; cursor: pointer; font-family: 'Roboto', sans-serif;">
-    🌙 / ☀️
+  <button id="theme-toggle" style="position: fixed; top: 12px; right: 160px; z-index: 10001; background: var(--surface-2, #1f2937); color: var(--text-main, white); border: 1px solid var(--border, #1f2937); border-radius: 8px; padding: 8px 12px; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 16px; min-width: 40px;">
+    ☀️
   </button>
   <google-codelab codelab-gaid=""
                   id="finding_security_vulnerabilities"
@@ -1575,20 +1576,28 @@ return 0;
     (function () {
       const toggle = document.getElementById("theme-toggle");
       const root = document.documentElement;
+      
+      const updateIcon = (isLight) => {
+        toggle.textContent = isLight ? "🌙" : "☀️";
+      };
   
       // Load saved preference
       const savedTheme = localStorage.getItem("codelab-theme");
-      if (savedTheme === "light") {
+      const isLight = savedTheme === "light";
+      if (isLight) {
         root.classList.add("light");
       }
+      updateIcon(isLight);
   
       toggle?.addEventListener("click", () => {
         root.classList.toggle("light");
+        const isLightNow = root.classList.contains("light");
+        updateIcon(isLightNow);
   
         // Persist preference
         localStorage.setItem(
           "codelab-theme",
-          root.classList.contains("light") ? "light" : "dark"
+          isLightNow ? "light" : "dark"
         );
       });
     })();
