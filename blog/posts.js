@@ -1,7 +1,7 @@
 window.blogPosts = [
     {
         "title": "X86/X64 on Windows ARM build",
-        "summary": "\n** This are some notes i have taken/prepared few years back while doing some research on x86/64 bit support on windows arm build. I couldnot finish it and then...",
+        "summary": "\n** These are some notes i have taken/prepared few years back while doing some research on x86/64 bit support on windows arm build. I could not finish it and then...",
         "date": "March 13, 2024",
         "read_time": "10 min read",
         "category": "Uncategorized",
@@ -121,7 +121,7 @@ window.blogPosts = [
         "summary": "\nhttps://ffmpeg.org/ is a software to record,convert and stream audio and video. this has been used by many people. in this post i will discuss how to fuzz it w...",
         "date": "August 22, 2020",
         "read_time": "6 min read",
-        "category": "Fuzzin",
+        "category": "Fuzzing",
         "image": "",
         "link": "blog/fuzzing-ffmpeg-with-afl-on-ubuntu.html"
     },
@@ -342,7 +342,7 @@ window.blogPosts = [
         "link": "blog/analyzing-malicious-flash-using-flash-develop.html"
     },
     {
-        "title": "car maintanance checklist",
+        "title": "Car Maintenance Checklist",
         "summary": "attached document have some good points to check while servicing your car:\u00a0Car checklist",
         "date": "June 27, 2016",
         "read_time": "1 min read",
@@ -441,7 +441,7 @@ window.blogPosts = [
         "link": "blog/vinod-khosla-failure-does-not-matter-success-matters.html"
     },
     {
-        "title": "social media managment.",
+        "title": "Social Media Management",
         "summary": "there are lot of social media sites and if you have an RSS feed its difficult to update each one of them manually. you can use following tools:\n\n\ttwitter feed\n\t...",
         "date": "November 21, 2015",
         "read_time": "1 min read",
@@ -513,7 +513,7 @@ window.blogPosts = [
         "link": "blog/heartbleed-vulnerability-cve-2014-0160-analysis.html"
     },
     {
-        "title": "CVE-2013-4232 analyis",
+        "title": "CVE-2013-4232 Analysis",
         "summary": "After long time i did some quick analysis. here are the details for\u00a0CVE-2013-4232:\n\n&nbsp;\n\nif you look at the patch here:\n\nhttps://github.com/willysr/SlackHack...",
         "date": "April 05, 2014",
         "read_time": "3 min read",
@@ -572,7 +572,7 @@ window.blogPosts = [
         "date": "April 06, 2013",
         "read_time": "1 min read",
         "category": "0 day analysis",
-        "image": "http://hardik05.wordpress.com/wp-content/uploads/2013/04/cve-2012-1875_shellcode-transfer.jpg?w=300",
+        "image": "https://hardik05.wordpress.com/wp-content/uploads/2013/04/cve-2012-1875_shellcode-transfer.jpg?w=300",
         "link": "blog/cve-2012-1875-analysis.html"
     },
     {
@@ -581,7 +581,7 @@ window.blogPosts = [
         "date": "April 02, 2013",
         "read_time": "1 min read",
         "category": "0 day analysis",
-        "image": "http://hardik05.wordpress.com/wp-content/uploads/2013/04/cve-2012-003_1.jpg?w=300",
+        "image": "https://hardik05.wordpress.com/wp-content/uploads/2013/04/cve-2012-003_1.jpg?w=300",
         "link": "blog/cve-2012-0003-analysis.html"
     },
     {
@@ -590,7 +590,7 @@ window.blogPosts = [
         "date": "March 21, 2013",
         "read_time": "58 min read",
         "category": "0 day analysis",
-        "image": "http://hardik05.wordpress.com/wp-content/uploads/2013/03/screenhunter_50-mar-21-23-34.jpg?w=300",
+        "image": "https://hardik05.wordpress.com/wp-content/uploads/2013/03/screenhunter_50-mar-21-23-34.jpg?w=300",
         "link": "blog/cve-2013-1493-analysis.html"
     }
 ];

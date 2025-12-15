@@ -7,7 +7,7 @@
   "id": "practical_fuzzing",
   "duration": 3570,
   "title": "Practical Fuzzing: A Hands-On Learning Experience for Uncovering Vulnerabilities on Linux and Windows Platforms",
-  "summary": "This is a fuzzing training course which covers linux, windows.",
+  "summary": "This is a fuzzing training course which covers Linux, Windows.",
   "source": "linux_fuzzing_workshop.md",
   "theme": "",
   "status": [
