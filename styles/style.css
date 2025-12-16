@@ -5,37 +5,40 @@ body {
     max-width: 1200px;
 }
 
-/* Media Page */
+/* Common Card Styles for Consistency */
+.media-card,
+.patent-card,
+.pub-card,
+.training-card,
+.article-card,
+.advisory-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.media-card:hover,
+.patent-card:hover,
+.pub-card:hover,
+.training-card:hover,
+.article-card:hover,
+.advisory-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2); /* Blue shadow */
+}
+
+/* Specific Card Borders */
 .media-card {
-    transition: transform 0.2s, box-shadow 0.2s;
     border-left: 4px solid #3b82f6; /* Blue 500 */
 }
-.media-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
-}
 
-/* Patents Page */
 .patent-card {
-    transition: transform 0.2s, box-shadow 0.2s;
     border-left: 4px solid #3b82f6; /* Blue 500 */
 }
-.patent-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
-}
 
-/* Publications Page */
 .pub-card {
-    transition: transform 0.2s, box-shadow 0.2s;
     border-left: 4px solid #3b82f6; /* Blue 500 */
 }
-.pub-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
-}
 
-/* Trainings Page */
+/* Trainings Page Filters */
 .filter-toggle {
     display: none; /* Hidden on desktop */
 }
@@ -52,13 +55,9 @@ body {
         max-height: 1000px; /* Large enough value to show content */
     }
 }
+
 .training-card {
-    transition: transform 0.2s, box-shadow 0.2s;
     border-left: 4px solid transparent;
-}
-.training-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
 }
 .paid { border-left-color: #f59e0b; } /* Amber */
 .conference { border-left-color: #10b981; } /* Emerald */
@@ -126,14 +125,10 @@ body {
     border-left: 4px solid #ef4444; /* Red 500 */
 }
 
-/* Blog Page */
 .article-card {
-    transition: transform 0.2s, box-shadow 0.2s;
     border-bottom: 4px solid transparent;
 }
 .article-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2); /* Blue shadow */
     border-bottom-color: #3b82f6; /* Blue 500 */
 }
 
