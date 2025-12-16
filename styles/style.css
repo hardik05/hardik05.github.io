@@ -8,11 +8,11 @@ body {
 /* Media Page */
 .media-card {
     transition: transform 0.2s, box-shadow 0.2s;
-    border-left: 4px solid #10b981; /* Emerald 500 */
+    border-left: 4px solid #3b82f6; /* Blue 500 */
 }
 .media-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(16, 185, 129, 0.2);
+    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2);
 }
 
 /* Patents Page */
@@ -133,8 +133,8 @@ body {
 }
 .article-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 15px 25px -5px rgba(236, 72, 153, 0.2); /* Pink shadow for tech/blog feel */
-    border-bottom-color: #ec4899; /* Pink 500 */
+    box-shadow: 0 15px 25px -5px rgba(59, 130, 246, 0.2); /* Blue shadow */
+    border-bottom-color: #3b82f6; /* Blue 500 */
 }
 
 /* Contact Page */
