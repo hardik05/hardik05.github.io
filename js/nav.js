@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Preserve CTA button styling
-            if (link.classList.contains('bg-emerald-600')) {
-                baseClasses = 'block text-center px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition shadow-md font-bold';
+            if (link.classList.contains('bg-blue-600')) {
+                baseClasses = 'block text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-500 transition shadow-md font-bold';
             }
 
             mobileLink.className = baseClasses;

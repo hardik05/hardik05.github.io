@@ -60,7 +60,7 @@ body {
     border-left: 4px solid transparent;
 }
 .paid { border-left-color: #3b82f6; } /* Blue */
-.conference { border-left-color: #10b981; } /* Emerald */
+.conference { border-left-color: #3b82f6; } /* Blue */
 
 /* Index Page */
 .tech-bg {
@@ -99,7 +99,7 @@ body {
 }
 .day-1 { border-color: #3b82f6; } /* Blue */
 .day-2 { border-color: #f59e0b; } /* Amber */
-.day-3 { border-color: #10b981; } /* Emerald */
+.day-3 { border-color: #3b82f6; } /* Blue */
 
 /* Advisories Page */
 .advisory-table th, .advisory-table td {

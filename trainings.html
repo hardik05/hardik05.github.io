@@ -58,7 +58,7 @@
                 <a href="media.html" class="hover:text-blue-400 transition">Media</a>
                 <a href="about.html" class="hover:text-blue-400 transition">About</a>
                 <a href="contact.html" class="hover:text-blue-400 transition">Contact</a>
-                <a href="contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md">Private Training</a>
+                <a href="contact.html" class="px-3 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-500 transition shadow-md">Private Training</a>
                 <button id="theme-toggle" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
                     <i class="fas fa-moon theme-toggle-icon"></i>
                 </button>
@@ -103,15 +103,15 @@
                             </h5>
                             <ul class="space-y-2">
                                 <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                                    <i class="fas fa-check text-green-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
+                                    <i class="fas fa-check text-blue-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
                                     <span>Security Professionals</span>
                                 </li>
                                 <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                                    <i class="fas fa-check text-green-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
+                                    <i class="fas fa-check text-blue-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
                                     <span>Developers & QA Engineers</span>
                                 </li>
                                 <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                                    <i class="fas fa-check text-green-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
+                                    <i class="fas fa-check text-blue-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
                                     <span>Anyone looking to find bugs</span>
                                 </li>
                             </ul>
@@ -202,7 +202,7 @@
 
                     <div class="mt-8 pt-4 border-t border-gray-200 dark:border-gray-700">
                          <p class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-3">Can't find what you need?</p>
-                         <a href="contact.html" class="w-full inline-block text-center px-4 py-2 bg-emerald-600 rounded-lg text-white font-bold hover:bg-emerald-500 transition shadow-md">
+                         <a href="contact.html" class="w-full inline-block text-center px-4 py-2 bg-blue-600 rounded-lg text-white font-bold hover:bg-blue-500 transition shadow-md">
                             Request Custom Training
                         </a>
                     </div>
@@ -395,10 +395,10 @@
             pageItems.forEach(w => {
                 const isPaid = w.type === 'paid';
                 const cardClass = isPaid ? 'paid' : 'conference';
-                const badgeClass = isPaid ? 'text-blue-500 border-blue-500/30 bg-blue-500/10' : 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10';
+                const badgeClass = isPaid ? 'text-blue-500 border-blue-500/30 bg-blue-500/10' : 'text-blue-400 border-blue-500/30 bg-blue-500/10';
                 const badgeText = isPaid ? 'Paid Training' : 'Free';
                 const icon = isPaid ? '<i class="fas fa-crown text-blue-500 mr-2"></i>' : '';
-                const btnClass = isPaid ? 'bg-blue-600 hover:bg-blue-500' : 'bg-emerald-600 hover:bg-emerald-500';
+                const btnClass = isPaid ? 'bg-blue-600 hover:bg-blue-500' : 'bg-blue-600 hover:bg-blue-500';
                 const featuredBadge = w.isFeatured ? '<span class="ml-2 px-2 py-0.5 bg-blue-500 text-white text-xs font-bold uppercase rounded tracking-wider">Featured</span>' : '';
                 const fullUrl = encodeURIComponent(window.location.origin + w.link);
                 const encodedTitle = encodeURIComponent(w.title);
@@ -421,7 +421,7 @@
                                 <ul class="space-y-2">
                                     ${w.whoShouldAttend.map(who => `
                                         <li class="flex items-start text-sm text-gray-600 dark:text-gray-300">
-                                            <i class="fas fa-check text-green-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
+                                            <i class="fas fa-check text-blue-500 mt-1 mr-2 flex-shrink-0 text-xs"></i>
                                             <span>${who}</span>
                                         </li>
                                     `).join('')}
