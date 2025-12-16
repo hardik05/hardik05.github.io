@@ -106,7 +106,10 @@ body {
 .advisory-table th, .advisory-table td {
     padding: 1rem;
     text-align: left;
-    border-bottom: 1px solid #374151; /* Gray 700 */
+    border-bottom: 1px solid #e5e7eb; /* Gray 200 for Light Mode */
+}
+.dark .advisory-table th, .dark .advisory-table td {
+    border-bottom-color: #374151; /* Gray 700 for Dark Mode */
 }
 .advisory-table th {
     text-transform: uppercase;
@@ -114,7 +117,10 @@ body {
     color: #9ca3af; /* Gray 400 */
 }
 .advisory-table tbody tr:hover {
-    background-color: #1f2937; /* Gray 800 */
+    background-color: #f3f4f6; /* Gray 100 for Light Mode */
+}
+.dark .advisory-table tbody tr:hover {
+    background-color: #374151; /* Gray 700 for Dark Mode */
 }
 .advisory-card {
     border-left: 4px solid #ef4444; /* Red 500 */
