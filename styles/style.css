@@ -59,7 +59,7 @@ body {
 .training-card {
     border-left: 4px solid transparent;
 }
-.paid { border-left-color: #f59e0b; } /* Amber */
+.paid { border-left-color: #3b82f6; } /* Blue */
 .conference { border-left-color: #10b981; } /* Emerald */
 
 /* Index Page */
