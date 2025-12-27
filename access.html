@@ -49,7 +49,14 @@
     </div>
 
     <script>
-        document.getElementById('access-form').addEventListener('submit', function(e) {
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        document.getElementById('access-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const key = document.getElementById('license-key').value.trim();
             const errorMsg = document.getElementById('error-msg');
@@ -59,8 +66,10 @@
             btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...';
             errorMsg.classList.add('hidden');
 
-            // The automation creates a file named: codelabs/Practical_Fuzzing/access/pay_XYZ.html
-            const accessUrl = `codelabs/Practical_Fuzzing/access/${key}.html`;
+            // The automation creates a file named: sha256(pay_XYZ + salt).html
+            const salt = "fuzzing_is_fun_2025";
+            const hash = await sha256(key + salt);
+            const accessUrl = `codelabs/Practical_Fuzzing/access/${hash}.html`;
             
             fetch(accessUrl, { method: 'HEAD' })
                 .then(response => {

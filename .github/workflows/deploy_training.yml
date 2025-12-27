@@ -11,6 +11,11 @@ jobs:
       - name: Checkout Public Repo
         uses: actions/checkout@v4
 
+      - name: Mask Sensitive Data
+        run: |
+          echo "::add-mask::${{ github.event.client_payload.payment_id }}"
+          echo "::add-mask::${{ github.event.client_payload.license_key }}"
+
       - name: Checkout Private Source Repo
         uses: actions/checkout@v4
         with:
@@ -45,13 +50,19 @@ jobs:
           # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)
           npx staticrypt private-source/index_fixed.html -p "$PAYMENT_ID" -d codelabs/Practical_Fuzzing/access --short -c false
           
-          # Rename the output file to the payment ID
-          mv codelabs/Practical_Fuzzing/access/index_fixed.html "codelabs/Practical_Fuzzing/access/$PAYMENT_ID.html"
+          # Generate a deterministic but non-obvious filename from the payment ID
+          # We use SHA256 with a salt to ensure the filename doesn't reveal the password
+          # and is resistant to precomputed rainbow tables.
+          SALT="fuzzing_is_fun_2025"
+          FILENAME=$(echo -n "${PAYMENT_ID}${SALT}" | sha256sum | awk '{print $1}')
+          
+          # Rename the output file to the hashed filename
+          mv codelabs/Practical_Fuzzing/access/index_fixed.html "codelabs/Practical_Fuzzing/access/$FILENAME.html"
 
       - name: Commit and Push
         run: |
           git config --global user.name "Fuzzing-in Bot"
           git config --global user.email "bot@fuzzing.in"
           git add codelabs/Practical_Fuzzing/access/
-          git commit -m "New training access created for license: ${{ github.event.client_payload.license_key }}"
+          git commit -m "Add encrypted training access page"
           git push

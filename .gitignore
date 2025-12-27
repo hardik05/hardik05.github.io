@@ -10,3 +10,5 @@ sample-post.md
 !styles/
 !scripts/
 import_wp.py
+private-source/
+index_fixed.html
