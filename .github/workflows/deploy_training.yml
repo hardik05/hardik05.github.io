@@ -31,8 +31,11 @@ jobs:
           # Ensure output directory exists
           mkdir -p codelabs/Practical_Fuzzing/access
           
-          # Run Staticrypt
-          npx staticrypt private-source/index.html -p "$PAYMENT_ID" -o "codelabs/Practical_Fuzzing/access/$PAYMENT_ID.html" --short
+          # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)
+          npx staticrypt private-source/index.html -p "$PAYMENT_ID" -d codelabs/Practical_Fuzzing/access --short -c false
+          
+          # Rename the output file to the payment ID
+          mv codelabs/Practical_Fuzzing/access/index.html "codelabs/Practical_Fuzzing/access/$PAYMENT_ID.html"
 
       - name: Commit and Push
         run: |
