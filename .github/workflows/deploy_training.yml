@@ -32,12 +32,9 @@ jobs:
           mkdir -p codelabs/Practical_Fuzzing/access
           
           # Fix relative paths by replacing them in the source before encryption
-          # 1. Update paths to global assets (elements, styles, etc.)
-          # 2. Update paths to local images
-          sed -e 's|href="../../|href="../../../|g' \
-              -e 's|src="../../|src="../../../|g' \
-              -e 's|src="img/|src="../img/|g' \
-              -e 's|href="img/|href="../img/|g' \
+          # Handles both single and double quotes for src and href attributes
+          sed -E -e 's|(href\|src)=["\']\.\./\.\./|\1="../../../|g' \
+              -e 's|(href\|src)=["\']img/|\1="../img/|g' \
               private-source/index.html > private-source/index_fixed.html
           
           # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)

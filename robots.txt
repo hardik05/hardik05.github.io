@@ -1,3 +1,3 @@
 User-agent: *
-Disallow:
+Disallow: /codelabs/*/access/
 Sitemap: https://fuzzing.in/sitemap.xml
