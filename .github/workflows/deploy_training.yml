@@ -31,9 +31,14 @@ jobs:
           # Ensure output directory exists
           mkdir -p codelabs/Practical_Fuzzing/access
           
-          # Inject <base> tag to fix relative paths since we are moving the file to a subfolder
-          # We place it right after <head>
-          sed 's|<head>|<head><base href="../">|' private-source/index.html > private-source/index_fixed.html
+          # Fix relative paths by replacing them in the source before encryption
+          # 1. Update paths to global assets (elements, styles, etc.)
+          # 2. Update paths to local images
+          sed -e 's|href="../../|href="../../../|g' \
+              -e 's|src="../../|src="../../../|g' \
+              -e 's|src="img/|src="../img/|g' \
+              -e 's|href="img/|href="../img/|g' \
+              private-source/index.html > private-source/index_fixed.html
           
           # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)
           npx staticrypt private-source/index_fixed.html -p "$PAYMENT_ID" -d codelabs/Practical_Fuzzing/access --short -c false
