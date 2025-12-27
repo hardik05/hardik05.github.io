@@ -31,11 +31,15 @@ jobs:
           # Ensure output directory exists
           mkdir -p codelabs/Practical_Fuzzing/access
           
+          # Inject <base> tag to fix relative paths since we are moving the file to a subfolder
+          # We place it right after <head>
+          sed 's|<head>|<head><base href="../">|' private-source/index.html > private-source/index_fixed.html
+          
           # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)
-          npx staticrypt private-source/index.html -p "$PAYMENT_ID" -d codelabs/Practical_Fuzzing/access --short -c false
+          npx staticrypt private-source/index_fixed.html -p "$PAYMENT_ID" -d codelabs/Practical_Fuzzing/access --short -c false
           
           # Rename the output file to the payment ID
-          mv codelabs/Practical_Fuzzing/access/index.html "codelabs/Practical_Fuzzing/access/$PAYMENT_ID.html"
+          mv codelabs/Practical_Fuzzing/access/index_fixed.html "codelabs/Practical_Fuzzing/access/$PAYMENT_ID.html"
 
       - name: Commit and Push
         run: |
