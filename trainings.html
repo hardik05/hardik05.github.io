@@ -119,12 +119,16 @@
                         <div class="flex flex-wrap gap-4 mb-6">
                             <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm"><i class="far fa-clock mr-2"></i> 3495 Minutes</span>
                             <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm"><i class="fas fa-desktop mr-2"></i> Linux, Windows</span>
+                            <span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-sm font-bold"><i class="fas fa-tag mr-2"></i> ₹9,999</span>
                         </div>
                         <div class="flex flex-wrap gap-4">
                             <a href="training-agenda.html" class="inline-flex items-center px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-lg">
                                 <i class="fas fa-list-alt mr-2"></i> View Agenda
                             </a>
-                            <a href="codelabs/Practical_Fuzzing/index.html" class="inline-flex items-center px-6 py-3 bg-amber-600 rounded-lg text-white font-bold hover:bg-amber-500 transition shadow-lg">
+                            <a href="https://rzp.io/rzp/jaErf9Jt" class="inline-flex items-center px-6 py-3 bg-emerald-600 rounded-lg text-white font-bold hover:bg-emerald-500 transition shadow-lg">
+                                <i class="fas fa-shopping-cart mr-2"></i> Buy Access
+                            </a>
+                            <a href="access.html" class="inline-flex items-center px-6 py-3 bg-amber-600 rounded-lg text-white font-bold hover:bg-amber-500 transition shadow-lg">
                                 Start Learning Now <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -329,8 +333,9 @@
                 duration: 3495,
                 date: "2024-10-20",
                 platforms: ["linux", "windows"],
-                link: "codelabs/Practical_Fuzzing/index.html",
+                link: "access.html",
                 agendaLink: "training-agenda.html",
+                buyLink: "https://rzp.io/rzp/jaErf9Jt",
                 isFeatured: true,
                 whoShouldAttend: [
                     "Security Professionals",
@@ -431,6 +436,7 @@
                         <div class="flex flex-wrap gap-4 items-center text-gray-500 text-sm mt-4 flex-grow">
                             <span class="bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1"><i class="far fa-clock"></i> ${w.duration} Minutes</span>
                             <span class="bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1"><i class="fas fa-calendar-alt"></i> Updated ${new Date(w.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                            ${isPaid ? `<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full font-bold">₹9,999</span>` : ''}
                         </div>
                         <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                             <div class="flex items-center gap-3">
@@ -446,6 +452,7 @@
                             </div>
                             <div class="flex gap-2">
                                 ${w.agendaLink ? `<a href="${w.agendaLink}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition">Agenda</a>` : ''}
+                                ${w.buyLink ? `<a href="${w.buyLink}" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-500 transition"><i class="fas fa-shopping-cart mr-2"></i> Buy</a>` : ''}
                                 <a href="${w.link}" class="inline-flex items-center px-4 py-2 ${btnClass} rounded-lg text-white font-semibold transition">Start <i class="fas fa-arrow-right ml-2"></i></a>
                             </div>
                         </div>

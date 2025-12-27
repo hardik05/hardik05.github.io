@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Training | Fuzzing.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-6 text-center">
+
+    <div class="max-w-md w-full bg-gray-800 p-8 rounded-2xl shadow-2xl border border-gray-700">
+        <div class="mb-8">
+            <div class="w-20 h-20 bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-emerald-500/30">
+                <i class="fas fa-unlock-alt text-emerald-500 text-3xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold">Training Access</h1>
+            <p class="text-gray-400 mt-2">Enter your Razorpay Payment ID to start learning</p>
+        </div>
+
+        <form id="access-form" class="space-y-6">
+            <div class="text-left">
+                <label for="license-key" class="block text-sm font-medium text-gray-400 mb-2">Payment ID (pay_...)</label>
+                <input type="text" id="license-key" placeholder="pay_xxxxxxxxxxxxxx" 
+                    class="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition"
+                    required>
+                <p class="text-xs text-gray-500 mt-2 italic">
+                    <i class="fas fa-info-circle mr-1"></i> Check your Razorpay email receipt for this ID.
+                </p>
+            </div>
+            
+            <button type="submit" id="submit-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-lg transition shadow-lg flex items-center justify-center gap-2">
+                Unlock Training <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div id="error-msg" class="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm hidden">
+            <i class="fas fa-exclamation-circle mr-2"></i> Access not found. Note: It may take 1-2 minutes for your access to be prepared after payment.
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-gray-700">
+            <p class="text-gray-500 text-sm">Don't have access?</p>
+            <a href="trainings.html" class="text-emerald-500 hover:text-emerald-400 font-semibold text-sm mt-1 inline-block">Get Practical Fuzzing for ₹9,999</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('access-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const key = document.getElementById('license-key').value.trim();
+            const errorMsg = document.getElementById('error-msg');
+            const btn = document.getElementById('submit-btn');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Verifying...';
+            errorMsg.classList.add('hidden');
+
+            // The automation creates a file named: codelabs/Practical_Fuzzing/access/pay_XYZ.html
+            const accessUrl = `codelabs/Practical_Fuzzing/access/${key}.html`;
+            
+            fetch(accessUrl, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        // Redirect to the unique file
+                        window.location.href = accessUrl;
+                    } else {
+                        throw new Error('Not found');
+                    }
+                })
+                .catch(() => {
+                    errorMsg.classList.remove('hidden');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Unlock Training <i class="fas fa-arrow-right"></i>';
+                });
+        });
+    </script>
+</body>
+</html>

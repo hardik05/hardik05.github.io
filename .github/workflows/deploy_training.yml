@@ -1,0 +1,43 @@
+name: Deploy Unique Training Page
+
+on:
+  repository_dispatch:
+    types: [license_purchased]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Public Repo
+        uses: actions/checkout@v4
+
+      - name: Checkout Private Source Repo
+        uses: actions/checkout@v4
+        with:
+          repository: hardik05/fuzzing-source
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+          path: private-source
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Encrypt Training Page
+        run: |
+          # The payment ID comes from the webhook payload
+          PAYMENT_ID="${{ github.event.client_payload.payment_id }}"
+          
+          # Ensure output directory exists
+          mkdir -p codelabs/Practical_Fuzzing/access
+          
+          # Run Staticrypt
+          npx staticrypt private-source/index.html -p "$PAYMENT_ID" -o "codelabs/Practical_Fuzzing/access/$PAYMENT_ID.html" --short
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "Fuzzing-in Bot"
+          git config --global user.email "bot@fuzzing.in"
+          git add codelabs/Practical_Fuzzing/access/
+          git commit -m "New training access created for license: ${{ github.event.client_payload.license_key }}"
+          git push
