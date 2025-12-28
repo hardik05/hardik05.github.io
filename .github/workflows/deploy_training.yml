@@ -12,9 +12,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Mask Sensitive Data
+        env:
+          PAYMENT_ID: ${{ github.event.client_payload.payment_id }}
+          LICENSE_KEY: ${{ github.event.client_payload.license_key }}
         run: |
-          echo "::add-mask::${{ github.event.client_payload.payment_id }}"
-          echo "::add-mask::${{ github.event.client_payload.license_key }}"
+          echo "::add-mask::$PAYMENT_ID"
+          echo "::add-mask::$LICENSE_KEY"
 
       - name: Checkout Private Source Repo
         uses: actions/checkout@v4
@@ -29,9 +32,11 @@ jobs:
           node-version: '20'
 
       - name: Encrypt Training Page
+        env:
+          PAYMENT_ID: ${{ github.event.client_payload.payment_id }}
+          SALT: ${{ secrets.TRAINING_FILENAME_SALT }}
         run: |
-          # The payment ID comes from the webhook payload
-          PAYMENT_ID="${{ github.event.client_payload.payment_id }}"
+          # The payment ID comes from the webhook payload (passed via env var)
           
           # Ensure output directory exists
           mkdir -p codelabs/Practical_Fuzzing/access
@@ -53,7 +58,10 @@ jobs:
           # Generate a deterministic but non-obvious filename from the payment ID
           # We use SHA256 with a salt to ensure the filename doesn't reveal the password
           # and is resistant to precomputed rainbow tables.
-          SALT="fuzzing_is_fun_2025"
+          if [ -z "$SALT" ]; then
+            echo "Error: TRAINING_FILENAME_SALT secret is not set."
+            exit 1
+          fi
           FILENAME=$(echo -n "${PAYMENT_ID}${SALT}" | sha256sum | awk '{print $1}')
           
           # Rename the output file to the hashed filename
