@@ -13,3 +13,5 @@ import_wp.py
 private-source/
 index_fixed.html
 scripts/
+certificates/issued/
+node_modules/
