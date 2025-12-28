@@ -84,6 +84,31 @@
                     <i class="fas fa-rocket"></i>
                     <span>Explore All Workshops</span>
                 </a>
+
+                <!-- Disassembly Visual -->
+                <div class="mt-10 mb-2 relative max-w-2xl mx-auto transform hover:scale-105 transition-transform duration-500 hidden md:block">
+                    <div class="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-20"></div>
+                    <div class="relative bg-gray-900 rounded-lg border border-gray-700 p-4 font-mono text-xs text-left shadow-2xl">
+                        <div class="flex justify-between items-center border-b border-gray-800 pb-2 mb-2">
+                            <div class="flex gap-2">
+                                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                            </div>
+                            <span class="text-gray-500">disassembly_view.asm</span>
+                            <span class="text-[10px] text-red-400 animate-pulse">● Live Analysis</span>
+                        </div>
+                        <div class="grid grid-cols-12 gap-4">
+                            <div class="col-span-2 text-blue-500 opacity-70">0x401000<br>0x401004<br>0x401008<br>0x40100C</div>
+                            <div class="col-span-10 text-gray-300">
+                                <span class="text-purple-400">mov</span>     eax, [ebp+arg_0]<br>
+                                <span class="text-purple-400">add</span>     eax, 0x10<br>
+                                <span class="text-purple-400">push</span>    eax<br>
+                                <span class="text-red-400 bg-red-900/30 px-1 rounded">call    unsafe_memcpy</span> <span class="text-gray-500">// Potential Overflow detected</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="mt-12 text-gray-500 font-semibold uppercase tracking-widest text-sm">
                     Featured at Leading Security Conferences
