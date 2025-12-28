@@ -183,6 +183,123 @@
             </div>
         </section>
 
+        <!-- Choose Your Path & Comparison -->
+        <section class="mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">Choose Your Fuzzing Path</h2>
+                <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+                    Whether you are just starting out, focusing specifically on Linux internals, or looking for a comprehensive cross-platform mastery, we have a training module tailored for you.
+                </p>
+            </div>
+
+            <!-- Path Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <!-- Free Path -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border-t-4 border-gray-400 hover:-translate-y-1 transition-transform duration-300">
+                    <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-seedling text-3xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-3">Free Workshops</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6">
+                        Perfect for beginners. Dip your toes into vulnerability discovery with our conference talks and introductory labs.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-green-500 mr-2"></i> Basic Concepts
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-green-500 mr-2"></i> Simple Targets
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mastering Linux Path -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border-t-4 border-blue-500 hover:-translate-y-1 transition-transform duration-300 relative">
+                    <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fab fa-linux text-3xl text-blue-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-3">Mastering Linux Fuzzing</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6">
+                        Deep dive into Linux User-mode, Kernel, and IoT. Ideal for researchers focused purely on the Linux ecosystem.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-blue-500 mr-2"></i> Advanced Linux
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-blue-500 mr-2"></i> Kernel & IoT
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practical Fuzzing Path -->
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-amber-500 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">RECOMMENDED</div>
+                    <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-6 mx-auto">
+                        <i class="fas fa-layer-group text-3xl text-amber-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-3">Practical Fuzzing</h3>
+                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6">
+                        The complete package. Master modern fuzzing techniques across both Linux and Windows platforms.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-amber-500 mr-2"></i> Linux + Windows
+                        </div>
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-amber-500 mr-2"></i> Comprehensive
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table -->
+            <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-gray-50 dark:bg-gray-900/50 text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700">
+                            <th class="p-4 font-bold">Feature</th>
+                            <th class="p-4 font-semibold text-center text-gray-500">Free Workshops</th>
+                            <th class="p-4 font-bold text-center text-blue-500">Mastering Linux</th>
+                            <th class="p-4 font-bold text-center text-amber-600">Practical Fuzzing</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-sm text-gray-600 dark:text-gray-300">
+                        <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                            <td class="p-4 font-medium">OS Platforms</td>
+                            <td class="p-4 text-center">Linux (Basic)</td>
+                            <td class="p-4 text-center">Linux (Adv)</td>
+                            <td class="p-4 text-center font-bold text-emerald-500">Linux + Windows</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                            <td class="p-4 font-medium">Target Scope</td>
+                            <td class="p-4 text-center">Simple Apps</td>
+                            <td class="p-4 text-center">Kernel, IoT, Network</td>
+                            <td class="p-4 text-center">File Formats, Network, GUI</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                            <td class="p-4 font-medium">Content Hours</td>
+                            <td class="p-4 text-center">~5 Hours</td>
+                            <td class="p-4 text-center">~30 Hours</td>
+                            <td class="p-4 text-center font-bold">~58 Hours</td>
+                        </tr>
+                        <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                            <td class="p-4 font-medium">Support</td>
+                            <td class="p-4 text-center text-gray-400">-</td>
+                            <td class="p-4 text-center"><i class="fas fa-envelope text-blue-400"></i> Email</td>
+                            <td class="p-4 text-center"><i class="fas fa-star text-amber-500"></i> Priority</td>
+                        </tr>
+                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition">
+                            <td class="p-4 font-medium">Price</td>
+                            <td class="p-4 text-center font-bold">Free</td>
+                            <td class="p-4 text-center font-bold text-gray-900 dark:text-white">₹4,999</td>
+                            <td class="p-4 text-center font-bold text-gray-900 dark:text-white">₹9,999</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mt-8">
 
             <aside class="md:col-span-1">
