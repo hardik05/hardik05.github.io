@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate Verification | Fuzzing.in</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white min-h-screen flex flex-col transition-colors duration-300">
+
+    <div class="flex-grow flex items-center justify-center p-6">
+        <div class="max-w-lg w-full bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
+            
+            <div class="bg-gray-900 p-6 text-center">
+                <img src="images/logo.jpg" alt="Logo" class="h-16 w-16 rounded-full mx-auto border-4 border-gray-800 mb-3">
+                <h1 class="text-xl font-bold text-white tracking-widest">FUZZING.IN</h1>
+                <p class="text-xs text-gray-400 uppercase tracking-widest mt-1">Credential Verification</p>
+            </div>
+
+            <div class="p-8">
+                <!-- Search Form -->
+                <div id="search-section" class="mb-6">
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Certificate ID</label>
+                    <div class="flex gap-2">
+                        <input type="text" id="cert-input" placeholder="e.g. PF-2025-001" class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none uppercase">
+                        <button onclick="verifyCert()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-bold transition">Verify</button>
+                    </div>
+                </div>
+
+                <!-- Result Section (Hidden by default) -->
+                <div id="result-section" class="hidden text-center">
+                    <div id="status-icon" class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 bg-green-100 text-green-500">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    
+                    <h2 id="status-text" class="text-2xl font-bold mb-1 text-green-600">Verified Credential</h2>
+                    <p class="text-sm text-gray-500 mb-6">This certificate is valid and issued by Fuzzing.in</p>
+
+                    <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 text-left space-y-3 border border-gray-200 dark:border-gray-700">
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase font-bold">Issued To</p>
+                            <p id="cert-name" class="text-lg font-bold text-gray-900 dark:text-white">Student Name</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase font-bold">Training Course</p>
+                            <p id="cert-course" class="text-gray-800 dark:text-gray-200">Practical Fuzzing Masterclass</p>
+                        </div>
+                        <div class="flex justify-between">
+                            <div>
+                                <p class="text-xs text-gray-500 uppercase font-bold">Date Issued</p>
+                                <p id="cert-date" class="text-gray-800 dark:text-gray-200">Jan 20, 2025</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500 uppercase font-bold">Cert ID</p>
+                                <p id="cert-id" class="font-mono text-gray-800 dark:text-gray-200">PF-2025-001</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="resetSearch()" class="mt-6 text-sm text-gray-500 hover:text-blue-500 underline">Verify another certificate</button>
+                </div>
+
+                <!-- Error Section -->
+                <div id="error-section" class="hidden text-center py-4">
+                    <div class="w-16 h-16 mx-auto rounded-full flex items-center justify-center text-3xl mb-4 bg-red-100 text-red-500">
+                        <i class="fas fa-times"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-red-500 mb-2">Invalid Certificate</h2>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm">We could not find a certificate with that ID.</p>
+                    <button onclick="resetSearch()" class="mt-6 text-sm text-gray-500 hover:text-blue-500 underline">Try again</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load Database
+        let certDB = [];
+        fetch('certificates/db.json')
+            .then(res => res.json())
+            .then(data => certDB = data)
+            .catch(err => console.error("Could not load certificate DB", err));
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlId = urlParams.get('id');
+
+        if (urlId) {
+            document.getElementById('cert-input').value = urlId;
+            // Slight delay to ensure DB is loaded
+            setTimeout(() => verifyCert(), 500);
+        }
+
+        function verifyCert() {
+            const inputId = document.getElementById('cert-input').value.trim();
+            if (!inputId) return;
+
+            const record = certDB.find(c => c.id.toLowerCase() === inputId.toLowerCase());
+            
+            document.getElementById('search-section').classList.add('hidden');
+            
+            if (record) {
+                document.getElementById('result-section').classList.remove('hidden');
+                document.getElementById('error-section').classList.add('hidden');
+                
+                document.getElementById('cert-name').textContent = record.name;
+                document.getElementById('cert-course').textContent = record.course;
+                document.getElementById('cert-date').textContent = record.date;
+                document.getElementById('cert-id').textContent = record.id;
+            } else {
+                document.getElementById('result-section').classList.add('hidden');
+                document.getElementById('error-section').classList.remove('hidden');
+            }
+        }
+
+        function resetSearch() {
+            document.getElementById('search-section').classList.remove('hidden');
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('error-section').classList.add('hidden');
+            document.getElementById('cert-input').value = '';
+            // Clear URL param without refresh
+            window.history.pushState({}, document.title, window.location.pathname);
+        }
+    </script>
+</body>
+</html>
