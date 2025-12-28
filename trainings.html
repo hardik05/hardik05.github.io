@@ -195,60 +195,89 @@
             <!-- Path Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                 <!-- Free Path -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border-t-4 border-gray-400 hover:-translate-y-1 transition-transform duration-300">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border-t-4 border-gray-400 hover:-translate-y-1 transition-transform duration-300 flex flex-col">
                     <div class="w-16 h-16 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-6 mx-auto">
                         <i class="fas fa-seedling text-3xl text-gray-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-3">Free Workshops</h3>
-                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6">
-                        Perfect for beginners. Dip your toes into vulnerability discovery with our conference talks and introductory labs.
+                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6 flex-grow">
+                        Perfect for beginners. Dip your toes into vulnerability discovery with our conference talks and introductory labs. 
+                        Learn the basics of sanitizers, simple fuzzing loops, and crash triage without spending a dime.
                     </p>
-                    <div class="space-y-2">
+                    <div class="space-y-2 mb-8">
                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
                             <i class="fas fa-check text-green-500 mr-2"></i> Basic Concepts
                         </div>
                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
                             <i class="fas fa-check text-green-500 mr-2"></i> Simple Targets
                         </div>
+                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-green-500 mr-2"></i> Conference Talks
+                        </div>
                     </div>
+                     <a href="codelabs/finding_security_vulnerabilities/index.html?index=..%2F..index" class="block w-full text-center px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                        Start Learning Free
+                    </a>
                 </div>
 
                 <!-- Mastering Linux Path -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border-t-4 border-blue-500 hover:-translate-y-1 transition-transform duration-300 relative">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border-t-4 border-blue-500 hover:-translate-y-1 transition-transform duration-300 relative flex flex-col">
                     <div class="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-6 mx-auto">
                         <i class="fab fa-linux text-3xl text-blue-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-3">Mastering Linux Fuzzing</h3>
-                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6">
-                        Deep dive into Linux User-mode, Kernel, and IoT. Ideal for researchers focused purely on the Linux ecosystem.
+                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6 flex-grow">
+                        Deep dive into Linux User-mode, Kernel, and IoT. This specialized track is ideal for researchers focused purely on the Linux ecosystem, covering advanced topics like custom mutators, Syzkaller for Kernel fuzzing, and firmware emulation.
                     </p>
-                    <div class="space-y-2">
+                    <div class="space-y-2 mb-8">
                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                            <i class="fas fa-check text-blue-500 mr-2"></i> Advanced Linux
+                            <i class="fas fa-check text-blue-500 mr-2"></i> Advanced Linux User-mode
                         </div>
                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                            <i class="fas fa-check text-blue-500 mr-2"></i> Kernel & IoT
+                            <i class="fas fa-check text-blue-500 mr-2"></i> Linux Kernel (Syzkaller)
                         </div>
+                        <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-blue-500 mr-2"></i> IoT Firmware Analysis
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="mastering-fuzzing-agenda.html" class="flex-1 text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            View Agenda
+                        </a>
+                        <a href="https://rzp.io/rzp/hLzQlxJ" class="flex-1 text-center px-4 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-500 transition shadow-md">
+                            Buy for ₹4,999
+                        </a>
                     </div>
                 </div>
 
                 <!-- Practical Fuzzing Path -->
-                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-amber-500 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden">
+                <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl border-t-4 border-amber-500 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden flex flex-col">
                     <div class="absolute top-0 right-0 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">RECOMMENDED</div>
                     <div class="w-16 h-16 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-6 mx-auto">
                         <i class="fas fa-layer-group text-3xl text-amber-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-center text-gray-900 dark:text-white mb-3">Practical Fuzzing</h3>
-                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6">
-                        The complete package. Master modern fuzzing techniques across both Linux and Windows platforms.
+                    <p class="text-gray-600 dark:text-gray-400 text-center text-sm mb-6 flex-grow">
+                        The complete package. Master modern fuzzing techniques across both Linux and Windows platforms. From file formats to network protocols and GUI applications, this comprehensive course covers it all. Includes everything in the Linux track plus dedicated Windows fuzzing modules.
                     </p>
-                    <div class="space-y-2">
+                    <div class="space-y-2 mb-8">
                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                            <i class="fas fa-check text-amber-500 mr-2"></i> Linux + Windows
+                            <i class="fas fa-check text-amber-500 mr-2"></i> Everything in Linux Track
                         </div>
                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                            <i class="fas fa-check text-amber-500 mr-2"></i> Comprehensive
+                            <i class="fas fa-check text-amber-500 mr-2"></i> Windows WinAFL & DynamoRIO
                         </div>
+                         <div class="flex items-center text-sm text-gray-600 dark:text-gray-400">
+                            <i class="fas fa-check text-amber-500 mr-2"></i> Network & GUI Fuzzing
+                        </div>
+                    </div>
+                    <div class="flex gap-2">
+                        <a href="training-agenda.html" class="flex-1 text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                            View Agenda
+                        </a>
+                        <a href="https://rzp.io/rzp/jaErf9Jt" class="flex-1 text-center px-4 py-2 bg-amber-600 text-white rounded-lg font-bold hover:bg-amber-500 transition shadow-md">
+                            Buy for ₹9,999
+                        </a>
                     </div>
                 </div>
             </div>
