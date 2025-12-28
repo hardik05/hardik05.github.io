@@ -56,14 +56,12 @@ jobs:
           # 499900 paise = ₹4,999 -> Mastering Linux Fuzzing
           # 999900 paise = ₹9,999 -> Practical Fuzzing
           
-          # TEST MODE: 10000 paise (₹100) -> Practical Fuzzing
-          
           if [ "$AMOUNT" == "499900" ] || [ "$AMOUNT" == "4999" ]; then
-             echo "Detected Course: Mastering Linux Fuzzing"
-             echo "COURSE_ID=mastering_linux" >> $GITHUB_ENV
-          elif [ "$AMOUNT" == "10000" ] || [ "$AMOUNT" == "100" ]; then
-             echo "Detected Course: Practical Fuzzing (TEST)"
-             echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
+            echo "Detected Course: Mastering Linux Fuzzing"
+            echo "COURSE_ID=mastering_linux" >> $GITHUB_ENV
+          elif [ "$AMOUNT" == "999900" ] || [ "$AMOUNT" == "9999" ]; then
+            echo "Detected Course: Practical Fuzzing"
+            echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
           else
             # Fallback to payload or default if amount doesn't match known prices
             PAYLOAD_COURSE=$(jq -r '.client_payload.course_id // "practical_fuzzing"' $GITHUB_EVENT_PATH)
