@@ -36,26 +36,30 @@ jobs:
           RAZORPAY_KEY_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
         run: |
           PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
+          PAYLOAD_AMOUNT=$(jq -r '.client_payload.amount // empty' $GITHUB_EVENT_PATH)
           
-          # Fetch payment details from Razorpay
-          # -u user:password for Basic Auth
-          RESPONSE=$(curl -s -u "${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}" \
-            "https://api.razorpay.com/v1/payments/${PAYMENT_ID}")
+          # Initialize AMOUNT with payload amount if available
+          AMOUNT=$PAYLOAD_AMOUNT
+
+          # If amount not in payload and PAYMENT_ID looks like a payment ID (pay_...), fetch from API
+          if [ -z "$AMOUNT" ] && [[ $PAYMENT_ID == pay_* ]]; then
+            echo "Fetching payment details from Razorpay API for $PAYMENT_ID..."
+            RESPONSE=$(curl -s -u "${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}" \
+              "https://api.razorpay.com/v1/payments/${PAYMENT_ID}")
+            AMOUNT=$(echo $RESPONSE | jq -r '.amount // empty')
+          fi
           
-          # Extract amount (in paise)
-          AMOUNT=$(echo $RESPONSE | jq -r '.amount')
-          
-          echo "Payment ID: $PAYMENT_ID"
-          echo "Amount Paid: $AMOUNT"
+          echo "Payment/Order ID: $PAYMENT_ID"
+          echo "Detected Amount: $AMOUNT"
           
           # Determine Course ID based on Amount
           # 499900 paise = ₹4,999 -> Mastering Linux Fuzzing
           # 999900 paise = ₹9,999 -> Practical Fuzzing
           
-          if [ "$AMOUNT" == "499900" ]; then
+          if [ "$AMOUNT" == "499900" ] || [ "$AMOUNT" == "4999" ]; then
             echo "Detected Course: Mastering Linux Fuzzing"
             echo "COURSE_ID=mastering_linux" >> $GITHUB_ENV
-          elif [ "$AMOUNT" == "999900" ]; then
+          elif [ "$AMOUNT" == "999900" ] || [ "$AMOUNT" == "9999" ]; then
             echo "Detected Course: Practical Fuzzing"
             echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
           else
