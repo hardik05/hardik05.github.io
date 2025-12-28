@@ -113,6 +113,120 @@
             </div>
         </section>
 
+        <section class="p-8 md:p-16 relative overflow-hidden">
+            <!-- Background Decoration -->
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-gray-800 dark:to-slate-800 opacity-50 -z-10"></div>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-12">
+                    <!-- Text Content -->
+                    <div class="flex-1 text-center md:text-left">
+                        <div class="inline-block px-4 py-1.5 bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 rounded-full text-sm font-bold uppercase tracking-wider mb-6">
+                            <i class="fas fa-star mr-2"></i> Most Popular Course
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-6 leading-tight">
+                            Practical Fuzzing <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400">Masterclass</span>
+                        </h2>
+                        <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                            Stop guessing. Start finding. A comprehensive, 100% hands-on deep dive into modern fuzzing techniques. From setting up AFL++ to triaging real-world crashes.
+                        </p>
+                        
+                        <!-- Feature Grid -->
+                        <div class="grid grid-cols-2 gap-6 mb-8">
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-blue-500/10 rounded-lg text-blue-600 dark:text-blue-400">
+                                    <i class="fas fa-laptop-code text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h4 class="font-bold text-gray-900 dark:text-white">Hands-on Labs</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Dockerized environments</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-emerald-500/10 rounded-lg text-emerald-600 dark:text-emerald-400">
+                                    <i class="fas fa-bug text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h4 class="font-bold text-gray-900 dark:text-white">Real Targets</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Fuzz actual software</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-purple-500/10 rounded-lg text-purple-600 dark:text-purple-400">
+                                    <i class="fas fa-network-wired text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h4 class="font-bold text-gray-900 dark:text-white">Protocol Fuzzing</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Network & structure aware</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-amber-500/10 rounded-lg text-amber-600 dark:text-amber-400">
+                                    <i class="fas fa-certificate text-xl"></i>
+                                </div>
+                                <div class="text-left">
+                                    <h4 class="font-bold text-gray-900 dark:text-white">Certification</h4>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">Earn your credential</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                            <a href="trainings.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl hover:shadow-lg hover:shadow-blue-500/30 transform hover:-translate-y-1 transition-all duration-300">
+                                Start Learning Now
+                                <i class="fas fa-arrow-right ml-2"></i>
+                            </a>
+                            <a href="training-agenda.html" class="inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-xl hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300">
+                                View Syllabus
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Visual/Image Side -->
+                    <div class="flex-1 relative hidden md:block">
+                        <div class="relative z-10 bg-gray-900 rounded-2xl p-6 shadow-2xl border border-gray-700 transform rotate-2 hover:rotate-0 transition-transform duration-500">
+                            <!-- Fake Terminal Header -->
+                            <div class="flex items-center gap-2 mb-4">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                <span class="text-xs text-gray-500 font-mono ml-2">user@fuzzing-lab:~</span>
+                            </div>
+                            <!-- Fake Terminal Content -->
+                            <div class="font-mono text-sm text-green-400 space-y-2">
+                                <p><span class="text-blue-400">$</span> afl-fuzz -i input/ -o output/ ./target</p>
+                                <p class="text-gray-400">[+] Instrumented target found</p>
+                                <p class="text-gray-400">[+] Maps density: 12.4%</p>
+                                <p class="text-gray-400">[+] Reliability: 100%</p>
+                                <p class="border-b border-gray-700 pb-2 mb-2"></p>
+                                <div class="grid grid-cols-2 gap-4 text-gray-300">
+                                    <div>
+                                        <div class="text-xs text-gray-500">run time</div>
+                                        <div>2 days, 4 hrs</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-500">cycles done</div>
+                                        <div class="text-purple-400">451</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-500">total crashes</div>
+                                        <div class="text-red-500 font-bold animate-pulse">12 unique</div>
+                                    </div>
+                                    <div>
+                                        <div class="text-xs text-gray-500">exec speed</div>
+                                        <div>4,200/sec</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Decorative Blob -->
+                        <div class="absolute -top-10 -right-10 w-72 h-72 bg-blue-500/30 rounded-full blur-3xl -z-10"></div>
+                        <div class="absolute -bottom-10 -left-10 w-72 h-72 bg-purple-500/30 rounded-full blur-3xl -z-10"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="p-8 md:p-16">
             <h3 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">YOUR PATH TO VULNERABILITY DISCOVERY</h3>
 
