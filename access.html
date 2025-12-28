@@ -67,7 +67,7 @@
             errorMsg.classList.add('hidden');
 
             // The automation creates a file named: sha256(pay_XYZ + salt).html
-            const salt = "fuzzing_is_fun_2025";
+            const salt = "7d4f9b2c3a5e1f680d4e92a1c7b3f5d8";
             const hash = await sha256(key + salt);
             const accessUrl = `codelabs/Practical_Fuzzing/access/${hash}.html`;
             
