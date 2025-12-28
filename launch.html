@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Control | Practical Fuzzing Masterclass</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .checkbox:checked + div { background-color: #10B981; border-color: #10B981; }
+        .checkbox:checked + div:after { content: '\2714'; display: block; text-align: center; color: white; font-size: 14px; }
+        .task-item.completed { opacity: 0.5; text-decoration: line-through; }
+    </style>
+</head>
+<body class="bg-gray-900 text-white min-h-screen p-6">
+
+    <div class="max-w-3xl mx-auto">
+        
+        <!-- Header -->
+        <div class="flex justify-between items-end mb-8 border-b border-gray-800 pb-4">
+            <div>
+                <p class="text-emerald-500 mono text-sm mb-1">> LAUNCH_SEQUENCE_INITIATED</p>
+                <h1 class="text-3xl font-black tracking-tight">Mission Control</h1>
+                <p class="text-gray-400 text-sm">Practical Fuzzing Masterclass Launch Plan</p>
+            </div>
+            <div class="text-right">
+                <div class="text-4xl font-bold mono" id="progress-text">0%</div>
+                <div class="text-xs text-gray-500 uppercase tracking-widest">Readiness</div>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full bg-gray-800 h-2 rounded-full mb-10 overflow-hidden">
+            <div id="progress-bar" class="bg-emerald-500 h-full transition-all duration-500 ease-out" style="width: 0%"></div>
+        </div>
+
+        <!-- Phase 1 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-blue-400 mb-4 flex items-center gap-2">
+                <i class="fas fa-flask"></i> Phase 1: Final Polish
+            </h2>
+            <div class="bg-gray-800 rounded-xl p-1 space-y-1">
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Verify Payment Flow (Real ₹10 txn)</span>
+                </label>
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Confirm Private Content Access (VM Links working?)</span>
+                </label>
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Test Certificate Generation Script</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Phase 2 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-amber-400 mb-4 flex items-center gap-2">
+                <i class="fas fa-bullhorn"></i> Phase 2: Soft Launch (Tomorrow)
+            </h2>
+            <div class="bg-gray-800 rounded-xl p-1 space-y-1">
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Post "Teaser" on Twitter/X (Screenshot of Stats)</span>
+                </label>
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Update LinkedIn Bio / Featured Section</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Phase 3 -->
+        <div class="mb-8">
+            <h2 class="text-xl font-bold text-red-400 mb-4 flex items-center gap-2">
+                <i class="fas fa-rocket"></i> Phase 3: Hard Launch (Next Week)
+            </h2>
+            <div class="bg-gray-800 rounded-xl p-1 space-y-1">
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Publish Announcement Blog Post</span>
+                </label>
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Send LinkedIn Blast (Long-form story)</span>
+                </label>
+                <label class="flex items-center p-4 hover:bg-gray-700/50 rounded-lg cursor-pointer transition">
+                    <input type="checkbox" class="checkbox hidden" onchange="toggleTask(this)">
+                    <div class="w-6 h-6 border-2 border-gray-500 rounded mr-4 flex-shrink-0"></div>
+                    <span class="text-gray-300 select-none">Post YouTube Course Trailer</span>
+                </label>
+            </div>
+        </div>
+
+        <button onclick="resetProgress()" class="text-xs text-gray-600 hover:text-gray-400 underline">Reset Progress</button>
+
+    </div>
+
+    <script>
+        // Load saved state
+        document.addEventListener('DOMContentLoaded', () => {
+            const checkboxes = document.querySelectorAll('.checkbox');
+            checkboxes.forEach((cb, index) => {
+                const savedState = localStorage.getItem(`launch_task_${index}`);
+                if (savedState === 'true') {
+                    cb.checked = true;
+                    cb.parentElement.querySelector('span').classList.add('completed');
+                }
+            });
+            updateProgress();
+        });
+
+        function toggleTask(checkbox) {
+            const span = checkbox.parentElement.querySelector('span');
+            if (checkbox.checked) {
+                span.classList.add('completed');
+            } else {
+                span.classList.remove('completed');
+            }
+            
+            // Save state
+            const checkboxes = document.querySelectorAll('.checkbox');
+            checkboxes.forEach((cb, index) => {
+                localStorage.setItem(`launch_task_${index}`, cb.checked);
+            });
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const total = document.querySelectorAll('.checkbox').length;
+            const checked = document.querySelectorAll('.checkbox:checked').length;
+            const percentage = Math.round((checked / total) * 100);
+
+            document.getElementById('progress-text').innerText = percentage + '%';
+            document.getElementById('progress-bar').style.width = percentage + '%';
+
+            if (percentage === 100) {
+                launchConfetti();
+            }
+        }
+
+        function launchConfetti() {
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    return clearInterval(interval);
+                }
+
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        function resetProgress() {
+            if(confirm('Reset all progress?')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>
