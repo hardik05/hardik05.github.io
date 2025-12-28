@@ -12,10 +12,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Mask Sensitive Data
-        env:
-          PAYMENT_ID: ${{ github.event.client_payload.payment_id }}
-          LICENSE_KEY: ${{ github.event.client_payload.license_key }}
         run: |
+          PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
+          LICENSE_KEY=$(jq -r '.client_payload.license_key' $GITHUB_EVENT_PATH)
           echo "::add-mask::$PAYMENT_ID"
           echo "::add-mask::$LICENSE_KEY"
 
@@ -33,10 +32,10 @@ jobs:
 
       - name: Encrypt Training Page
         env:
-          PAYMENT_ID: ${{ github.event.client_payload.payment_id }}
           SALT: ${{ secrets.TRAINING_FILENAME_SALT }}
         run: |
-          # The payment ID comes from the webhook payload (passed via env var)
+          # The payment ID comes from the webhook payload
+          PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
           
           # Ensure output directory exists
           mkdir -p codelabs/Practical_Fuzzing/access
