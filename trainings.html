@@ -357,8 +357,10 @@
                 duration: 1850,
                 date: "2023-06-06",
                 platforms: ["linux", "network", "kernel", "iot"],
-                link: "codelabs/Mastering_fuzzing_TyphoonCon23/index.html",
+                link: "access-mastering.html",
                 agendaLink: "mastering-fuzzing-agenda.html",
+                buyLink: "https://rzp.io/l/PLACEHOLDER",
+                price: 4999,
                 isFeatured: false,
                 whoShouldAttend: [
                     "Security Engineers & Researchers",
@@ -377,6 +379,7 @@
                 link: "access.html",
                 agendaLink: "training-agenda.html",
                 buyLink: "https://rzp.io/rzp/jaErf9Jt",
+                price: 9999,
                 isFeatured: true,
                 whoShouldAttend: [
                     "Security Professionals",
@@ -477,7 +480,7 @@
                         <div class="flex flex-wrap gap-4 items-center text-gray-500 text-sm mt-4 flex-grow">
                             <span class="bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1"><i class="far fa-clock"></i> ${w.duration} Minutes</span>
                             <span class="bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1"><i class="fas fa-calendar-alt"></i> Updated ${new Date(w.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                            ${isPaid ? `<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full font-bold">₹9,999</span>` : ''}
+                            ${isPaid ? `<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full font-bold">₹${w.price.toLocaleString('en-IN')}</span>` : ''}
                         </div>
                         <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                             <div class="flex items-center gap-3">

@@ -36,11 +36,34 @@ jobs:
         run: |
           # The payment ID comes from the webhook payload
           PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
+          COURSE_ID=$(jq -r '.client_payload.course_id // "practical_fuzzing"' $GITHUB_EVENT_PATH)
+          
+          echo "Processing course: $COURSE_ID"
+
+          if [ "$COURSE_ID" == "mastering_linux" ]; then
+            OUTPUT_DIR="codelabs/Mastering_fuzzing_TyphoonCon23/access"
+            # TODO: Verify the correct path in private-source repo for this course
+            SOURCE_FILE="private-source/mastering/index.html" 
+            if [ ! -f "$SOURCE_FILE" ]; then
+                echo "Warning: Source file $SOURCE_FILE not found. Checking root index..."
+                if [ -f "private-source/index.html" ]; then
+                    echo "Using private-source/index.html as fallback."
+                    SOURCE_FILE="private-source/index.html"
+                else
+                    echo "Error: No source file found."
+                    exit 1
+                fi
+            fi
+          else
+            OUTPUT_DIR="codelabs/Practical_Fuzzing/access"
+            SOURCE_FILE="private-source/index.html"
+          fi
           
           # Ensure output directory exists
-          mkdir -p codelabs/Practical_Fuzzing/access
+          mkdir -p "$OUTPUT_DIR"
           
           # Fix relative paths by replacing them in the source before encryption
+          # Note: Both courses are at codelabs/COURSE_NAME/access, so depth is same (../../../)
           sed -e 's|href="../../|href="../../../|g' \
               -e 's|src="../../|src="../../../|g' \
               -e "s|href='../../|href='../../../|g" \
@@ -49,10 +72,10 @@ jobs:
               -e 's|href="img/|href="../img/|g' \
               -e "s|src='img/|src='../img/|g" \
               -e "s|href='img/|href='../img/|g" \
-              private-source/index.html > private-source/index_fixed.html
+              "$SOURCE_FILE" > private-source/index_fixed.html
           
           # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)
-          npx staticrypt private-source/index_fixed.html -p "$PAYMENT_ID" -d codelabs/Practical_Fuzzing/access --short -c false
+          npx staticrypt private-source/index_fixed.html -p "$PAYMENT_ID" -d "$OUTPUT_DIR" --short -c false
           
           # Generate a deterministic but non-obvious filename from the payment ID
           # We use SHA256 with a salt to ensure the filename doesn't reveal the password
@@ -64,12 +87,12 @@ jobs:
           FILENAME=$(echo -n "${PAYMENT_ID}${SALT}" | sha256sum | awk '{print $1}')
           
           # Rename the output file to the hashed filename
-          mv codelabs/Practical_Fuzzing/access/index_fixed.html "codelabs/Practical_Fuzzing/access/$FILENAME.html"
+          mv "$OUTPUT_DIR/index_fixed.html" "$OUTPUT_DIR/$FILENAME.html"
 
       - name: Commit and Push
         run: |
           git config --global user.name "Fuzzing-in Bot"
           git config --global user.email "bot@fuzzing.in"
-          git add codelabs/Practical_Fuzzing/access/
+          git add codelabs/
           git commit -m "Add encrypted training access page"
           git push
