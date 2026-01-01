@@ -122,7 +122,7 @@
                         <div class="flex flex-wrap gap-4 mb-6">
                             <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm"><i class="far fa-clock mr-2"></i> 3495 Minutes</span>
                             <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-3 py-1 rounded-full text-sm"><i class="fas fa-desktop mr-2"></i> Linux, Windows</span>
-                            <span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-sm font-bold"><i class="fas fa-tag mr-2"></i> ₹9,999 (Introductory Price)</span>
+                            <span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-sm font-bold"><i class="fas fa-tag mr-2"></i> ₹14,999 (Standard Access)</span>
                         </div>
                         <div class="flex flex-wrap gap-4">
                             <a href="training-agenda.html" class="inline-flex items-center px-6 py-3 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white font-bold rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition shadow-lg">
@@ -249,9 +249,8 @@
                         </a>
                         <div class="flex-1 flex flex-col">
                             <a href="https://pages.razorpay.com/mfuzzing" class="text-center px-4 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-500 transition shadow-md">
-                                Buy for ₹4,999
+                                Buy for ₹7,999
                             </a>
-                            <span class="text-[10px] text-center text-red-500 font-bold mt-1">Introductory Price (Increasing Soon)</span>
                         </div>
                     </div>
                 </div>
@@ -283,9 +282,8 @@
                         </a>
                         <div class="flex-1 flex flex-col">
                             <a href="https://pages.razorpay.com/pfuzzing" class="text-center px-4 py-2 bg-amber-600 text-white rounded-lg font-bold hover:bg-amber-500 transition shadow-md">
-                                Buy for ₹9,999
+                                Buy for ₹14,999
                             </a>
-                            <span class="text-[10px] text-center text-red-500 font-bold mt-1">Introductory Price (Increasing Soon)</span>
                         </div>
                     </div>
                 </div>
@@ -331,12 +329,12 @@
                             <td class="p-4 font-medium">Price</td>
                             <td class="p-4 text-center font-bold">Free</td>
                             <td class="p-4 text-center">
-                                <span class="font-bold text-gray-900 dark:text-white">₹4,999</span><br>
-                                <span class="text-xs text-red-500 font-bold">Introductory</span>
+                                <span class="font-bold text-gray-900 dark:text-white">₹7,999</span><br>
+                                <span class="text-xs text-emerald-500 font-bold">Standard Access</span>
                             </td>
                             <td class="p-4 text-center">
-                                <span class="font-bold text-gray-900 dark:text-white">₹9,999</span><br>
-                                <span class="text-xs text-red-500 font-bold">Introductory</span>
+                                <span class="font-bold text-gray-900 dark:text-white">₹14,999</span><br>
+                                <span class="text-xs text-emerald-500 font-bold">Standard Access</span>
                             </td>
                         </tr>
                     </tbody>
@@ -506,7 +504,7 @@
                 link: "access-mastering.html",
                 agendaLink: "mastering-fuzzing-agenda.html",
                 buyLink: "https://pages.razorpay.com/mfuzzing",
-                price: 4999,
+                price: 7999,
                 isFeatured: false,
                 whoShouldAttend: [
                     "Security Engineers & Researchers",
@@ -540,7 +538,7 @@
                 link: "access.html",
                 agendaLink: "training-agenda.html",
                 buyLink: "https://pages.razorpay.com/pfuzzing",
-                price: 9999,
+                price: 14999,
                 isFeatured: true,
                 whoShouldAttend: [
                     "Security Professionals",
@@ -641,7 +639,7 @@
                         <div class="flex flex-wrap gap-4 items-center text-gray-500 text-sm mt-4 flex-grow">
                             <span class="bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1"><i class="far fa-clock"></i> ${w.duration} Minutes</span>
                             <span class="bg-gray-100 dark:bg-gray-700 rounded-full px-3 py-1"><i class="fas fa-calendar-alt"></i> Updated ${new Date(w.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
-                            ${isPaid ? `<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full font-bold">₹${w.price.toLocaleString('en-IN')} <span class="text-xs text-red-500 ml-1">(Introductory)</span></span>` : ''}
+                            ${isPaid ? `<span class="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full font-bold">₹${w.price.toLocaleString('en-IN')} <span class="text-xs text-emerald-500 ml-1">(Standard Access)</span></span>` : ''}
                         </div>
                         <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 flex justify-between items-center">
                             <div class="flex items-center gap-3">

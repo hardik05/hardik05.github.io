@@ -53,13 +53,13 @@ jobs:
           echo "Detected Amount: $AMOUNT"
           
           # Determine Course ID based on Amount
-          # 499900 paise = ₹4,999 -> Mastering Linux Fuzzing
-          # 999900 paise = ₹9,999 -> Practical Fuzzing
+          # 799900 paise = ₹7,999 -> Mastering Linux Fuzzing
+          # 1499900 paise = ₹14,999 -> Practical Fuzzing
           
-          if [ "$AMOUNT" == "499900" ] || [ "$AMOUNT" == "4999" ]; then
+          if [ "$AMOUNT" == "799900" ] || [ "$AMOUNT" == "7999" ]; then
             echo "Detected Course: Mastering Linux Fuzzing"
             echo "COURSE_ID=mastering_linux" >> $GITHUB_ENV
-          elif [ "$AMOUNT" == "999900" ] || [ "$AMOUNT" == "9999" ]; then
+          elif [ "$AMOUNT" == "1499900" ] || [ "$AMOUNT" == "14999" ]; then
             echo "Detected Course: Practical Fuzzing"
             echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
           else
