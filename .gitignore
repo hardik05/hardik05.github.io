@@ -16,3 +16,4 @@ scripts/
 certificates/issued/
 node_modules/
 launch.html
+WORKFLOW.md
