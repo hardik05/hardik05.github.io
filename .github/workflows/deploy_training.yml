@@ -59,8 +59,8 @@ jobs:
           if [ "$AMOUNT" == "799900" ] || [ "$AMOUNT" == "7999" ]; then
             echo "Detected Course: Mastering Linux Fuzzing"
             echo "COURSE_ID=mastering_linux" >> $GITHUB_ENV
-          elif [ "$AMOUNT" == "1499900" ] || [ "$AMOUNT" == "14999" ]; then
-            echo "Detected Course: Practical Fuzzing"
+          elif [ "$AMOUNT" == "1499900" ] || [ "$AMOUNT" == "14999" ] || [ "$AMOUNT" == "3999900" ] || [ "$AMOUNT" == "39999" ]; then
+            echo "Detected Course: Practical Fuzzing (Standard or Commercial)"
             echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
           else
             # Fallback to payload or default if amount doesn't match known prices
