@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate of Completion</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-print-color-adjust: exact; }
+        .mono { font-family: 'Share Tech Mono', monospace; }
+        .cert-bg {
+            background-color: #111827; /* gray-900 */
+            background-image: radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.05) 0%, transparent 40%),
+                              radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+        }
+        @page { size: landscape; margin: 0; }
+    </style>
+</head>
+<body class="bg-gray-900 w-[1123px] h-[794px] flex items-center justify-center p-0 m-0 overflow-hidden text-white">
+
+    <div class="relative w-full h-full cert-bg border-[20px] border-gray-800 flex flex-col items-center justify-center text-center p-16">
+        
+        <!-- Corner Accents -->
+        <div class="absolute top-0 left-0 w-32 h-32 border-t-4 border-l-4 border-emerald-500 m-8"></div>
+        <div class="absolute top-0 right-0 w-32 h-32 border-t-4 border-r-4 border-emerald-500 m-8"></div>
+        <div class="absolute bottom-0 left-0 w-32 h-32 border-b-4 border-l-4 border-blue-500 m-8"></div>
+        <div class="absolute bottom-0 right-0 w-32 h-32 border-b-4 border-r-4 border-blue-500 m-8"></div>
+
+        <!-- Logo -->
+        <div class="mb-8">
+            <div class="w-20 h-20 bg-gray-800 rounded-full flex items-center justify-center mx-auto border-4 border-gray-700 shadow-xl">
+                <i class="fas fa-bug text-4xl text-emerald-500"></i>
+            </div>
+            <h2 class="text-xl font-bold tracking-[0.5em] text-gray-500 mt-4 uppercase">Fuzzing.in</h2>
+        </div>
+
+        <!-- Title -->
+        <h1 class="text-5xl font-extrabold mb-2 tracking-tight">CERTIFICATE</h1>
+        <p class="text-xl text-gray-400 tracking-widest uppercase mb-12">Of Completion</p>
+
+        <!-- Recipient -->
+        <p class="text-gray-500 text-lg mb-2">This is to certify that</p>
+        <h3 class="text-6xl font-black text-emerald-400 mb-8 font-serif" id="student-name">Student Name</h3>
+
+        <!-- Description -->
+        <p class="text-gray-400 text-lg max-w-3xl leading-relaxed mb-12">
+            Has successfully completed the comprehensive hands-on training on<br>
+            <span class="text-white font-bold text-2xl mt-2 block">Practical Fuzzing Masterclass</span>
+            <span class="text-sm text-gray-500 block mt-2">Covering Linux & Windows Fuzzing, AFL++, WinAFL, and Crash Analysis.</span>
+        </p>
+
+        <!-- Footer Info -->
+        <div class="absolute bottom-16 left-16 text-left">
+            <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Date Issued</p>
+            <p class="text-lg font-bold mono" id="cert-date">2025-01-20</p>
+        </div>
+
+        <div class="absolute bottom-16 right-16 text-right">
+            <p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Certificate ID</p>
+            <p class="text-lg font-bold mono text-blue-400" id="cert-id">PF-2025-001</p>
+            <p class="text-[10px] text-gray-600 mt-1">Verify at https://fuzzing.in/verify.html</p>
+        </div>
+
+        <!-- Signature -->
+        <div class="absolute bottom-16 left-1/2 transform -translate-x-1/2 text-center">
+            <div class="w-48 border-b border-gray-600 pb-2 mb-2">
+                <span class="font-serif text-3xl italic text-gray-300">Hardik Shah</span>
+            </div>
+            <p class="text-xs text-gray-500 uppercase tracking-widest">Instructor</p>
+        </div>
+
+    </div>
+
+</body>
+</html>

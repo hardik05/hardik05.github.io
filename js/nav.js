@@ -1,3 +1,11 @@
+// Load layout first
+const script = document.createElement('script');
+// Check if we are in a subdirectory to load layout.js correctly
+const pathDepth = window.location.pathname.split('/').length - 2;
+const prefix = pathDepth > 0 ? '../'.repeat(pathDepth) : '';
+script.src = prefix + 'js/layout.js';
+document.head.appendChild(script);
+
 // Theme Initialization
 if (localStorage.theme === 'light') {
     document.documentElement.classList.remove('dark');
@@ -23,7 +31,7 @@ function updateThemeIcons() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initMobileMenu() {
     const header = document.querySelector('header');
     // Select the hamburger button inside the header
     const mobileBtn = header.querySelector('button.md\\:hidden');
@@ -31,9 +39,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const desktopNav = header.querySelector('nav');
 
     if (mobileBtn && desktopNav) {
+        // Check if menu already exists
+        if (header.querySelector('.mobile-menu-container')) return;
+
         // Create mobile menu container
         const mobileMenu = document.createElement('div');
-        mobileMenu.className = 'md:hidden hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 absolute top-full left-0 w-full shadow-xl z-50';
+        mobileMenu.className = 'mobile-menu-container md:hidden hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 absolute top-full left-0 w-full shadow-xl z-50';
         
         // Clone links from desktop nav
         const links = desktopNav.querySelectorAll('a');
@@ -79,15 +90,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+}
 
-    // Bind Theme Toggle to Desktop Nav Button
-    const themeBtn = document.getElementById('theme-toggle');
-    if (themeBtn) {
-        themeBtn.addEventListener('click', toggleTheme);
-    }
+document.addEventListener('DOMContentLoaded', () => {
+    // Wait for layout injection
+    setTimeout(() => {
+        initMobileMenu();
+        
+        // Bind Theme Toggle to Desktop Nav Button
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) {
+            themeBtn.addEventListener('click', toggleTheme);
+        }
+        
+        // Initial icon update
+        updateThemeIcons();
 
-    // Initial icon update
-    updateThemeIcons();
+        // Last Updated (Moved here to ensure footer exists)
+        const lastUpdatedSpan = document.getElementById('last-updated');
+        if (lastUpdatedSpan) {
+            const date = new Date(document.lastModified);
+            lastUpdatedSpan.textContent = 'Last Updated: ' + date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+    }, 100); // Small delay to allow layout.js to run
 
     // Back to Top Button Logic
     const backToTopBtn = document.createElement('button');
@@ -109,19 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     backToTopBtn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-
-    // Dynamic Copyright Year
-    const yearSpan = document.getElementById('current-year');
-    if (yearSpan) {
-        yearSpan.textContent = new Date().getFullYear();
-    }
-
-    // Last Updated
-    const lastUpdatedSpan = document.getElementById('last-updated');
-    if (lastUpdatedSpan) {
-        const date = new Date(document.lastModified);
-        lastUpdatedSpan.textContent = 'Last Updated: ' + date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-    }
 
     // Copy Code Button Logic for Blog Posts
     document.querySelectorAll('.prose pre').forEach(pre => {
