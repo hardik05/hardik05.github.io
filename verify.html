@@ -29,9 +29,9 @@
             <div class="p-8">
                 <!-- Search Form -->
                 <div id="search-section" class="mb-6">
-                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Certificate ID or Order ID</label>
+                    <label class="block text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Certificate ID</label>
                     <div class="flex gap-2">
-                        <input type="text" id="cert-input" placeholder="e.g. PF-2025-001 or Order ID" class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none uppercase">
+                        <input type="text" id="cert-input" placeholder="e.g. PF-2026-001-XXXX" class="flex-1 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none uppercase">
                         <button onclick="verifyCert()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-bold transition">Verify</button>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                             </div>
                             <div class="text-right">
                                 <p class="text-xs text-gray-500 uppercase font-bold">Cert ID</p>
-                                <p id="cert-id" class="font-mono text-gray-800 dark:text-gray-200">PF-2025-001</p>
+                                <p id="cert-id" class="font-mono text-gray-800 dark:text-gray-200">PF-2026-001-XXXX</p>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@
             const inputId = document.getElementById('cert-input').value.trim();
             if (!inputId) return;
 
-            const record = certDB.find(c => c.id.toLowerCase() === inputId.toLowerCase() || (c.order_id && c.order_id.toLowerCase() === inputId.toLowerCase()));
+            const record = certDB.find(c => c.id.toLowerCase() === inputId.toLowerCase());
             
             document.getElementById('search-section').classList.add('hidden');
             
