@@ -1,11 +1,11 @@
 
 const HeaderHTML = `
-<div class="container mx-auto flex justify-between items-center p-4 md:p-6">
-    <a href="{{PREFIX}}index.html" class="flex items-center gap-3 text-3xl font-extrabold text-blue-500 tracking-widest">
-        <img src="{{PREFIX}}images/logo.jpg" alt="Fuzzing.in Logo" class="h-10 w-10 rounded-full object-cover border-2 border-blue-500">
+<div class="container mx-auto flex justify-between items-center p-4 md:p-6 gap-4">
+    <a href="{{PREFIX}}index.html" class="flex items-center gap-3 text-2xl md:text-3xl font-extrabold text-blue-500 tracking-widest shrink-0">
+        <img src="{{PREFIX}}images/logo.jpg" alt="Fuzzing.in Logo" class="h-8 w-8 md:h-10 md:w-10 rounded-full object-cover border-2 border-blue-500">
         FUZZING.IN
     </a>
-    <nav class="hidden md:flex space-x-6 text-sm font-medium">
+    <nav class="hidden md:flex space-x-2 lg:space-x-6 text-[10px] lg:text-sm font-medium items-center">
         <a href="{{PREFIX}}index.html" class="hover:text-blue-400 transition" data-link="index.html">Home</a>
         <a href="{{PREFIX}}trainings.html" class="hover:text-blue-400 transition" data-link="trainings.html">Trainings</a>
         <a href="{{PREFIX}}blog.html" class="hover:text-blue-400 transition" data-link="blog.html">Blog</a>
