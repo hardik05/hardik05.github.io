@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script>tailwind.config = { darkMode: 'class' };</script>
     <script src="js/nav.js" defer></script>
+    <script src="js/testimonials.js" defer></script>
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body class="py-4 md:py-10 px-2 tech-bg bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -315,82 +316,8 @@
         <section id="testimonials" class="py-16 bg-gray-50 dark:bg-gray-800/30 border-b border-gray-200 dark:border-gray-700 transition-colors duration-300 overflow-hidden">
             <h3 class="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-white">Testimonials</h3>
             
-            <div class="relative w-full mask-linear-fade">
-                <div class="flex gap-6 animate-marquee items-stretch">
-                    <!-- Original List -->
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The 'Mastering Fuzzing' training was a game-changer for my career. The hands-on labs with AFL++ and custom mutators helped me find my first CVE within weeks."</p>
-                        <p class="relative z-10 text-right text-sm text-blue-500 font-bold mt-4">- Security Engineer</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Hardik's deep knowledge of Windows internals made the binary fuzzing workshop incredibly valuable. Highly recommended for anyone looking to move beyond basic web app sec."</p>
-                        <p class="relative z-10 text-right text-sm text-blue-500 font-bold mt-4">- Vulnerability Researcher</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Excellent content delivery and pacing. The section on crash triaging saved our team countless hours. A must-attend for product security teams."</p>
-                        <p class="relative z-10 text-right text-sm text-amber-500 font-bold mt-4">- AppSec Lead</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The practical exercises on fuzzing network protocols were exactly what I needed. Great balance of theory and practice."</p>
-                        <p class="relative z-10 text-right text-sm text-purple-500 font-bold mt-4">- Network Security Engineer</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"One of the best security trainings I've attended. The instructor explains complex concepts clearly."</p>
-                        <p class="relative z-10 text-right text-sm text-pink-500 font-bold mt-4">- Security Consultant</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Learned so much about AFL and libFuzzer. The custom mutator section was brilliant."</p>
-                        <p class="relative z-10 text-right text-sm text-indigo-500 font-bold mt-4">- Software Engineer</p>
-                    </div>
-
-                    <!-- Duplicate List for Seamless Loop -->
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The 'Mastering Fuzzing' training was a game-changer for my career. The hands-on labs with AFL++ and custom mutators helped me find my first CVE within weeks."</p>
-                        <p class="relative z-10 text-right text-sm text-blue-500 font-bold mt-4">- Security Engineer</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Hardik's deep knowledge of Windows internals made the binary fuzzing workshop incredibly valuable. Highly recommended for anyone looking to move beyond basic web app sec."</p>
-                        <p class="relative z-10 text-right text-sm text-blue-500 font-bold mt-4">- Vulnerability Researcher</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Excellent content delivery and pacing. The section on crash triaging saved our team countless hours. A must-attend for product security teams."</p>
-                        <p class="relative z-10 text-right text-sm text-amber-500 font-bold mt-4">- AppSec Lead</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"The practical exercises on fuzzing network protocols were exactly what I needed. Great balance of theory and practice."</p>
-                        <p class="relative z-10 text-right text-sm text-purple-500 font-bold mt-4">- Network Security Engineer</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"One of the best security trainings I've attended. The instructor explains complex concepts clearly."</p>
-                        <p class="relative z-10 text-right text-sm text-pink-500 font-bold mt-4">- Security Consultant</p>
-                    </div>
-
-                    <div class="w-80 md:w-96 shrink-0 bg-white dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 relative flex flex-col justify-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 dark:hover:shadow-gray-700/30">
-                        <i class="fas fa-quote-left text-4xl text-blue-100 dark:text-gray-700 absolute top-4 left-4 -z-0"></i>
-                        <p class="relative z-10 text-gray-600 dark:text-gray-300 italic text-lg">"Learned so much about AFL and libFuzzer. The custom mutator section was brilliant."</p>
-                        <p class="relative z-10 text-right text-sm text-indigo-500 font-bold mt-4">- Software Engineer</p>
-                    </div>
-                </div>
+            <div class="relative w-full mask-linear-fade" id="testimonials-container">
+                <!-- Populated by js/testimonials.js -->
             </div>
         </section>
 
