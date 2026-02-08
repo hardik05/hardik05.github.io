@@ -45,33 +45,78 @@ function initMobileMenu() {
         const mobileLinksContainer = document.createElement('div');
         mobileLinksContainer.className = 'flex flex-col p-4 space-y-2';
 
-        // Select ALL links (direct and nested in dropdowns)
-        const links = desktopNav.querySelectorAll('a');
+        // Iterate over immediate children of desktop nav
+        Array.from(desktopNav.children).forEach(child => {
+            // Ignore theme toggle button and script tags
+            if (child.id === 'theme-toggle' || child.tagName === 'SCRIPT') return;
 
-        links.forEach(link => {
-            const mobileLink = link.cloneNode(true);
-            
-            // Base styling for mobile links
-            let baseClasses = 'block text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-medium py-2 px-4 rounded-lg';
-            
-            // Highlight active
-            if (link.classList.contains('text-blue-400') && link.classList.contains('font-bold')) {
-                baseClasses = 'block text-blue-400 font-bold transition py-2 px-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg';
-            }
-            
-            // CTA button
-            if (link.classList.contains('bg-blue-600') || link.classList.contains('bg-emerald-600')) {
-                baseClasses = 'block text-center px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition shadow-md font-bold mt-4';
-            }
+            // Handle standard links
+            if (child.tagName === 'A') {
+                const mobileLink = child.cloneNode(true);
+                
+                // Base styling for mobile links
+                let baseClasses = 'block text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-medium py-2 px-4 rounded-lg';
+                
+                // Highlight active
+                if (child.classList.contains('text-blue-400') && child.classList.contains('font-bold')) {
+                    baseClasses = 'block text-blue-400 font-bold transition py-2 px-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg';
+                }
+                
+                // CTA button
+                if (child.classList.contains('bg-emerald-600')) {
+                    baseClasses = 'block text-center px-4 py-3 bg-emerald-600 text-white rounded-lg hover:bg-emerald-500 transition shadow-md font-bold mt-4';
+                }
 
-            mobileLink.className = baseClasses;
-            mobileLinksContainer.appendChild(mobileLink);
+                mobileLink.className = baseClasses;
+                mobileLinksContainer.appendChild(mobileLink);
+            }
+            // Handle Dropdowns (Groups)
+            else if (child.classList.contains('group')) {
+                const btnText = child.querySelector('button').textContent.trim();
+                const dropdownLinks = child.querySelectorAll('div a');
+                
+                // Create Accordion Container
+                const accordionContainer = document.createElement('div');
+                accordionContainer.className = 'border border-gray-100 dark:border-gray-800 rounded-lg overflow-hidden';
+
+                // Accordion Button
+                const accordionBtn = document.createElement('button');
+                accordionBtn.className = 'w-full flex justify-between items-center text-left text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-medium py-2 px-4 bg-gray-50 dark:bg-gray-800/50';
+                accordionBtn.innerHTML = `${btnText} <i class="fas fa-chevron-down text-xs transition-transform duration-300"></i>`;
+                
+                // Accordion Content
+                const accordionContent = document.createElement('div');
+                accordionContent.className = 'hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800';
+
+                // Toggle Logic
+                accordionBtn.onclick = () => {
+                    const isExpanded = !accordionContent.classList.contains('hidden');
+                    accordionContent.classList.toggle('hidden');
+                    const icon = accordionBtn.querySelector('i');
+                    if (isExpanded) {
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                };
+
+                // Add Links to Content
+                dropdownLinks.forEach(link => {
+                    const subLink = link.cloneNode(true);
+                    subLink.className = 'block pl-8 pr-4 py-2 text-sm text-gray-500 dark:text-gray-400 hover:text-blue-400 border-l-2 border-transparent hover:border-blue-400 transition';
+                    accordionContent.appendChild(subLink);
+                });
+
+                accordionContainer.appendChild(accordionBtn);
+                accordionContainer.appendChild(accordionContent);
+                mobileLinksContainer.appendChild(accordionContainer);
+            }
         });
 
         // Add Theme Toggle
         const mobileThemeBtn = document.createElement('button');
         mobileThemeBtn.onclick = toggleTheme;
-        mobileThemeBtn.className = 'flex items-center w-full text-left text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-medium py-2 px-4 mt-2';
+        mobileThemeBtn.className = 'flex items-center w-full text-left text-gray-600 dark:text-gray-300 hover:text-blue-400 transition font-medium py-2 px-4 mt-2 border-t border-gray-100 dark:border-gray-800 pt-4';
         mobileThemeBtn.innerHTML = '<i class="fas fa-moon theme-toggle-icon mr-3"></i> Toggle Mode';
         mobileLinksContainer.appendChild(mobileThemeBtn);
 
