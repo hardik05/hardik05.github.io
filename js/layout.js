@@ -1,4 +1,3 @@
-
 const HeaderHTML = `
 <div class="container mx-auto flex justify-between items-center p-4 md:p-6 gap-4">
     <a href="{{PREFIX}}index.html" class="flex items-center gap-3 text-2xl md:text-3xl font-extrabold text-blue-500 tracking-widest shrink-0">
@@ -10,14 +9,25 @@ const HeaderHTML = `
         <a href="{{PREFIX}}trainings.html" class="hover:text-blue-400 transition" data-link="trainings.html">Trainings</a>
         <a href="{{PREFIX}}blog.html" class="hover:text-blue-400 transition" data-link="blog.html">Blog</a>
         <a href="{{PREFIX}}advisories.html" class="hover:text-blue-400 transition" data-link="advisories.html">Advisories</a>
-        <a href="{{PREFIX}}patents.html" class="hover:text-blue-400 transition" data-link="patents.html">Patents</a>
-        <a href="{{PREFIX}}publications.html" class="hover:text-blue-400 transition" data-link="publications.html">Publications</a>
-        <a href="{{PREFIX}}media.html" class="hover:text-blue-400 transition" data-link="media.html">Media</a>
-        <a href="{{PREFIX}}about.html" class="hover:text-blue-400 transition" data-link="about.html">About</a>
-        <a href="{{PREFIX}}verify.html" class="hover:text-blue-400 transition" data-link="verify.html">Verify Certificate</a>
+        
+        <!-- About Dropdown -->
+        <div class="relative group py-2">
+            <button class="flex items-center gap-1 hover:text-blue-400 transition uppercase tracking-wider">
+                About <i class="fas fa-chevron-down text-[8px]"></i>
+            </button>
+            <div class="absolute left-0 mt-0 w-48 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50 py-2">
+                <a href="{{PREFIX}}about.html" class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 transition" data-link="about.html">The Researcher</a>
+                <a href="{{PREFIX}}patents.html" class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 transition" data-link="patents.html">Patents</a>
+                <a href="{{PREFIX}}publications.html" class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 transition" data-link="publications.html">Publications</a>
+                <a href="{{PREFIX}}media.html" class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 transition" data-link="media.html">Media Coverage</a>
+                <a href="{{PREFIX}}verify.html" class="block px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-blue-500 transition" data-link="verify.html">Verify Certificate</a>
+            </div>
+        </div>
+
         <a href="{{PREFIX}}contact.html" class="hover:text-blue-400 transition" data-link="contact.html">Contact</a>
         <a href="{{PREFIX}}contact.html" class="px-3 py-1 bg-emerald-600 text-white rounded-full hover:bg-emerald-500 transition shadow-md" data-link="contact.html">Private Training</a>
-        <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-4">
+        
+        <button id="theme-toggle" aria-label="Toggle Dark Mode" class="text-gray-500 dark:text-gray-300 hover:text-blue-400 transition ml-2">
             <i class="fas fa-moon theme-toggle-icon"></i>
         </button>
     </nav>
@@ -67,6 +77,13 @@ function injectLayout() {
     navLinks.forEach(link => {
         if (link.dataset.link === currentFile) {
             link.classList.add('text-blue-400', 'font-bold');
+            
+            // If it's inside a dropdown, highlight the parent too
+            const dropdown = link.closest('.group');
+            if (dropdown) {
+                const btn = dropdown.querySelector('button');
+                if (btn) btn.classList.add('text-blue-400', 'font-bold');
+            }
         }
     });
 
