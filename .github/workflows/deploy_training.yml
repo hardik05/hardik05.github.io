@@ -38,19 +38,20 @@ jobs:
           PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
           PAYLOAD_AMOUNT=$(jq -r '.client_payload.amount // empty' $GITHUB_EVENT_PATH)
           
-          # Initialize AMOUNT with payload amount if available
-          AMOUNT=$PAYLOAD_AMOUNT
-
-          # If amount not in payload and PAYMENT_ID looks like a payment ID (pay_...), fetch from API
-          if [ -z "$AMOUNT" ] && [[ $PAYMENT_ID == pay_* ]]; then
-            echo "Fetching payment details from Razorpay API for $PAYMENT_ID..."
+          # If the payment ID looks like a real Razorpay payment, we MUST verify and retrieve the amount 
+          # directly from the Razorpay API to prevent spoofing of the amount in the webhook payload.
+          if [[ $PAYMENT_ID == pay_* ]]; then
+            echo "Verifying payment details with Razorpay API for $PAYMENT_ID..."
             RESPONSE=$(curl -s -u "${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}" \
               "https://api.razorpay.com/v1/payments/${PAYMENT_ID}")
             AMOUNT=$(echo $RESPONSE | jq -r '.amount // empty')
+          else
+            # Only fall back to payload amount for custom/manual runs triggered by authorized users
+            AMOUNT=$PAYLOAD_AMOUNT
           fi
           
           echo "Payment/Order ID: $PAYMENT_ID"
-          echo "Detected Amount: $AMOUNT"
+          echo "Verified/Detected Amount: $AMOUNT"
           
           # Determine Course ID based on Amount
           # 799900 paise = ₹7,999 -> Mastering Linux Fuzzing
