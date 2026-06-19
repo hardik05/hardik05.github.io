@@ -63,10 +63,8 @@ jobs:
             echo "Detected Course: Practical Fuzzing (Standard or Commercial)"
             echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
           else
-            # Fallback to payload or default if amount doesn't match known prices
-            PAYLOAD_COURSE=$(jq -r '.client_payload.course_id // "practical_fuzzing"' $GITHUB_EVENT_PATH)
-            echo "Amount $AMOUNT did not match known courses. Falling back to payload/default: $PAYLOAD_COURSE"
-            echo "COURSE_ID=$PAYLOAD_COURSE" >> $GITHUB_ENV
+            echo "Error: Amount $AMOUNT did not match known courses."
+            exit 1
           fi
 
       - name: Encrypt Training Page
@@ -93,9 +91,12 @@ jobs:
                     exit 1
                 fi
             fi
-          else
+          elif [ "$COURSE_ID" == "practical_fuzzing" ]; then
             OUTPUT_DIR="codelabs/Practical_Fuzzing/access"
             SOURCE_FILE="private-source/index.html"
+          else
+            echo "Error: Invalid COURSE_ID: $COURSE_ID"
+            exit 1
           fi
           
           # Ensure output directory exists
