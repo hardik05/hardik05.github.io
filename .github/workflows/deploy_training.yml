@@ -13,10 +13,14 @@ jobs:
 
       - name: Mask Sensitive Data
         run: |
-          PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
-          LICENSE_KEY=$(jq -r '.client_payload.license_key' $GITHUB_EVENT_PATH)
-          echo "::add-mask::$PAYMENT_ID"
-          echo "::add-mask::$LICENSE_KEY"
+          PAYMENT_ID=$(jq -r '.client_payload.payment_id // empty' $GITHUB_EVENT_PATH)
+          LICENSE_KEY=$(jq -r '.client_payload.license_key // empty' $GITHUB_EVENT_PATH)
+          if [ -n "$PAYMENT_ID" ] && [ "$PAYMENT_ID" != "null" ]; then
+            echo "::add-mask::$PAYMENT_ID"
+          fi
+          if [ -n "$LICENSE_KEY" ] && [ "$LICENSE_KEY" != "null" ]; then
+            echo "::add-mask::$LICENSE_KEY"
+          fi
 
       - name: Checkout Private Source Repo
         uses: actions/checkout@v4
@@ -35,36 +39,88 @@ jobs:
           RAZORPAY_KEY_ID: ${{ secrets.RAZORPAY_KEY_ID }}
           RAZORPAY_KEY_SECRET: ${{ secrets.RAZORPAY_KEY_SECRET }}
         run: |
-          PAYMENT_ID=$(jq -r '.client_payload.payment_id' $GITHUB_EVENT_PATH)
+          PAYMENT_ID=$(jq -r '.client_payload.payment_id // empty' $GITHUB_EVENT_PATH)
           PAYLOAD_AMOUNT=$(jq -r '.client_payload.amount // empty' $GITHUB_EVENT_PATH)
+          PAYLOAD_COURSE_ID=$(jq -r '.client_payload.course_id // .client_payload.course // empty' $GITHUB_EVENT_PATH)
           
-          # If the payment ID looks like a real Razorpay payment, we MUST verify and retrieve the amount 
-          # directly from the Razorpay API to prevent spoofing of the amount in the webhook payload.
+          AMOUNT=""
+          
+          # 1. If payment ID looks like a Razorpay payment or order ID, attempt API verification
           if [[ $PAYMENT_ID == pay_* ]]; then
             echo "Verifying payment details with Razorpay API for $PAYMENT_ID..."
-            RESPONSE=$(curl -s -u "${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}" \
-              "https://api.razorpay.com/v1/payments/${PAYMENT_ID}")
-            AMOUNT=$(echo $RESPONSE | jq -r '.amount // empty')
-          else
-            # Only fall back to payload amount for custom/manual runs triggered by authorized users
-            AMOUNT=$PAYLOAD_AMOUNT
+            if [ -n "$RAZORPAY_KEY_ID" ] && [ -n "$RAZORPAY_KEY_SECRET" ]; then
+              RESPONSE=$(curl -s -u "${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}" \
+                "https://api.razorpay.com/v1/payments/${PAYMENT_ID}")
+              AMOUNT=$(echo "$RESPONSE" | jq -r '.amount // empty')
+              if [ -z "$AMOUNT" ] || [ "$AMOUNT" == "null" ]; then
+                ERR_MSG=$(echo "$RESPONSE" | jq -r '.error.description // empty')
+                if [ -n "$ERR_MSG" ] && [ "$ERR_MSG" != "null" ]; then
+                  echo "Warning: Razorpay API returned error: $ERR_MSG"
+                fi
+                AMOUNT=""
+              fi
+            else
+              echo "Warning: Razorpay API credentials (RAZORPAY_KEY_ID/RAZORPAY_KEY_SECRET) not set."
+            fi
+          elif [[ $PAYMENT_ID == order_* ]]; then
+            echo "Verifying order details with Razorpay API for $PAYMENT_ID..."
+            if [ -n "$RAZORPAY_KEY_ID" ] && [ -n "$RAZORPAY_KEY_SECRET" ]; then
+              RESPONSE=$(curl -s -u "${RAZORPAY_KEY_ID}:${RAZORPAY_KEY_SECRET}" \
+                "https://api.razorpay.com/v1/orders/${PAYMENT_ID}")
+              AMOUNT=$(echo "$RESPONSE" | jq -r '.amount // empty')
+              if [ -z "$AMOUNT" ] || [ "$AMOUNT" == "null" ]; then
+                ERR_MSG=$(echo "$RESPONSE" | jq -r '.error.description // empty')
+                if [ -n "$ERR_MSG" ] && [ "$ERR_MSG" != "null" ]; then
+                  echo "Warning: Razorpay API returned error: $ERR_MSG"
+                fi
+                AMOUNT=""
+              fi
+            else
+              echo "Warning: Razorpay API credentials not set."
+            fi
+          fi
+          
+          # 2. Fallback to payload amount if Razorpay API didn't yield an amount
+          if [ -z "$AMOUNT" ] && [ -n "$PAYLOAD_AMOUNT" ] && [ "$PAYLOAD_AMOUNT" != "null" ]; then
+            echo "Using payload amount as fallback: $PAYLOAD_AMOUNT"
+            AMOUNT="$PAYLOAD_AMOUNT"
           fi
           
           echo "Payment/Order ID: $PAYMENT_ID"
           echo "Verified/Detected Amount: $AMOUNT"
           
-          # Determine Course ID based on Amount
+          # Determine Course ID based on Amount or explicit Payload Course ID
           # 799900 paise = ₹7,999 -> Mastering Linux Fuzzing
           # 1499900 paise = ₹14,999 -> Practical Fuzzing
+          # 3999900 paise = ₹39,999 -> Practical Fuzzing (Commercial)
           
+          COURSE_ID=""
           if [ "$AMOUNT" == "799900" ] || [ "$AMOUNT" == "7999" ]; then
-            echo "Detected Course: Mastering Linux Fuzzing"
-            echo "COURSE_ID=mastering_linux" >> $GITHUB_ENV
+            echo "Detected Course: Mastering Linux Fuzzing (Amount: $AMOUNT)"
+            COURSE_ID="mastering_linux"
           elif [ "$AMOUNT" == "1499900" ] || [ "$AMOUNT" == "14999" ] || [ "$AMOUNT" == "3999900" ] || [ "$AMOUNT" == "39999" ]; then
-            echo "Detected Course: Practical Fuzzing (Standard or Commercial)"
-            echo "COURSE_ID=practical_fuzzing" >> $GITHUB_ENV
+            echo "Detected Course: Practical Fuzzing (Amount: $AMOUNT)"
+            COURSE_ID="practical_fuzzing"
+          elif [ -n "$PAYLOAD_COURSE_ID" ] && [ "$PAYLOAD_COURSE_ID" != "null" ]; then
+            echo "Using course_id from payload: $PAYLOAD_COURSE_ID"
+            case "$PAYLOAD_COURSE_ID" in
+              mastering*|linux*)
+                COURSE_ID="mastering_linux"
+                ;;
+              practical*|fuzzing*)
+                COURSE_ID="practical_fuzzing"
+                ;;
+              *)
+                COURSE_ID="$PAYLOAD_COURSE_ID"
+                ;;
+            esac
+          fi
+          
+          if [ -n "$COURSE_ID" ]; then
+            echo "Setting COURSE_ID=$COURSE_ID"
+            echo "COURSE_ID=$COURSE_ID" >> $GITHUB_ENV
           else
-            echo "Error: Amount $AMOUNT did not match known courses."
+            echo "Error: Could not determine course. Amount '$AMOUNT' did not match known courses, and payload course_id '$PAYLOAD_COURSE_ID' is empty or invalid."
             exit 1
           fi
 
