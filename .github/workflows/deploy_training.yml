@@ -169,6 +169,9 @@ jobs:
               -e 's|href="img/|href="../img/|g' \
               -e "s|src='img/|src='../img/|g" \
               -e "s|href='img/|href='../img/|g" \
+              -e 's|https://storage.googleapis.com/claat-public/|../../../elements/codelab-elements/|g' \
+              -e 's|//storage.googleapis.com/claat-public/|../../../elements/codelab-elements/|g' \
+              -e 's|http://storage.googleapis.com/claat-public/|../../../elements/codelab-elements/|g' \
               "$SOURCE_FILE" > private-source/index_fixed.html
           
           # Run Staticrypt (v3 uses -d for directory and doesn't have -o for filename)

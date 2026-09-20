@@ -826,7 +826,11 @@ exports.init = init;
             const templateConfig = {
                 rememberExpirationKey: "staticrypt_expiration",
                 rememberPassphraseKey: "staticrypt_passphrase",
-                replaceHtmlCallback: null,
+                replaceHtmlCallback: function (plainHTML) {
+                    var fixed = plainHTML.replace(/https?:\/\/storage\.googleapis\.com\/claat-public\//g, "../../../elements/codelab-elements/");
+                    document.write(fixed);
+                    document.close();
+                },
                 clearLocalStorageCallback: null,
             };
 
